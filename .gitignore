@@ -107,3 +107,6 @@ sympy-plots-for-*.tex/
 
 # xindy
 *.xdy
+
+# Lets not share the output for now (comment it at the final release)
+immortalsTDP.pdf
