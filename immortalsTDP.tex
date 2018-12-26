@@ -40,20 +40,42 @@
 \input{macros}
 
 
+
+\makeatletter
+\DeclareRobustCommand{\textsupsub}[2]{{%
+  \m@th\ensuremath{%
+    ^{\mbox{\fontsize\sf@size\z@#1}}%
+    _{\mbox{\fontsize\sf@size\z@#2}}%
+  }%
+}}
+\makeatother
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % Title
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{Lipsum 2018 Team Description Paper}
+\title{Immortals 2018 Extended Team Description Paper}
 
-\author{Main-author \and Co-author \and Team Members}
-\institute{Affiliation name and address, \\
+\author{\normalsize Omid Najafi Koopai{\small\textsupsub{1}{}}, 
+MohammadAli Ghasemieh{\small\textsupsub{2}{}}, 
+Mehran Khanloghy{\small\textsupsub{3}{}}, \\
+\normalsize AliReza Mohammadi{\small\textsupsub{3}{}}, 
+AmirMahdi Matin{\small\textsupsub{3}{}}, 
+}
+\institute{Sharif University of Technology, \\
 \texttt{http://devoted-web-site.url}}
 
 
 \begin{document}
 \maketitle
+
+\center{
+\texttt{\small 1} Sharif University of Technology\\
+\texttt{\small 2} Pars University of Art\\
+\texttt{\small 3} University of Tehran\\
+\texttt{http://www.immortals-robotics.com}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
