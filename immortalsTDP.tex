@@ -37,6 +37,7 @@
 \usepackage{titling}
 \usepackage{xcolor}
 \usepackage{lipsum}
+\usepackage{ragged2e}
 \input{macros}
 
 
@@ -55,13 +56,13 @@
 % Title
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{Immortals 2018 Extended Team Description Paper}
+\title{Immortals 2019 Extended Team Description Paper}
 
-\author{\normalsize Omid Najafi Koopai{\small\textsupsub{1}{}}, 
-MohammadAli Ghasemieh{\small\textsupsub{2}{}}, 
-Mehran Khanloghy{\small\textsupsub{3}{}}, \\
-\normalsize AliReza Mohammadi{\small\textsupsub{3}{}}, 
-AmirMahdi Matin{\small\textsupsub{3}{}}, 
+\author{\normalsize Omid Najafi Koopai{\textsupsub{\small\texttt{1}}{}}, 
+MohammadAli Ghasemieh{\textsupsub{\small\texttt{2}}{}}, 
+Mehran Khanloghy{\textsupsub{\small\texttt{3}}{}}, \\
+\normalsize AliReza Mohammadi{\textsupsub{\small\texttt{3}}{}}, 
+AmirMahdi Matin{\textsupsub{\small\texttt{3}}{}}
 }
 \institute{Sharif University of Technology, \\
 \texttt{http://devoted-web-site.url}}
@@ -84,14 +85,14 @@ AmirMahdi Matin{\small\textsupsub{3}{}},
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-
-In your abstract, please state your main research line and your achievements of this year (on which problem or set of problems are you focusing all the team efforts). Tell why this research is important, how are you approaching to the problem solution and which results do you expect to obtain.
+This paper describes the recent works done by the Immortals team, a team consisting of undergraduate engineering students, currently focusing on the Small Size League. There were changes applied to the mechanics and electronics of the robots in the previuos year. This year, the team focused on solving the issues which were observed during the recent competitions including RoboCup 2018, Montréal. The goal is to reach to a reliable design where there is no need for any robot substitution due to damages during a match. In addition to the current robot, there is a 3D printed robot which was introduced in the previous year by this team and has been improved and tested for the upcomming competitions.
+%In your abstract, please state your main research line and your achievements of this year (on which problem or set of problems are you focusing all the team efforts). Tell why this research is important, how are you approaching to the problem solution and which results do you expect to obtain.
 
 \end{abstract}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\justify
 \section{Introduction}
 A Team Description Paper (hereinafter referred as TDP) is an 8-pages long scientific paper, detailing information on the technical and scientific approach of the team's research.
 
@@ -174,9 +175,10 @@ Examples are provided at the end of this document in
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %\robospecs
-%\input{Mechanics}
 %\newpage
-%\input{Electronics}
+\input{Mechanics}
+%\newpage
+\input{Electronics}
 %\newpage
 %\input{Software}
 
