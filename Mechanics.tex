@@ -1,53 +1,64 @@
-\section{EVA Software and External Devices [DSPL Template]}
+\section{Mechanics}
 % In this section briefly describe the software and hardware of the robot
-
 \setlength\intextsep{0pt}
-%\begin{wrapfigure}[10]{r}{0.3\textwidth}
-%	\centering
-%	\includegraphics[width=0.4\textwidth]{images/eva.png}
-%	\caption{Robot EVA}
-%	\label{fig:eva}
-%\end{wrapfigure}
+In the past 2 years there were multiple changes applied to the chip kicker in order to reach the most efficient design. There were numbers of simulation tests done on every chip design and after a successful test, the parts were menufactured for real world testing procedures.
 
+\subsection{Chip kickers new design}
+Chip kicker is a part which should have a high resistance against impacts, It has to be efficient in transmitting the force applied to it from the chip kicker plunger to the ball. The first improvement in the chip kicker is that $\theta$ (angle between a line which passes through the chip kickers axis of rotation and impact point and the direction of the force vector)has been increased to 90 degrees. With this improvement the force applied to the chip kicker will be completely in the direction of the angular acceleration of the chip kicker. According to the torque relation, It is shown that when the angle between the force and the distance vector turn into 90 degrees, The ball would receive the most impact from that force.\\
+The other improvement is to increase the moment of inertia around the chip kickers axis of rotation. This way, more angular acceleration can be achieved by the chip kicker.\\
+In this section we will derive a function for angular acceleration of the chip kicker. As known, the relation between the moment of inertia around the chip kickers axis of rotation and sum of torque applied to the chip kicker can be written as:
+\begin{equation}
+\sum T=I\alpha
+\end{equation}
+\begin{equation}
+T=Fb
+\end{equation}
+Where b is the vertical distance between the center of the chip kickers pin and the point which force is applied.\\
+It is not necessary to calculate the impact force accurately thus, it is assumed that the force applied, is constant to reduce the parameters involved in the new chip kickers design. the impact force is approximated by the equation below:
+\begin{equation}
+F=\dfrac{m\limits_{plunger} {V}^2\limits_{f-plunger}}{2d}
+\end{equation}
+Where $m\limits_{plunger}$ is the mass of the plunger and ${V}\limits_{f-plunger}$ is the velocity of plunger exactly before the impact and $d$ is the distance in which the plunger and the chip kicker are in contact during the impact.\\
+Now we can finally write an expression for angular acceleration:
+\begin{equation}
+\alpha = \dfrac{b m\limits_{plunger} {V}^2\limits_{f-plunger}}{2Id}
+\end{equation}
+If we assume that the F is constant then the angular acceleration will be a function of:
+\begin{equation}
+\alpha=f(\dfrac{b}{I})
+\end{equation}
+As a result if we reduce moment of inertia around the axis of rotation which can be achieved by reducing mass of the chip kicker or reduce distance between its center of mass and the axis of rotation we will get a higher $\alpha$.
+As it can be seen in Fig.\ref{fig:eva} we calculated $\dfrac{b}{I}$ for both old and new design:
 \begin{figure}
 	\centering
-	\includegraphics[width=0.4\textwidth]{images/eva.png}
-	\caption{Robot EVA}
-	\label{fig:eva}
+	\includegraphics[width=0.8\textwidth]{images/SIDE_VIEW.png}
+	\caption{$\dfrac{b}{I}$ for old (left) and new (right) design}
+	\label{fig:CHIP_SIDE_VIEW}
 \end{figure}
+The results show that $\dfrac{b}{I}$ for new design is higher than old design; therefore, angular acceleration for new design should be more than angular acceleration in the old design. As we discussed above new design of chip kicker is much simpler to manufacture and is more reliable and its weight is lower than the old design with all these improvements it also have higher angular acceleration which means reducing its weight won’t affect its functionality.\\
+In order to test our claim we also simulated the impact for both old and new designs in solid works (as shown in Fig.\ref{fig:SIM2CHIP}).\\
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/SIM_CHIPx2.png}
+	\caption{A view of the old (top left)and new (bottom right)chip kickers in a simulation enviroment}
+	\label{fig:SIM2CHIP}
+\end{figure}\\
+\\
+The new chip kicker was tested in a standard SSL field. The results can be seen and compared in Fig. \ref{fig:NEWPLOTBALL} and Fig. \ref{fig:OLDPLOTBALL}.\\
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/NewBallPlot.png}
+	\caption{Position time graph for a ball being kicked by the new chip kicker}
+	\label{fig:NEWPLOTBALL}
+\end{figure}\\
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/OldBallPlot.png}
+	\caption{Position time graph for a ball being kicked by the old chip kicker}
+	\label{fig:OLDPLOTBALL}
+\end{figure}\\
+\\
+As a result, new chip kicker can kick the ball further than the old design. The most important thing here is that new design of chip kicker made its process of manufacturing much easier, faster and cheaper which means a lot for our team. Also new design of kicking device is in a way that it can be easily disassembled from the robot which makes its repair process much faster. Faster robot repairing means having more robots operate when the match is taking place.
 
-We use a standard EVA robot from \textit{Buy'N Large}. No modifications have been applied.
 
-\section*{Robot's Software Description}
-% Please describe in this section the software you are using to control your robot. Consider the following example:
 
-\textit{For our robot we are using the following software:}
-
-\begin{itemize}
-	\item Platform: \BnL Operating System
-	\item Face recognition: None. Not designed for human interaction.
-	\item Object recognition: \BnL Green Plant Seeker Algorithm (See previous sections).
-	\item Arms control and two-hand coordination: \BnL automatic controller \cite{bnl2}.
-\end{itemize}
-
-\section*{External Devices}
-% Please describe in this section the external devices used by your robot. Consider the following example:
-
-\textit{EVA robot relies on the following external hardware:}
-
-\begin{itemize}
-	\item \BnL Mother-ship
-	\item \BnL Data Cluster
-	\item $3 \times$ \BnL Ultra-Power laptops.
-\end{itemize}
-
-\section*{Cloud Services}
-% Please describe in this section the Cloud Services and online software used by your robot. Consider the following example:
-
-\textit{EVA connects the following cloud services:}
-\begin{itemize}
-	\item Localization and mapping: \BnL Geolocalization system \cite{bnl3}.
-	\item Navigation: \BnL Navigator
-	\item Speech recognition: \BnL All-purpose recognizer \cite{bnl1}.
-	\item Speech generation: \BnL Speech synthesizer.
-\end{itemize}
