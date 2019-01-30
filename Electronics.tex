@@ -15,15 +15,37 @@ By using an nRF52 Development Board and an Arduino Ethernet Shield it is possibl
 	\label{fig:SIMPLE_SENDER}
 \end{figure}\\
 \\
-After running many tests the average amount of packet loss for the link between the sender and the robot was negligible (less than one packet loss among 60 packets per second in average). Using the previous sender of the team (NRF24l01)the average packet loss was more than one out of 60 packets. Although this might not be a concern when the robots can still get navigated properly with a few packets lost, it may be important for teams that wish to run 11 robots in the future.
+After running many tests the average amount of packet loss for the link between the sender and the robot was negligible (less than one packet loss among 60 packets per second in average). Using the previous sender of the team (NRF24l01)the average packet loss was more than one out of 60 packets. Although this might not be a concern when the robots can still get navigated properly with a few packets lost, it may be important for teams that wish to run 11 robots in the future.\\
 
 \subsection{Magnetic Encoder}
+Until last year the robots were equipped with a disk encoder which required the motor to have a back shaft, If the backshaft bends slightly due to very hard colisions, the disk encoder will malfunction and in extreme cases the encoders disk and ciruit will hit each other resulting in the damege of the encoder its self.\\
+It was decided to use magnetic encoders due to the explained issues. The type of encoder which the team currently uses is TLE5012B-E1000 [5], The previous disk encoders were the E4T-500 Miniature Optical Kit Encoderers [6].\\
+After using the Magnetic encoder the precision of the motor speed increased due to the high resolution of the magnetic encoders, there were no robot substitutions due to malfunctioning encoders, the process of assembling and disassembling a robot got very fast and easy, the motors we used were not needed to be specially customized which takes much time to get prepared.\\
+On the other side the megnetic encoder outputs are a little vulnerable to noise and the data gets invalid when a strong magnetic field gets presented, For example when the robot performs a kick the encoders will give an invalid data output for a few tens of milliseconds.\\
+
+
+%\begin{table}
+%\center
+%\begin{tabular}{| p{3cm} | p{3cm} | p{3cm} |}
+%  \hline
+%  - & E4T-500 & TLE5012B-E1000\\
+%  \hline
+%  \hline
+%  resolution & 500 & 4096\\
+%  \hline
+%  salam & omg & omgwe\\
+%  \hline
+%\end{tabular}
+%\caption{My table}
+%\label{table:MAG_ENC}
+%\end{table}
+
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.6\textwidth]{images/MAG_ENC.jpg}
 	\caption{Magnetic Encoder}
-	\label{fig:SIMPLE_SENDER}
+	\label{fig:MAG_ENC}
 \end{figure}\\
 
 
