@@ -14,12 +14,12 @@ Last year, teams in division A were permitted to use 8 robots in the field durin
 	\caption{A sender made by deploying an Arduino Ethernet Shield on a nRF52 DK board}
 	\label{fig:SIMPLE_SENDER}
 \end{figure}\\
-\indent After running many tests the average amount of packet loss for the link between the sender and the robot was negligible (less than one packet loss among 60 packets per second on average). Using the previous sender of the team (nRF24L01)the average packet loss was more than one out of 60 packets. Although this might not be a concern when the robots can still get navigated properly with a few packets lost, it may be important for teams that wish to run 11 robots in the future.\\
+\indent After running many tests the average amount of packet loss for the link between the sender and the robot was negligible (less than one packet loss among 60 packets per second on average). Using the previous sender of the team (nRF24L01)the average packet loss was one or two out of 60 packets. Although this might not be a concern when the robots can still get navigated properly with a few packets lost, it may be important for teams that wish to run 11 robots in the future.\\
 
 \subsection{Magnetic Encoder}
 Until last year the robots were equipped with a disk encoder which required the motor to have a back shaft, If the backshaft bends slightly due to very hard collisions made with the wheel, the disk encoder will malfunction and in extreme cases the encoders disk and ciruit will hit each other resulting in the damage of the encoder itself.\\
 \indent It was decided to use magnetic encoders due to the explained issues. The type of encoder which the team currently uses is TLE5012B-E1000 [5], The previous disk encoders were the E4T-500 Miniature Optical Kit Encoderers [6].\\
-\indent After using the magnetic encoder the precision of the motor speed increased due to the high resolution of the magnetic encoders, there were no robot substitutions due to malfunctioning encoders, the process of assembling and disassembling a robot got very fast and easy, the motors we used were not needed to be specially customized which takes much time to get prepared by the manufacturer.\\
+\indent After using the magnetic encoder the precision of the motor speed increased by a factor of 8 due to the high resolution of the magnetic encoders, there were no robot substitutions due to malfunctioning encoders, the process of assembling and disassembling a robot got very fast and easy, the motors we used were not needed to be specially customized which takes much time to get prepared by the manufacturer.\\
 \indent On the other hand the magnetic encoder outputs are a little vulnerable to noise and the data gets invalid when a strong magnetic field gets presented, For example when the robot performs a kick the encoders will give an invalid data output for a few tens of milliseconds.\\
 
 
@@ -43,7 +43,7 @@ Until last year the robots were equipped with a disk encoder which required the 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.6\textwidth]{images/MAG_ENC.jpg}
-	\caption{Magnetic Encoder}
+	\caption{Immortals magnetic encoder module}
 	\label{fig:MAG_ENC}
 \end{figure}\\
 

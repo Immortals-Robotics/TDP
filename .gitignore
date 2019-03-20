@@ -110,3 +110,6 @@ sympy-plots-for-*.tex/
 
 # Lets not share the output for now (comment it at the final release)
 immortalsTDP.pdf
+
+# unwanted folder
+Extra
