@@ -5,6 +5,7 @@
 \documentclass[runningheads]{llncs}
 %
 \usepackage{graphicx}
+\usepackage{placeins}
 % Used for displaying a sample figure. If possible, figure files should
 % be included in EPS format.
 %
@@ -27,7 +28,7 @@ AmirMahdi Matin\inst{3} \and
 AliReza Mohammadi\inst{3} \and
 AmirMahdi Torabian\inst{4}}
 %
-\authorrunning{F. Author et al.}
+\authorrunning{Immortals Robotics}
 % First names are abbreviated in the running head.
 % If there are more than two authors, 'et al.' is used.
 %
@@ -56,9 +57,59 @@ The team was established in 2007 with the focus of designing a robust robot whil
 
 In the previous years the team reached close enough to a SSL robot design and solved most of the issues found in the previuos designs. The process of upgrading the robot can be seen in the previous years TDPs and ETDPs of this team. The readers who are interested in designing or upgrading a SSL robot are encouraged to study the previous papers of this team.
 
-This year the team had the chance to improve the AI software design which is the core program runing on a desktop or copmuter laptop and is the means to navigate each robot. The robots robots move and take actions which are defined by this program. Other enhancements, however, have been continued to be made to the robots mechanics and electonics which will be explained in further sections.
+This year the team had the chance to improve the AI software design which is the core program runing on a desktop or laptop copmuter and is the means to navigate each robot. The robots move and take actions defined by this program. Other enhancements, however, have been continued to be made to the robots mechanics and electonics which will be explained further.
 
 \section{Software}
+This year the main software also known as the AI software is redesigned in order to be more understandable and extandable. In previous years the software core was the same for each year but with slight changes according to rules or new referee commands. The new members who wanted to implement a new idea in the software needed to spend a great amount of time to uderstand the methods to use for the robot navigation and data input.
+
+The inputs for the software are vision data, referee commands and a configuration file which tells the initial parameter values for the network and match conditions. The outputs are simple navigation commands to the robots such ass move in a direction with this magnitude of speed or kick the ball with this amount of force.
+
+The new software is written in C++ same as the previous one. The only reason to use this language is the performance and easy to extend capabilities of i. For example the ability to optimize the code by using GPUs are well defined in this language.
+
+\subsection{Finite-State Machine} 
+After a few years of experience in the Small Size League as a software designer the key idea that every team is looking to implement is to make the robots to take the correct action at the exact time and condition. If the actions are perfomed correctly, the robots will accomplish their task which is scoring a goal or preventing the opponent from scoring. Unfortunately, there are many conditions that can happen in a match and each one has its own set of solutions these solutions are the sequence of commands which are given to a set of robots. For the software designer it may be hard to implement the solutions with a group of \textit{IF} conditions and no special structures.
+
+In order to simplify the implementation for multiple software designers in the team, a Finite-State Machine implementation structure has been introduced. This gives a great flexibility and readablity of implementation in the code. Each state is implemented by a single person and each state is connected to other states by a condition or conditions. This makes the implementation more easily to probe if solution does not work as expected the transmitions in the states can be viewed in the logs and the creator of the state can be found.
+
+Each state is basically a function which will be called whenever a complete picture of a field is received from the vision. The input of the function, or state, are the vision data.  
+In each state, the set of commands which have to be given to the robots in the field are defined and if there is a condition which a state transmition is requiered the next state will be defined to be called next time.
+Table~\ref{tab1} shows a sample group of commands which can be used in every state:
+
+\begin{table}
+\caption{Example commands which can be used in every state.}\label{tab1}
+\begin{tabular}{|p{7.5cm}|p{6cm}|}
+\hline
+Function &  Explanation \\
+\hline
+{\itshape Navigate2Point(robot, destination, maxSpeed)} & Navigate the robot to a destination.\\
+{\itshape ERRTNavigate2Point(robot, destination, maxSpeed)} & Navigate the robot while avoinding obstacles.\\
+{\itshape Mark(robot, oppRobot)} & Position between the goal and an opponent robot.\\
+{\itshape FetchBall(robot, point)} & Navigate the robot to a position on line which the ball is moving on and most close to the \itshape{point} argument.\\
+{\itshape CircleBall(robot, radius, angle)} & Position robot on a circle around the ball in a specific angle.\\
+{\itshape face(robot, point)} & Face the robot towards a point.\\
+{\itshape Chip(robot, power)} & Robot should perform a chip kick whenever the ball was intercepted.\\
+{\itshape Direct(robot, power)} & Robot should perform a direct kick whenever the ball was intercepted.\\
+%Title (centered) &  {\Large\bfseries Lecture Notes}\\
+%1st-level heading &  {\large\bfseries 1 Introduction}\\
+%2nd-level heading & {\bfseries 2.1 Printing Area}\\
+%3rd-level heading & {\bfseries Run-in Heading in Bold.} Text follows\\
+%4th-level heading & {\itshape Lowest Level Heading.} Text follows\\
+\hline
+\end{tabular}
+\end{table}
+
+As shown in Table~\ref{tab1} the commands are fairly simple to be understood. This simple implementation saves a great amount of time for the programmers to extend or debug the code.
+
+\subsection{Debugging Tools}
+Another experience with the previous AI software was the process of debugging the algorithems and, in general, the code itself. To overcome this problem, a logging protocol has been implemented which defines the messages that are sent from the AI software while operating. Using that protocol, whenever a computer is running the AI software and is connected to the network any other computer in the same network can run a logging software and monitor the AI software's parameters including not just the simple inputs from the vision, but also the state, predictions of the algorithems and et al.
+
+Fig~\ref{fig1_plotter} Shows a simple plotter which uses this protocol to visualize the changes in the speed and commanded velocity of a single robot. The plotter is a simple python script while the AI is written in C++ as mentioned before.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{images/plotter.jpg}
+\caption{An example logging program compatible with the new AI software.} \label{fig1_plotter}
+\end{figure}
+
 
 %\subsubsection{Sample Heading (Third Level)} Only two levels of
 %headings should be numbered. Lower level headings remain unnumbered;
