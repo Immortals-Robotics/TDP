@@ -57,6 +57,12 @@ The team was established in 2007 with the focus of designing a robust robot whil
 
 In the previous years the team reached close enough to a SSL robot design and solved most of the issues found in the previuos designs. The process of upgrading the robot can be seen in the previous years TDPs and ETDPs of this team. The readers who are interested in designing or upgrading a SSL robot are encouraged to study the previous papers of this team.
 
+\begin{figure}
+\centering
+\includegraphics[width=10cm]{images/std_robot.jpeg}
+\caption{Immortals current robot.} \label{fig_std_robot}
+\end{figure}
+
 This year the team had the chance to improve the AI software design which is the core program runing on a desktop or laptop copmuter and is the means to navigate each robot. The robots move and take actions defined by this program. Other enhancements, however, have been continued to be made to the robots mechanics and electonics which will be explained further.
 
 \section{Software}
@@ -110,6 +116,33 @@ Fig~\ref{fig1_plotter} Shows a simple plotter which uses this protocol to visual
 \caption{An example logging program compatible with the new AI software.} \label{fig1_plotter}
 \end{figure}
 
+\section{3D printed robot}
+As mentioned in the previous years team description paper[], A new type of robot was introduced to the league by this team in order to reduce the time of manufacturing the robots. This idea benefits teams in terms of energy and time of manufacturing.
+
+The design of the 3d printed robots where published and are available for teams and individuals to use. The designs are being updated to increase robustness. Though, the robustness of a 3d printed robot is incomparable with a usual SSL robot which is assembled with metal parts.
+
+\section{Kickers Solenoid}
+Before 2018 the limitations of the ball velocity was 8m/s which limited the robots to not shoot more than this velocity. In order for robots to kick a ball this much fast a strong shooting system including capacitors and solenoids where required to be used. Since RoboCup 2018, Montréal, Canada, the maximum speed limit has been decreased to 6.5m/s which makes teams to wonder if they want to redesign their robots kicking system in order to optimize the space consumption or battery power in their robot. This year the Immortals robots kicking system has been modified in order to optimize the energy consumption from the battery. This way robots have the chance to stay longer in a match without the need of their battery to be changed.
+
+\begin{figure}
+\centering
+\includegraphics[width=10cm]{images/kicking_system.jpg}
+\caption{The latest kicking system of the Immortals robots.} \label{fig_Kick_Sys}
+\end{figure}
+
+To understand the upgrade process of the shooting system, the reader is referred to the previous years (E)TDPs of this team.
+
+This year it has been decided to redesign the shooting solenoid which is the part that converts the electrical power to a magnetic field and thus it will move the metal plunger towards the ball to be kicked. The previous solenoid had a low resistance in order to pass a higher current through it which will result in a higher and less controllable speed. This part has been modified in a way that less current is flown in the solenoid to save more enegry and generate less heat. Although the kicking power will decrease, it will not disable the robot to kick the ball to less than 6.5m/s. Both Old and new versions of the solenoids are shown in Fig~\ref{fig_solenoid}.
+
+\begin{figure}
+\centering
+\includegraphics[width=10cm]{images/solenoid.jpg}
+\caption{The old solenoid(Left) and the new solenoid(Right).} \label{fig_solenoid}
+\end{figure}
+
+
+
+%The teams shooting system is described in the previous TDPs the reader is referred to them encourged to published by this teamrequired the robots to have a greater shooting system to perform such 
 
 %\subsubsection{Sample Heading (Third Level)} Only two levels of
 %headings should be numbered. Lower level headings remain unnumbered;
@@ -183,25 +216,33 @@ Fig~\ref{fig1_plotter} Shows a simple plotter which uses this protocol to visual
 % \bibliographystyle{splncs04}
 % \bibliography{mybibliography}
 %
+
+\newpage
 \begin{thebibliography}{8}
-\bibitem{ref_article1}
-Author, F.: Article title. Journal \textbf{2}(5), 99--110 (2016)
+\bibitem{ref_ETDP2019}
+Najafi, O.,Ghasemieh, M.A. and others:Immortals 2019 Team Description Paper
 
-\bibitem{ref_lncs1}
-Author, F., Author, S.: Title of a proceedings paper. In: Editor,
-F., Editor, S. (eds.) CONFERENCE 2016, LNCS, vol. 9999, pp. 1--13.
-Springer, Heidelberg (2016). \doi{10.10007/1234567890}
+\bibitem{ref_website}
+Immortals Robotics WebSite, \url{http://www.immortals-robotics.com}.
 
-\bibitem{ref_book1}
-Author, F., Author, S., Author, T.: Book title. 2nd edn. Publisher,
-Location (1999)
+\bibitem{ref_opensource}
+Immortals Open Source Project. \url{https://github.com/Ma-Ghasemieh/Immortals\_ssl\_opensource\_mech}.
 
-\bibitem{ref_proc1}
-Author, A.-B.: Contribution title. In: 9th International Proceedings
-on Proceedings, pp. 1--2. Publisher, Location (2010)
+%\bibitem{ref_article1}
+%Author, F.: Article title. Journal \textbf{2}(5), 99--110 (2016)
+%
+%\bibitem{ref_lncs1}
+%Author, F., Author, S.: Title of a proceedings paper. In: Editor,
+%F., Editor, S. (eds.) CONFERENCE 2016, LNCS, vol. 9999, pp. 1--13.
+%Springer, Heidelberg (2016). \doi{10.10007/1234567890}
+%
+%\bibitem{ref_book1}
+%Author, F., Author, S., Author, T.: Book title. 2nd edn. Publisher,
+%Location (1999)
+%
+%\bibitem{ref_proc1}
+%Author, A.-B.: Contribution title. In: 9th International Proceedings
+%on Proceedings, pp. 1--2. Publisher, Location (2010)
 
-\bibitem{ref_url1}
-LNCS Homepage, \url{http://www.springer.com/lncs}. Last accessed 4
-Oct 2017
 \end{thebibliography}
 \end{document}
