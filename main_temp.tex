@@ -66,8 +66,21 @@ In the previous years the team reached close enough to a SSL robot design and so
 
 This year the team had the chance to improve the AI software design which is the core program running on a desktop or laptop computer and is the means to navigate each robot. The robots move and take actions defined by this program. Other enhancements, however, have been continued to be made to the robots mechanics and electronics which will be explained further.
 
+\section{Kicking System}
+Before 2018 the limit for the ball velocity was 8m/s. In order for robots to kick a ball that much fast, a strong shooting system including capacitors and solenoids where required. Since RoboCup 2018, Montréal, Canada, the maximum speed limit has been decreased to 6.5m/s which makes teams to wonder if they want to redesign their robots kicking system and optimize the space consumption or battery power in their robot. This year the Immortals robots kicking system has been modified in order to optimize the energy consumption from the battery. This way robots have the chance to stay longer in a match without the need of their batteries to get changed.
+
+\begin{figure}
+\centering
+\includegraphics[width=10cm]{images/kicking_system.jpg}
+\caption{The latest kicking system of the Immortals robots.} \label{fig_Kick_Sys}
+\end{figure}
+
+To understand the upgrade process of the shooting system, the reader is referred to the previous year (E)TDPs of this team~\cite{ref_ETDP2019,ref_ETDP2018}.
+
+This year it has been decided to redesign the shooting solenoid which is the part that converts the electrical power to a magnetic field and thus it will move the metal plunger towards the ball to be kicked. The previous solenoid had a low resistance so a higher current will pass through it which will result in a higher speed. However, the kicking force will get a bit hard to control and it will generate a notable amount of heat. This part has been modified in a way that less current is flown in the solenoid to optimize energy consumption and generate less heat. Although the kicking power will decrease, it is still possible to kick the ball to more than 6.5m/s.
+
 \section{Software}
-This year the main software also known as the AI software is redesigned in order to be more understandable and extendable. In previous years the software core was the same for each year but with slight changes according to rules or new referee commands. The new members who wanted to implement a new idea in the software needed to spend a great amount of time to understand the methods to use for the robot navigation and data input.
+This year the main software also known as the AI software is redesigned in order to be more understandable and extendable. In previous years the software core was the same for each year but with slight changes according to rules and new referee commands. The new members who wanted to implement a new idea in the software needed to spend a great amount of time to understand the methods to use for the robot navigation and data input.
 
 The inputs for the software are vision data, referee commands and a configuration file which tells the initial parameter values for the network and match conditions. The outputs are simple navigation commands to the robots (e.g. moving with a given speed vector or kicking a ball with a specified amount of force).
 
@@ -76,7 +89,7 @@ The new software is written in C++ same as the previous one. The only reason to 
 \subsection{Finite-State Machine} 
 After a few years of experience in the Small Size League as a software designer the key idea that every team is looking to implement is to make the robots to take the correct action at the exact time and condition. If the actions are performed correctly, the robots will accomplish their task which is scoring a goal or preventing the opponent from scoring. Unfortunately, there are many conditions that can happen in a match and each one has its own set of solutions these solutions are the sequence of commands which are given to a set of robots. For the software designer it may be hard to implement the solutions with a group of \textit{IF} conditions and no special structures.
 
-In order to simplify the implementation for multiple software designers in the team, a Finite-State Machine implementation structure has been introduced. This gives a great flexibility and readability of implementation in the code. Each state is connected to other states by a condition or a set of conditions. This makes the implementation more easily to probe if solution do not work as expected the transitions in the states can be viewed in the logs which simplifies the debugging ability.
+In order to simplify the implementation for multiple software designers in the team, a Finite-State Machine implementation structure has been introduced. This gives a great flexibility and readability of implementation in the code. Each state is connected to other states by a condition or a set of conditions. This makes the implementation easier to probe. By tracking each state transition the faulty part of the code will be simply found.
 
 Each state is basically a function which will be called whenever a complete picture of a field is received from the vision. The input of the function, or state, are the vision data.  
 In each state, the set of commands which have to be given to the robots in the field are defined and if there is a condition which a state transition is required the next state will be defined to be called next time.
@@ -181,7 +194,7 @@ nextFunc2Run:function;\\
 \end{tabular}
 \end{table}
 
-In Table~\ref{table_GLOBAL_VARS}, the \textit{targetPosition} is the location where the robot will perform its one-touch kick. This variable is initialized in ever round. 
+In Table~\ref{table_GLOBAL_VARS}, the \textit{targetPosition} is the location where the robot will perform its one-touch kick. This variable is initialized in every round. 
 
 The \textit{initRobotPositions} and \textit{initBallPosition} are the initial locations of the robots and the ball in every round. These variables are defined before the start of the test. \textit{oppGoalPosition} is the position of the center of the opponents goal line. This variable is defined before the start of the test.
 
@@ -241,7 +254,7 @@ $ S2\_initKick$()\\
 \end{tabular}
 \end{table}
 
-In \textit{S2\_initKick}(), Robot \#3 tries to aim the \textit{targetPosition} and kick the ball towards it. Meanwhile, Robot \#0 will try to reach the \textit{targetPosition}. After a few moments of the ball moving, the FSM will transit to the next state.
+In \textit{S2\_initKick}(), Robot \#3 tries to aim the \textit{targetPosition} and kick the ball towards it. Meanwhile, Robot \#0 will try to reach the \textit{targetPosition}. After a few moments when the ball is moving, the FSM will transit to the next state.
 
 
 \begin{table}[H]
@@ -295,32 +308,19 @@ $ S4\_done$()\\
 
 In \textit{S4\_done}(), the robots are halted and the results are sent to the visualizer as red and green points.
 
-After running the code with 500 rounds in 1 hour and 20 minutes, the results were shown on the visualizer with 142 successful and 358 failed attempts. Fig~\ref{fig_ANALYZE_OUTPUT} shows the visualizer at the end of the test. It is now clearly seen which arias have a high possibility in scoring a goal by a one-touch kick under the tested conditions.
+After running the code with 500 rounds in 1 hour and 20 minutes, the results were shown on the visualizer with 142 successful and 358 failed attempts. Fig~\ref{fig_ANALYZE_OUTPUT} shows the visualizer at the end of the test. It is now clearly seen which areas have a high possibility in scoring a goal by a one-touch kick under the tested conditions.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=10cm]{images/Analyze_output.png}\caption{The final results of the analysis.} \label{fig_ANALYZE_OUTPUT}
 \end{figure}
 
-Finally, it is worth to notice that the test has been performed in a simulation to give a better result in a short amount of time. It is clear that this test has to be made on robots in the real world. In that case, the number of rounds will obviously need to decrease to a few tens. The focus of this section was to show how an analyze procedure is taken in the Immortals AI project.
+Finally, it is worth to notice that the test has been performed in a simulation to give a better result in a short amount of time. It is clear that this test has to be made on robots in the real world. In that case, the number of rounds will obviously need to decrease to a few tens. The focus of this section was to show how an analysis procedure is taken in the Immortals AI project.
 
 %\section{3D printed robot}
 %As mentioned in the previous years team description papers~\cite{ref_ETDP2019,ref_ETDP2018}, A new type of robot was introduced to the league by this team in order to reduce the time and energy for manufacturing the robots.
 %
 %The design of the 3d printed robots where published and are available for teams and individuals to use~\cite{ref_opensource}. The designs are being updated to increase robustness. However, the robustness of a 3d printed robot is incomparable with a usual SSL robot which is assembled with metal parts. Teams may choose to build this type of robot in order to run tests which require a high number of robots.
-
-\section{Kicking System}
-Before 2018 the limit for the ball velocity was 8m/s. In order for robots to kick a ball that much fast, a strong shooting system including capacitors and solenoids where required. Since RoboCup 2018, Montréal, Canada, the maximum speed limit has been decreased to 6.5m/s which makes teams to wonder if they want to redesign their robots kicking system and optimize the space consumption or battery power in their robot. This year the Immortals robots kicking system has been modified in order to optimize the energy consumption from the battery. This way robots have the chance to stay longer in a match without the need of their batteries to get changed.
-
-\begin{figure}
-\centering
-\includegraphics[width=10cm]{images/kicking_system.jpg}
-\caption{The latest kicking system of the Immortals robots.} \label{fig_Kick_Sys}
-\end{figure}
-
-To understand the upgrade process of the shooting system, the reader is referred to the previous year (E)TDPs of this team~\cite{ref_ETDP2019,ref_ETDP2018}.
-
-This year it has been decided to redesign the shooting solenoid which is the part that converts the electrical power to a magnetic field and thus it will move the metal plunger towards the ball to be kicked. The previous solenoid had a low resistance so a higher current will pass through it which will result in a higher speed. However, the kicking force will get a bit hard to control and it will generate a notable amount of heat. This part has been modified in a way that less current is flown in the solenoid to optimize energy consumption and generate less heat. Although the kicking power will decrease, it is still possible to kick the ball to more than 6.5m/s.
 
 %\begin{figure}
 %\centering
