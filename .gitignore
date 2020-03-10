@@ -1,0 +1,12 @@
+.old/*
+*.aux
+*.log
+samplepaper.*.
+samplepaper.*
+*.ba
+*.bak
+old/*
+*.bst
+readme.txt
+*.gz
+llncsdoc.pdf
