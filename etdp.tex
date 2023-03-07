@@ -44,7 +44,7 @@ Mustafa Talaeezadeh}
 \begin{abstract}
 %The abstract should briefly summarize the contents of the paper in
 %15--250 words.
-This paper describes the recent developments done by the Immortals team. The team consists of computer and electrical engineers, currently focusing on the Small Size League. There were some changes to the mechanics and electronics of the robots in the previous years. This year, the team focused on modernizing the electronics and software architecture. An effort was also made to solve the issues which were observed during the recent competitions including RoboCup 2018, Montréal. In addition to the current robot, there is a 3D-printed prototype robot that was introduced in 2018 and has been improved and tested since. The goal is to reach a modular, flexible, and reliable platform that would reduce the maintenance and future development costs of the robots.
+This paper describes the recent work done by the Immortals Robotics Team for the upcoming competitions including the RoboCup 2023.
 
 \keywords{RoboCup 2023  \and Small Size League}
 \end{abstract}
@@ -52,18 +52,17 @@ This paper describes the recent developments done by the Immortals team. The tea
 %
 %
 \section{Introduction}
-The Immortals Robotics Team consists of art and engineering students from different Persian universities.
-The team was established in 2007 with the focus of designing a robust robot while meeting all the requirements according to the Small Size League rules. The team's strategy is to adapt itself with all the rule changes in order to experience the new challenges. This makes the team to take part in the division-A which is intended for the advanced teams of the league~\cite{ref_website}.
+The Immortals Small Size League team was founded in 2008 and participated for the first time in RoboCup 2009 in Graz. The team consists of computer and electrical engineers and currently focuses on the Small Size League.
+ There have been some changes in the mechanics and electronics of the robots in the past years. The process can be seen in the previous years TDPs and ETDPs.~\cite{ref_ETDP2019}.
+ 
+ This year, the team focused on modernizing the electronics and software architecture. Efforts were also made to resolve issues observed during recent competitions, including RoboCup 2018, Montréal. In addition to the current robot, there is a 3D-printed prototype robot that was presented in 2018 and has been improved and tested since then. The goal is to achieve a modular, flexible, and reliable platform that would reduce the maintenance and future development costs of the robots.
 
-In the previous years the team reached close enough to a SSL robot design and solved most of the issues found in the previous designs. The process of upgrading the robot can be seen in the previous years TDPs and ETDPs~\cite{ref_ETDP2019} of this team. The readers who are interested in designing or upgrading a SSL robot are encouraged to study the previous papers of this team.
 
 \begin{figure}
 \centering
 \includegraphics[width=10cm]{images/std_robot.jpeg}
 \caption{Immortals current robot.} \label{fig_std_robot}
 \end{figure}
-
-This year the team had the chance to improve the AI software design which is the core program running on a desktop or laptop computer and is the means to navigate each robot. The robots move and take actions defined by this program. Other enhancements, however, have been continued to be made to the robots mechanics and electronics which will be explained further.
 
 \section{Kicking System}
 Before 2018 the limit for the ball velocity was 8m/s. In order for robots to kick a ball that much fast, a strong shooting system including capacitors and solenoids where required. Since RoboCup 2018, Montréal, Canada, the maximum speed limit has been decreased to 6.5m/s which makes teams to wonder if they want to redesign their robots kicking system and optimize the space consumption or battery power in their robot. This year the Immortals robots kicking system has been modified in order to optimize the energy consumption from the battery. This way robots have the chance to stay longer in a match without the need of their batteries to get changed.
@@ -80,12 +79,12 @@ This year it has been decided to redesign the shooting solenoid which is the par
 
 \section{Electronics}
 
-In 2018 there were changes to the electronics to modernize the designs and replace the old parts with their new counterparts. We tested them during RoboCup 2018 and the results show a solid improvement in reliability while lowering production cost. Currently all the robots are using these circuits. The reader is referred to the previous years TDP [1]of this team for more details about the main circuit.\\
-\indent This year, we're planning to redesign all our electronics from scratch, reflecting the recent developments in the league and also in the industry. The main goals are (1)reliability, (2)extensibility, and (3)being more competitive. It should be mentioned that at the time of writing this paper, the design work is still ongoing and we don't have the final boards manufactured. We're hoping to equip at least half our robots in RoboCup 2023 with the new parts. We will release the designs on our GitHub page shortly after the competition.
+In 2018, changes were made to the electronics to modernize the designs and replace the old parts with their new counterparts. We tested them during RoboCup 2018, and the results show a solid improvement in reliability while reducing production costs. Currently, all robots use these circuits. The reader is referred to this team's previous year's TDP [1] for more details on the main circuit.\\
+\indent This year, we're planning to redesign all of our electronics from scratch to reflect the latest developments in the league and also in the industry. The main goals are (1) reliability, (2) expandability, and (3) being more competitive. It should be mentioned that at the time of this writing, the design work is still ongoing and we don't have the final boards manufactured. We hope to equip at least half of our robots with the new parts in RoboCup 2023. We will publish the designs on our GitHub page shortly after the competition.
 
 \subsection{Main board}
-The current main board used by the team was designed in 2010 and apart from minor changes has been in use in its original form since. It uses a Xilinx Spartan3 FPGA as its main and only processor. A soft processor (TSK3000) is used inside the FPGA to handle more sequential logic, while the FPGA itself is used to read encoders, drive BLDC motors, drive the boost converter, etc.
-This design while being flexible and comparatively cheap to produce, has been showing its age in the past few years. The main shortcomings are:
+The current main board used by the team was designed in 2010 and, apart from minor changes, has been used in its original form ever since. It uses a Xilinx Spartan3 FPGA as its main and only processor. A soft processor (TSK3000) is used inside the FPGA to handle more sequential logic, while the FPGA itself is used to read encoders, drive BLDC motors, drive the boost converter, etc.
+While this design is flexible and comparatively cheap to produce, it has shown its age in recent years. The main drawbacks are:
 \begin{enumerate}
     \item The TSK3000 runs at around 36 MHz and in its current configuration is way too limited to develop any more sophisticated local processing and motion planning. Some efforts were done in the past to move parts of performance-critical C code to the logic gates, but it would make the implementation harder to change and extend. On the other hand the debugging workflow was too limiting, and any changes to the code needed a full rebuild of the FPGA project. All these factors resulted in the team using pretty much the same framework for several years, without being able to make major changes.
     \item The BLDC motor commutation is a simple 6-step trapezoidal commutation. It is easy to implement, but is inefficient and causes a high amount of torque ripple. Implementing a more sophisticated method, e.g. Field Oriented Control, requires massive changes to the PCB.
@@ -119,6 +118,7 @@ This year we redesigned the kicking board with the following features:
 	\caption{The new kicking board design}
 	\label{fig:MAG_ENC}
 \end{figure}\\
+
 
 \section{Software}
 
