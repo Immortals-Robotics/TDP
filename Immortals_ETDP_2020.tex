@@ -16,7 +16,7 @@
 
 \begin{document}
 %
-\title{Immortals 2020 Extended Team Description Paper}
+\title{Immortals 2023 Extended Team Description Paper}
 %
 %\titlerunning{Abbreviated paper title}
 % If the paper title is too long for the running head, you can set
@@ -93,12 +93,6 @@ Throughout the development process, we focused on making our AI software as open
 
 
 %%%%%%%%%%%%
-
-This year the main software also known as the AI software is redesigned in order to be more understandable and extendable. In previous years the software core was the same for each year but with slight changes according to rules and new referee commands. The new members who wanted to implement a new idea in the software needed to spend a great amount of time to understand the methods to use for the robot navigation and data input.
-
-The inputs for the software are vision data, referee commands and a configuration file which tells the initial parameter values for the network and match conditions. The outputs are simple navigation commands to the robots (e.g. moving with a given speed vector or kicking a ball with a specified amount of force).
-
-The new software is written in C++ same as the previous one. The only reason to use this language is the performance and easy to extend capabilities of it. For example the ability to optimize the code by using GPUs are well known in this language.
 
 \subsection{Finite-State Machine} 
 After a few years of experience in the Small Size League as a software designer the key idea that every team is looking to implement is to make the robots to take the correct action at the exact time and condition. If the actions are performed correctly, the robots will accomplish their task which is scoring a goal or preventing the opponent from scoring. Unfortunately, there are many conditions that can happen in a match and each one has its own set of solutions these solutions are the sequence of commands which are given to a set of robots. For the software designer it may be hard to implement the solutions with a group of \textit{IF} conditions and no special structures.
