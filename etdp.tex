@@ -22,6 +22,7 @@
 % If the paper title is too long for the running head, you can set
 % an abbreviated paper title here
 %
+
 \author{Ali Salehi \and
 Mohammad Tabasi \and
 Omid Najafi \and
@@ -64,18 +65,14 @@ The Immortals Small Size League team was founded in 2008 and participated for th
 \caption{Immortals current robot.} \label{fig_std_robot}
 \end{figure}
 
+Our team, Immortals, is thrilled to participate in this year's RoboCup SSL competition. With a history of innovation and success, we are constantly working to develop cutting-edge solutions in small-scale autonomous robotics. Building on our experience from last year's competition, we are currently dedicated to improving our AI software and robot electronics to address the needs we identified in our previous system. Our team is working tirelessly on designing and constructing a robot that will be smarter and more robust than ever before. Through an iterative process of development and testing, we are confident that we will create a robot team that is faster, smarter, and more agile than ever before. We look forward to showcasing our progress and competing against the best SSL teams from around the world.
+
+
 \section{Kicking System}
 Before 2018 the limit for the ball velocity was 8m/s. In order for robots to kick a ball that much fast, a strong shooting system including capacitors and solenoids where required. Since RoboCup 2018, Montréal, Canada, the maximum speed limit has been decreased to 6.5m/s which makes teams to wonder if they want to redesign their robots kicking system and optimize the space consumption or battery power in their robot. This year the Immortals robots kicking system has been modified in order to optimize the energy consumption from the battery. This way robots have the chance to stay longer in a match without the need of their batteries to get changed.
 
-\begin{figure}
-\centering
-\includegraphics[width=10cm]{images/kicking_system.jpg}
-\caption{The latest kicking system of the Immortals robots.} \label{fig_Kick_Sys}
-\end{figure}
 
-To understand the upgrade process of the shooting system, the reader is referred to the previous year (E)TDPs of this team~\cite{ref_ETDP2019,ref_ETDP2018}.
-
-This year it has been decided to redesign the shooting solenoid which is the part that converts the electrical power to a magnetic field and thus it will move the metal plunger towards the ball to be kicked. The previous solenoid had a low resistance so a higher current will pass through it which will result in a higher speed. However, the kicking force will get a bit hard to control and it will generate a notable amount of heat. This part has been modified in a way that less current is flown in the solenoid to optimize energy consumption and generate less heat. Although the kicking power will decrease, it is still possible to kick the ball to more than 6.5m/s.
+%%%%%%%%%%%%
 
 \section{Electronics}
 
@@ -117,7 +114,7 @@ This year we redesigned the kicking board with the following features:
 	\includegraphics[width=0.6\textwidth]{images/mikona.png}
 	\caption{The new kicking board design}
 	\label{fig:MAG_ENC}
-\end{figure}\\
+\end{figure}
 
 
 \section{Software}
@@ -130,10 +127,27 @@ Our current software stack is was developed in 2009 in C++ and has seen several 
 
 This year the main software also known as the AI software is redesigned in order to be more understandable and extendable. In previous years the software core was the same for each year but with slight changes according to rules and new referee commands. The new members who wanted to implement a new idea in the software needed to spend a great amount of time to understand the methods to use for the robot navigation and data input.
 
-The inputs for the software are vision data, referee commands and a configuration file which tells the initial parameter values for the network and match conditions. The outputs are simple navigation commands to the robots (e.g. moving with a given speed vector or kicking a ball with a specified amount of force).
+% Written by Omid (We need to merge this with the above soon.
 
-The new software is written in C++ same as the previous one. The only reason to use this language is the performance and easy to extend capabilities of it. For example the ability to optimize the code by using GPUs are well known in this language.
+Our team's main focus this year has been on designing a more effective AI system for our robot, with a particular emphasis on improving our debugging process. To achieve this goal, we have redesigned our AI system from the ground up, using C++20 and a modular architecture consisting of three classes: ExternalWorld, WorldState, and Player.
 
+The ExternalWorld class has different subclasses, each of which works in one of the following ways:
+
+\begin{itemize}
+\item[$\bullet$] \textbf{RealWorld:} This subclass receives data from a defined SSL-vision and SSL-refbox, and sends robot commands to a defined sender (which forwards the commands to the desired robot).
+\item[$\bullet$] \textbf{SimulatedWorld:} This subclass receives data from a defined SSL-vision and SSL-refbox simulator, or any virtual vision or refbox software that adheres to the official protocols of the SSL Communication Protocol, and sends it to a simulator with its own defined protocol.
+\item[$\bullet$] \textbf{LogfileWorld:} This subclass receives data from a given logfile of a game. In this mode, the robots act according to the information contained in the logfile without any control. This mode is useful for observing how the player acts in various scenarios. For example, the debugger can show what path each robot would take if it were being controlled by our AI or what strategies to use when the gameplay enters a specific state defined in the logfile.
+\end{itemize}
+
+The WorldState class contains all the data describing the state of the game. This includes information about the locations of the robots and ball, as well as the current score and other game details. The ExternalWorld class feeds data to the WorldState module, which uses it to update its internal state.
+
+The Player class is responsible for navigating the robot and generating commands for each robot. This is where the actual AI algorithms are implemented, including path planning, obstacle avoidance, and ball tracking. The Player class uses the data from the WorldState module to make decisions about how to move the robot and interact with other objects in the game.
+
+We have also added both text-based and graphical loggers to our AI system to improve our debugging process. The text-based logger writes output directly to stdout, allowing us to more easily probe exceptions and debug our code. The graphical logger provides us with a visual representation of what the AI software "sees" and how it makes decisions based on the information it has. By utilizing these logging tools, we hope to more effectively debug and refine our AI system.
+
+Throughout the development process, we focused on making our AI software as open and flexible as possible, to allow for easy implementation of new and innovative ideas. We also tested and debugged our software extensively, to ensure that it performs reliably and effectively in different game situations.
+
+%%%%%%%%%%%
 \subsection{Finite-State Machine} 
 After a few years of experience in the Small Size League as a software designer the key idea that every team is looking to implement is to make the robots to take the correct action at the exact time and condition. If the actions are performed correctly, the robots will accomplish their task which is scoring a goal or preventing the opponent from scoring. Unfortunately, there are many conditions that can happen in a match and each one has its own set of solutions these solutions are the sequence of commands which are given to a set of robots. For the software designer it may be hard to implement the solutions with a group of \textit{IF} conditions and no special structures.
 
@@ -389,6 +403,9 @@ Finally, it is worth to notice that the test has been performed in a simulation 
 \begin{thebibliography}{8}
 \bibitem{ref_website}
 Immortals Robotics Website, \url{http://www.immortals-robotics.com}.
+
+\bibitem{ref_ETDP2020}
+Immortals 2020 Extended Team Description Paper, \url{https://ssl.robocup.org/wp-content/uploads/2020/03/2020\_ETDP\_Immortals.pdf}.
 
 \bibitem{ref_ETDP2019}
 Immortals 2019 Team Description Paper, \url{https://ssl.robocup.org/wp-content/uploads/2019/03/2019\_ETDP\_Immortals.pdf}.
