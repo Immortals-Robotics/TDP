@@ -80,7 +80,7 @@ In 2018, changes were made to the electronics to modernize the designs and repla
 \indent This year, we're planning to redesign all of our electronics from scratch to reflect the latest developments in the league and also in the industry. The main goals are (1) reliability, (2) expandability, and (3) being more competitive. It should be mentioned that at the time of this writing, the design work is still ongoing and we don't have the final boards manufactured. We hope to equip at least half of our robots with the new parts in RoboCup 2023. We will publish the designs on our GitHub page shortly after the competition.
 
 \subsection{Main board}
-The current main board used by the team was designed in 2010 and, apart from minor changes, has been used in its original form ever since. It uses a Xilinx Spartan3 FPGA as its main and only processor. A soft processor (TSK3000) is used inside the FPGA to handle more sequential logic, while the FPGA itself is used to read encoders, drive BLDC motors, drive the boost converter, etc.
+The current main board used by the team was designed in 2010 and has been used in its original form ever since, except for minor changes. It uses a Xilinx Spartan3 FPGA as the main and only processor. A soft processor (TSK3000) is used inside the FPGA to handle more sequential logic, while the FPGA itself is used to read encoders, drive BLDC motors, drive the boost converter, etc.
 While this design is flexible and comparatively cheap to produce, it has shown its age in recent years. The main drawbacks are:
 \begin{enumerate}
     \item The TSK3000 runs at around 36 MHz and in its current configuration is way too limited to develop any more sophisticated local processing and motion planning. Some efforts were done in the past to move parts of performance-critical C code to the logic gates, but it would make the implementation harder to change and extend. On the other hand the debugging workflow was too limiting, and any changes to the code needed a full rebuild of the FPGA project. All these factors resulted in the team using pretty much the same framework for several years, without being able to make major changes.
@@ -93,20 +93,29 @@ While this design is flexible and comparatively cheap to produce, it has shown i
 To resolve these issues the work started on designing a new main board from scratch. The main features are:
 \begin{enumerate}
     \item Raspberry Pi Compute Module 4 as the local compute unit on robot. We intend to move parts of the skill execution, data fusion and prediction, and motion planning to it.
-    \item ESP32-C series as the wireless link using WiFi. We're currently using the ESP32-C2 and aim to upgrade to the recently released ESP32-C6 in the future which has WiFi 6 support. This will greatly enhance the bandwidth and the feature-set of the link and will allow us to add robots as regular links to our software stack. This way they will receive world state and the AI output necessary to execute local skills.\\
-    It is worth mentioning that the latency characteristics of using WiFi instead of a low-level protocol is yet to be determined. The latency requirements after moving more processing to the robot's local processor will be more relaxed. But, we are considering adding a separate nRF chip to handle latency-sensitive if the new approach causes issues.
-    \item CAN protocol will be used to connect the main board to other boards, including the kicking board. This will give us a more robust and flexible base that we can build on top.
-    \item Dedicated BLDC driving IC, TMC4671. It implements  Field Oriented Control (FOC) for BLDC motors, and includes various closed-loop control methods. This offloads the local motor control functionality from the main MCU to the dedicated HW, which is more reliable in terms of latency.
+    \item Raspberry Pi Compute Module's 5GHz WiFi as the wireless. This will greatly enhance the bandwidth and the feature-set of the link and will allow us to add robots as regular links to our software stack. This way they will receive world state and the AI output necessary to execute local skills.\\
+    The latency characteristics of using WiFi instead of a low-level protocol in the lab environment has been satisfacroty. Using the default PCB-antenna at a distance of 20m to the access point, we were able to achieve a latency of ~2ms with a data loss of ~\%3. The latency requirements after moving more processing to the robot's local processor will be more relaxed. But, we are still considering adding a separate nRF chip to handle latency-sensitive if the new approach causes issues.
+    \item CAN protocol will be used to connect the main board to other boards, including the kicking board, motor drivers, and the battery monioring board. This will give us a more robust and flexible base that we can build on top.
+    \item 
 \end{enumerate}
 
+\subsection{Motor driver}
+In the past competitions, motor driving ciruitury was one of the common failure points of the robot. As they were placed on the same PCB, the repair would require a complete reflow of the broken parts. In more severe cases, e.g. when the traces especially on the internal layers get damaged, it could mean the board will become irreparable.\\
+This year we decided to design separate modular motor driving boards that will be placed on the main board for each motor. This will greatly enhance our ability to repair robots in case of a failure in one of the drivers. It would also make it easier to upgrade the main board and motor drivers separately.\\
+This new driving board is based on:
+\begin{enumerate}
+    \item A dedicated BLDC driving IC, TMC4671. It implements  Field Oriented Control (FOC) for BLDC motors, and includes various closed-loop control methods. This offloads the local motor control functionality from the main MCU to the dedicated HW, which is more reliable in terms of latency. It has an SPI interface to receive both configuration and command, and send back sensory data including speed and position.
+    \item A power mosfet driver IC, TMC6100. It drives the mosfets and senses the motor currents that is needed for the FOC algorithm. It also contains a fault detection mechanism.
+    \item A small Arm processor, STM32F042G6Ux, that acts as a CAN client link to the main processor. It communicates with both the TMC4671 and the TMC6200 via SPI, and also reads the current sensor.
+\end{enumerate}
 \subsection{Kicking board}
 In the previous years, we used a boost converter that was drived by the FPGA from the main board. There were also two discharge and a charged state pin connected directly to FPGA's IO pins. The were major issues with this design both in terms of reliability and charging performance.\\
 This year we redesigned the kicking board with the following features:
 \begin{enumerate}
     \item A dedicated flyback capacitor charging IC, LT3570, is used. This simplifies the design and improves performance and reliability at the same time. We use DA2034 transformer and the BSC109N10NS3G MOSFET.
-    \item A STM32F103 MCU is used on the board to handle CAN protocol to the main board, and controls the charging IC, variable resistors, and discharge IGBTs.
-    \item A high-power resistor network composed of three 2.4K 3W resistors is added to the board to discharge the capacitors when needed, without using the kicker magnets. The FQD5N60C MOSFET drived by a ZXGD3009E6 is used to control the discharge.
-    \item Two IGB50N60T IGBTs drived by a single UCC27624DR are used to discharge the capacitors to the kicking magnets. 
+    \item A STM32F042G6Ux MCU is used on the board to handle CAN protocol to the main board, and controls the charging IC, variable resistors, and discharge IGBTs.
+    \item A high-power resistor network composed of three 2.4K 3W resistors is added to the board to discharge the capacitors when needed, without using the kicker magnets. The STN3N40K3 MOSFET drived by a ZXGD3009E6 is used to control the discharge.
+    \item Two IGB50N60T IGBTs drived by a single IX4427MTR are used to discharge the capacitors to the kicking magnets. 
 \end{enumerate}
 
 \begin{figure}
