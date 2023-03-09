@@ -22,3 +22,9 @@ jobs:
         with:
           name: PDF
           path: ${{ env.latex_file_name }}.pdf
+
+      - name: Upload Release PDF
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ env.latex_file_name }}.pdf
