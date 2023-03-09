@@ -72,29 +72,27 @@ Our team, Immortals, is thrilled to participate in this year's RoboCup SSL compe
 
 
 \section{Software}
-Our team's main focus this year has been on designing a more effective AI system for our robot, with a particular emphasis on improving our debugging process. To achieve this goal, we have redesigned our AI system from the ground up, using C++20 and a modular architecture consisting of three main classes: ExternalWorld, WorldState, and Player.
+Our team's main focus this year has been on designing a more effective AI system for our robot, with a particular emphasis on improving our debugging process. To achieve this goal, we have redesigned our AI system from the ground up, using C++20 and a modular architecture consisting of three classes: ExternalWorld, WorldState, and Player.
 
-The "ExternalWorld" class handles all input and output data for the robot, including data from SSL-vision and SSL-refbox, as well as log files for testing and debugging. It is responsible for collecting and processing data from these sources, and providing it to the rest of the AI system.
+The ExternalWorld class has different subclasses, each of which works in one of the following ways:
 
-The "ExternalWorld" class is responsible for collecting and processing data from various sources, such as SSL-vision and SSL-refbox, as well as log files for testing and debugging. It has different subclasses, each of which works in a specific way:
+\begin{itemize}
+\item[$\bullet$] \textbf{RealWorld:} This subclass receives data from a defined SSL-vision and SSL-refbox, and sends robot commands to a defined sender (which forwards the commands to the desired robot).
+\item[$\bullet$] \textbf{SimulatedWorld:} This subclass receives data from a defined SSL-vision and SSL-refbox simulator, or any virtual vision or refbox software that adheres to the official protocols of the SSL Communication Protocol, and sends it to a simulator with its own defined protocol.
+\item[$\bullet$] \textbf{LogfileWorld:} This subclass receives data from a given logfile of a game. In this mode, the robots act according to the information contained in the logfile without any control. This mode is useful for observing how the player acts in various scenarios. For example, the debugger can show what path each robot would take if it were being controlled by our AI or what strategies to use when the gameplay enters a specific state defined in the logfile.
+\end{itemize}
 
-    Receives data from a defined SSL-vision and SSL-refbox and sends robot commands to a defined sender, which forwards the commands to the desired robot.
+The WorldState class contains all the data describing the state of the game. This includes information about the locations of the robots and ball, as well as the current score and other game details. The ExternalWorld class feeds data to the WorldState module, which uses it to update its internal state.
 
-    Receives data from a defined SSL-vision and SSL-refbox, which can be a simulator or any virtual vision or refbox software that adheres to the official protocols of the SSL Communication Protocol, and sends it to a simulator with its own defined protocol.
+The Player class is responsible for navigating the robot and generating commands for each robot. This is where the actual AI algorithms are implemented, including path planning, obstacle avoidance, and ball tracking. The Player class uses the data from the WorldState module to make decisions about how to move the robot and interact with other objects in the game.
 
-    The third subclass receives data from a given logfile of a game, and in this scenario, the robots act according to the information contained in the logfile without any control. This mode is useful for observing how the player acts in various scenarios. For example, the debugger can show what path each robot would take if it were being controlled by our AI or what strategies to use when the gameplay enters a specific state defined in the logfile.
-
-The ExternalWorld class updates the WorldState class with the data it collects and processes. The WorldState class contains all the data describing the state of the game, such as information about the locations of the robots and ball, as well as the current score and other game details. The Player class uses the data from the WorldState module to make decisions about how to move the robot and interact with other objects in the game.
-
-The "WorldState" class contains all the data describing the state of the game, including information about the locations of the robots and ball, as well as the current score and other game details. It is fed data from the "ExternalWorld" module, and uses it to update its internal state.
-
-The "player" class is responsible for navigating the robot and generating commands for each robot. This is where the actual AI algorithms are implemented, including path planning, obstacle avoidance, and ball tracking. The "player" class uses the data from the "WorldState" module to make decisions about how to move the robot and interact with other objects in the game.
+We have also added both text-based and graphical loggers to our AI system to improve our debugging process. The text-based logger writes output directly to stdout, allowing us to more easily probe exceptions and debug our code. The graphical logger provides us with a visual representation of what the AI software "sees" and how it makes decisions based on the information it has. By utilizing these logging tools, we hope to more effectively debug and refine our AI system.
 
 Throughout the development process, we focused on making our AI software as open and flexible as possible, to allow for easy implementation of new and innovative ideas. We also tested and debugged our software extensively, to ensure that it performs reliably and effectively in different game situations.
 
-To further improve our debugging process, we have added both text-based and graphical loggers to our AI system. The text-based logger writes output directly to stdout, allowing us to more easily probe exceptions and debug our code. The graphical logger provides us with a visual representation of what the AI software "sees" and how it makes decisions based on the information it has. By utilizing these logging tools, we hope to more effectively debug and refine our AI system.
 
 
+%%%%%%%%%%%%
 
 This year the main software also known as the AI software is redesigned in order to be more understandable and extendable. In previous years the software core was the same for each year but with slight changes according to rules and new referee commands. The new members who wanted to implement a new idea in the software needed to spend a great amount of time to understand the methods to use for the robot navigation and data input.
 
