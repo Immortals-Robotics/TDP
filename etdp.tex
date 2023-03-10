@@ -134,10 +134,20 @@ This year we redesigned the kicking board with the following features:
 
 
 \section{Software}
+Our current software stack was developed in 2009 in C++ and has seen several additions and improvements throughout the years. This has resulted in a performant and robust software, and at the same time hard to maintain codebase that is too fragile to the new changes.\\
+This year the main focuses are to make our software:\\
+\begin{enumerate}
+    \item more robust, less fragile
+    \item easier to read / understand, change / extend
+    \item more competitive
+    \item faster to iterate and extend
+\end{enumerate}
+
+In the following sections we will describe the efforts made to reach these goals.
 
 \subsection{Architecture}
-Our current software stack was developed in 2009 in C++ and has seen several additions and improvements throughout the years. This has resulted in a performant and robust software, and at the same time hard to maintain codebase that is too fragile to the new changes.\\
-\indent It is also a single application that handles world state estimation, AI, and motion planning of the robots. This has the added benefit of being able to change the data flow between various parts quite easily. But forces us to implement everything in C++ to produce one single application that runs on one machine.\\
+
+Our current software is a single application that handles world state estimation, AI, and motion planning of the robots. This has the added benefit of being able to change the data flow between various parts quite easily. But forces us to implement everything in C++ to produce one single application that runs on one machine. Another side effect of such monolithic design was that it encouraged more coupling between the soccer and the vision parts of the software and as a result made it harder to make changes to each of them.\\
 \indent The goal this year is to refactor the codebase into separate parts that are connected via the network. This allows us to move the lower-level motion planning and skill execution to the robots' local processor, and develop GUIs using other technologies. \\
 \indent At the time of writing this paper, this effort is still ongoing, but we are confident that we can make the transition to the new stack in time for RoboCup 2023.
 
