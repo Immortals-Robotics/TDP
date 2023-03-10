@@ -122,7 +122,7 @@ This year we redesigned the kicking board with the following features:
 	\centering
 	\includegraphics[width=0.6\textwidth]{images/mikona.png}
 	\caption{The new kicking board design}
-	\label{fig:MAG_ENC}
+	\label{fig:MIKONA}
 \end{figure}
 
 
@@ -133,6 +133,13 @@ Our current software stack is was developed in 2009 in C++ and has seen several 
 \indent It is also a single application that handles world state estimation, AI, and motion planning of the robots. This has the added benifit of being able to change the data flow between various parts quite easily. But forces us to implement everything in C++ in to produce one single application that runs on one machine.\\
 \indent The goal this year is to refactor the codebase into separate parts that are connected via nanomsg. This allows us to move the lower-level motion planning and skill execution to the robots' local processor, and develop GUIs using other technologies. \\
 \indent At the time of writing this paper, this effort is still ongoing, but we are confident that we can make the transition to the new stack in time for RoboCup 2023.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\textwidth]{images/software-architecture.jpg}
+	\caption{The new software architecture}
+	\label{fig:software-architecture}
+\end{figure}
 
 This year the main software also known as the AI software is redesigned in order to be more understandable and extendable. In previous years the software core was the same for each year but with slight changes according to rules and new referee commands. The new members who wanted to implement a new idea in the software needed to spend a great amount of time to understand the methods to use for the robot navigation and data input.
 
