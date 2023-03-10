@@ -79,6 +79,13 @@ Before 2018 the limit for the ball velocity was 8m/s. In order for robots to kic
 In 2018, changes were made to the electronics to modernize the designs and replace the old parts with their new counterparts. We tested them during RoboCup 2018, and the results show a solid improvement in reliability while reducing production costs. Currently, all robots use these circuits. The reader is referred to this team's previous year's TDP [1] for more details on the main circuit.\\
 \indent This year, we're planning to redesign all of our electronics from scratch to reflect the latest developments in the league and also in the industry. The main goals are (1) reliability, (2) expandability, and (3) being more competitive. It should be mentioned that at the time of this writing, the design work is still ongoing and we don't have the final boards manufactured. We hope to equip at least half of our robots with the new parts in RoboCup 2023. We will publish the designs on our GitHub page shortly after the competition.
 
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/electronics-architecture.jpg}
+	\caption{The new electronics architecture}
+	\label{fig:electronics-architecture}
+\end{figure}
+
 \subsection{Main board}
 The current main board used by the team was designed in 2010 and has been used in its original form ever since, except for minor changes. It uses a Xilinx Spartan3 FPGA as the main and only processor. A soft processor (TSK3000) is used inside the FPGA to handle more sequential logic, while the FPGA itself is used to read encoders, drive BLDC motors, drive the boost converter, etc.
 While this design is flexible and comparatively cheap to produce, it has shown its age in recent years. The main drawbacks are:
