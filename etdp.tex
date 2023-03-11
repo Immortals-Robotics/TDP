@@ -135,19 +135,37 @@ This year we redesigned the kicking board with the following features:
 
 \section{Software}
 Our current software stack was developed in 2009 in C++ and has seen several additions and improvements throughout the years. This has resulted in a performant and robust software, and at the same time hard to maintain codebase that is too fragile to the new changes.\\
-This year the main focuses are to make our software:\\
+\indent This year the main focuses are to make our software:
 \begin{enumerate}
-    \item more robust, less fragile
-    \item easier to read / understand, change / extend
-    \item more competitive
+    \item more robust
+    \item easier to read/understand, and change/extend
     \item faster to iterate and extend
+    \item more competitive
+\end{enumerate}
+In the following sections, we will describe the efforts made to reach these goals.
+
+\subsection{Improving robustness}
+
+\subsubsection{Third-party libraries}
+
+This year we started using several third-party libraries for parts of our software:
+\begin{enumerate}
+    \item \textbf{\textit{Asio}}~\cite{ref_3rd-party_asio} for networking 
+    \item \textbf{\textit{Quill}}~\cite{ref_3rd-party_quill} for logging
+    \item \textbf{\textit{toml++}}~\cite{ref_3rd-party_tomlplusplus} for configuration files
+    \item \textbf{\textit{Eigen}}~\cite{ref_3rd-party_eigen} for linear algebra
+    \item \textbf{\textit{homog2d}}~\cite{ref_3rd-party_homog2d} for 2D math
 \end{enumerate}
 
-In the following sections we will describe the efforts made to reach these goals.
+\indent Using these libraries over our custom solutions can help improve code quality, both in terms of robustness and ease of use.
+
+\indent These open-source projects have a proven track record and have been extensively reviewed and stabilized by experts over time. This means they are more reliable than custom-built solutions and better suited to handle common tasks with reasonable performance and reliability.
+
+\indent They also often come with a broader set of features that have detailed documentation, making them easier to integrate and use. This allows developers to focus on implementing the core logic without worrying about the underlying infrastructure. This results in more readable code that is less prone to bugs.
 
 \subsection{Architecture}
 
-Our current software is a single application that handles world state estimation, AI, and motion planning of the robots. This has the added benefit of being able to change the data flow between various parts quite easily. But forces us to implement everything in C++ to produce one single application that runs on one machine. Another side effect of such monolithic design was that it encouraged more coupling between the soccer and the vision parts of the software and as a result made it harder to make changes to each of them.\\
+Our current software is a single application that handles world state estimation, AI, and motion planning of the robots. This has the added benefit of being able to change the data flow between various parts quite easily. But forces us to implement everything in C++ to produce one single application that runs on one machine. Another side effect of such a monolithic design was that it encouraged more coupling between the soccer and the vision parts of the software and as a result made it harder to make changes to each of them.\\
 \indent The goal this year is to refactor the codebase into separate parts that are connected via the network. This allows us to move the lower-level motion planning and skill execution to the robots' local processor, and develop GUIs using other technologies. \\
 \indent At the time of writing this paper, this effort is still ongoing, but we are confident that we can make the transition to the new stack in time for RoboCup 2023.
 
@@ -454,6 +472,22 @@ Immortals Open Source Publish in RoboCup 2016. \url{https://github.com/lordhippo
 
 \bibitem{ref_grsim}
 Monajjemi, Valiallah (Mani), Ali Koochakzadeh, and Saeed Shiry Ghidary. "grSim – RoboCup Small Size Robot Soccer Simulator." In Robot Soccer World Cup, pp. 450-460. Springer Berlin Heidelberg, 2011.
+
+% 3rd-party libraries
+\bibitem{ref_3rd-party_asio}
+Asio, cross-platform C++ library for network and low-level I/O programming \url{https://think-async.com/Asio/}
+
+\bibitem{ref_3rd-party_quill}
+Quill, asynchronous Low Latency C++ Logging Library \url{https://github.com/odygrd/quill}
+
+\bibitem{ref_3rd-party_tomlplusplus}
+toml++, header-only TOML config file parser and serializer for C++17. \url{https://github.com/marzer/tomlplusplus}
+
+\bibitem{ref_3rd-party_eigen}
+Eigen, C++ template library for linear algebra \url{https://eigen.tuxfamily.org/}
+
+\bibitem{ref_3rd-party_homog2d}
+homog2d, C++ 2D geometry library \url{https://github.com/skramm/homog2d}
 
 \end{thebibliography}
 \end{document}
