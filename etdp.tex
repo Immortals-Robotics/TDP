@@ -26,11 +26,11 @@
 \author{Ali Salehi \and
 Mohammad Tabasi \and
 Omid Najafi \and
-Ali Amouzandeh \and
 MohammadHossein Fazeli \and
 MohammadAli Ghasemieh \and
 MohammadReza Niknezhad \and
-Mustafa Talaeezadeh}
+Mustafa Talaeezadeh \and
+Ali Amoozandeh Nobaveh}
 %
 \authorrunning{Immortals Robotics}
 % First names are abbreviated in the running head.
@@ -61,14 +61,19 @@ The Immortals Small Size League team was founded in 2008 and participated for th
 
 \begin{figure}
 \centering
-\includegraphics[width=10cm]{images/std_robot.jpeg}
+\includegraphics[width=8cm]{images/std_robot.jpeg}
 \caption{Immortals current robot.} \label{fig_std_robot}
 \end{figure}
 
 Our team, Immortals, is thrilled to participate in this year's RoboCup SSL competition. With a history of innovation and success, we are constantly working to develop cutting-edge solutions in small-scale autonomous robotics. Building on our experience from last year's competition, we are currently dedicated to improving our AI software and robot electronics to address the needs we identified in our previous system. Our team is working tirelessly on designing and constructing a robot that will be smarter and more robust than ever before. Through an iterative process of development and testing, we are confident that we will create a robot team that is faster, smarter, and more agile than ever before. We look forward to showcasing our progress and competing against the best SSL teams from around the world.
 
+\section {Mechanical Developments}
+Due to the optimal design of the previous robots, the mechanical design team decided not to overhaul the entire system, but rather to modify design details to improve the parts' manufacturability and durability. In addition, recent advancements in additive manufacturing techniques, which have resulted in more accurate and dependable 3D printed parts, are driving our developments toward a broader use of these elements and the replacement of several mechanical parts that are currently manufactured using conventional methods, such as turning and wire EDM, with additively manufactured parts in order to reduce costs and increase fabrication and maintenance speeds.
 
-\section{Kicking System}
+The manufacturing companies are consulted on the technical drawings of the revised design, and the majority of the fabrication work for the new series of robots was outsourced.
+Specific robot components are redesigned to meet the requirements of the new regulations:
+
+\subsection{Kicking System}
 Before 2018 the limit for the ball velocity was 8m/s. In order for robots to kick a ball that much fast, a strong shooting system including capacitors and solenoids where required. Since RoboCup 2018, Montréal, Canada, the maximum speed limit has been decreased to 6.5m/s which makes teams to wonder if they want to redesign their robots kicking system and optimize the space consumption or battery power in their robot. This year the Immortals robots kicking system has been modified in order to optimize the energy consumption from the battery. This way robots have the chance to stay longer in a match without the need of their batteries to get changed.
 
 
@@ -191,7 +196,7 @@ Our current software is a single application that handles world state estimation
 
 \begin{figure}
 	\centering
-	\includegraphics[width=1.0\textwidth]{images/software-architecture.jpg}
+	\includegraphics[width=0.9\textwidth]{images/software-architecture.jpg}
 	\caption{The new software architecture}
 	\label{fig:software-architecture}
 \end{figure}
@@ -229,10 +234,11 @@ In each state, the set of commands which have to be given to the robots in the f
 Table~\ref{tab1} shows a sample group of commands which can be used in every state:
 
 \begin{table}[H]
+\footnotesize
 \caption{Example commands which can be used in every state.}\label{tab1}
 \begin{tabular}{|p{7.5cm}|p{6cm}|}
 \hline
-Function &  Explanation \\
+\bf{Function} &  \bf{Explanation} \\
 \hline
 {\itshape Navigate2Point(robot, destination, maxSpeed)} & Navigate the robot to a destination.\\
 {\itshape ERRTNavigate2Point(robot, destination, maxSpeed)} & Navigate the robot while avoiding obstacles.\\
@@ -266,7 +272,8 @@ Another experience with the previous AI software was the process of debugging th
 Fig~\ref{fig1_plotter} shows a simple plotter which  visualizes the changes in the speed and commanded velocity of a single robot. This logging tool is also written in python.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{images/plotter.jpg}
+\centering
+\includegraphics[width=0.8\textwidth]{images/plotter.jpg}
 \caption{An example logging program compatible with the new AI software.} \label{fig1_plotter}
 \end{figure}
 
@@ -297,7 +304,7 @@ To define this process the FSM chart shown in Fig~\ref{fig_ANALYZE_FSM} can be i
 
 \begin{figure}
 \centering
-\includegraphics[width=10cm]{images/Analyze_FSM.png}\caption{The FSM chart for the analysis process.} \label{fig_ANALYZE_FSM}
+\includegraphics[width=11cm]{images/Analyze_FSM.png}\caption{The FSM chart for the analysis process.} \label{fig_ANALYZE_FSM}
 \end{figure}
 
 Now that the FSM is known, each state can be implemented. The pseudocodes of the states are defined in Tables~\ref{table_STATE1_IMP},~\ref{table_STATE2_IMP},~\ref{table_STATE3_IMP} and~\ref{table_STATE4_IMP}. These state functions have access to global variables which are defined in Table~\ref{table_GLOBAL_VARS}.
