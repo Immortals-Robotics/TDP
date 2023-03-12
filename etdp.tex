@@ -4,6 +4,7 @@
 %
 \documentclass[runningheads]{llncs}
 %
+\usepackage{subcaption}
 \usepackage{graphicx}
 \usepackage{placeins}
 \usepackage{float}
@@ -17,11 +18,7 @@
 \begin{document}
 %
 \title{Immortals 2023 Extended Team Description Paper}
-%
-%\titlerunning{Abbreviated paper title}
-% If the paper title is too long for the running head, you can set
-% an abbreviated paper title here
-%
+\titlerunning{Immortals 2023 ETDP}
 
 \author{Ali Salehi \and
 Mohammad Tabasi \and
@@ -33,8 +30,6 @@ Mustafa Talaeezadeh \and
 Ali Amoozandeh Nobaveh}
 %
 \authorrunning{Immortals Robotics}
-% First names are abbreviated in the running head.
-% If there are more than two authors, 'et al.' is used.
 %
 \institute{
 \url{http://www.immortals-robotics.com}
@@ -45,44 +40,56 @@ Ali Amoozandeh Nobaveh}
 \begin{abstract}
 %The abstract should briefly summarize the contents of the paper in
 %15--250 words.
-This paper describes the recent work done by the Immortals Robotics Team for the upcoming competitions including the RoboCup 2023.
+This paper describes the recent work that has been done by the Immortals Robotics Team for the upcoming RoboCup 2023 competition in Bordeaux, France.
 
-\keywords{RoboCup 2023  \and Small Size League}
+\keywords{RoboCup 2023 \and Small Size League}
 \end{abstract}
 %
 %
 %
 \section{Introduction}
 The Immortals Small Size League team was founded in 2008 and participated for the first time in RoboCup 2009 in Graz. The team consists of computer and electrical engineers and currently focuses on the Small Size League.
- There have been some changes in the mechanics and electronics of the robots in the past years. The process can be seen in the previous years TDPs and ETDPs.~\cite{ref_ETDP2019}.
- 
- This year, the team focused on modernizing the electronics and software architecture. Efforts were also made to resolve issues observed during recent competitions, including RoboCup 2018, Montréal. In addition to the current robot, there is a 3D-printed prototype robot that was presented in 2018 and has been improved and tested since then. The goal is to achieve a modular, flexible, and reliable platform that would reduce the maintenance and future development costs of the robots.
 
+There have been some changes in the mechanics and electronics of our robots (Fig. \ref{fig:std_robot}) in the last few years. The process can be seen in the previous TDPs and ETDPs~\cite{ref_ETDP2019}.
+ 
+This year, the team focused on modernizing the electronics and software architecture. Efforts were also made to resolve issues observed during recent competitions, including RoboCup 2018 in Montréal. In addition to the current robot, there is a 3D-printed prototype robot that was presented in 2018 and has been improved and tested since then. The goal is to achieve a modular, flexible, and reliable platform that would reduce the maintenance and future development costs of the robots.
 
 \begin{figure}
-\centering
-\includegraphics[width=8cm]{images/std_robot.jpeg}
-\caption{Immortals current robot.} \label{fig_std_robot}
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{images/std_robot.jpeg}
+         \caption{Standard}
+         \label{fig:robot_std}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/printed_robot.jpeg}
+        \caption{3D-printed}
+        \label{fig:robot_printed}
+    \end{subfigure}
+    \caption{Immortals current robots.}
+    \label{fig:std_robot}
 \end{figure}
 
-Our team, Immortals, is thrilled to participate in this year's RoboCup SSL competition. With a history of innovation and success, we are constantly working to develop cutting-edge solutions in small-scale autonomous robotics. Building on our experience from last year's competition, we are currently dedicated to improving our AI software and robot electronics to address the needs we identified in our previous system. Our team is working tirelessly on designing and constructing a robot that will be smarter and more robust than ever before. Through an iterative process of development and testing, we are confident that we will create a robot team that is faster, smarter, and more agile than ever before. We look forward to showcasing our progress and competing against the best SSL teams from around the world.
+\section {Mechanics}
+Due to the optimal design of the previous robots, the mechanical design team decided not to overhaul the entire system, but rather to modify design details to improve the manufacturability and durability of the parts. In addition, recent advances in additive manufacturing techniques, which have resulted in more accurate and reliable 3D-printed parts, are driving our developments toward broader use of these elements and the replacement of several mechanical parts currently manufactured using conventional methods, such as turning and wire EDM, with additively manufactured parts to reduce costs and increase manufacturing and maintenance speeds.
 
-\section {Mechanical Developments}
-Due to the optimal design of the previous robots, the mechanical design team decided not to overhaul the entire system, but rather to modify design details to improve the parts' manufacturability and durability. In addition, recent advancements in additive manufacturing techniques, which have resulted in more accurate and dependable 3D printed parts, are driving our developments toward a broader use of these elements and the replacement of several mechanical parts that are currently manufactured using conventional methods, such as turning and wire EDM, with additively manufactured parts in order to reduce costs and increase fabrication and maintenance speeds.
-
-The manufacturing companies are consulted on the technical drawings of the revised design, and the majority of the fabrication work for the new series of robots was outsourced.
-Specific robot components are redesigned to meet the requirements of the new regulations:
-
-\subsection{Kicking System}
-Before 2018 the limit for the ball velocity was 8m/s. In order for robots to kick a ball that much fast, a strong shooting system including capacitors and solenoids where required. Since RoboCup 2018, Montréal, Canada, the maximum speed limit has been decreased to 6.5m/s which makes teams to wonder if they want to redesign their robots kicking system and optimize the space consumption or battery power in their robot. This year the Immortals robots kicking system has been modified in order to optimize the energy consumption from the battery. This way robots have the chance to stay longer in a match without the need of their batteries to get changed.
-
+The manufacturing companies are consulted on the technical drawings of the revised design, and most of the manufacturing work for the new series of robots has been outsourced.
 
 %%%%%%%%%%%%
 
 \section{Electronics}
 
 In 2018, changes were made to the electronics to modernize the designs and replace the old parts with their new counterparts. We tested them during RoboCup 2018, and the results show a solid improvement in reliability while reducing production costs. Currently, all robots use these circuits. The reader is referred to this team's previous year's TDP [1] for more details on the main circuit.\\
-\indent This year, we're planning to redesign all of our electronics from scratch to reflect the latest developments in the league and also in the industry. The main goals are (1) reliability, (2) expandability, and (3) being more competitive. It should be mentioned that at the time of this writing, the design work is still ongoing and we don't have the final boards manufactured. We hope to equip at least half of our robots with the new parts in RoboCup 2023. We will publish the designs on our GitHub page shortly after the competition.
+\indent This year, we're planning to redesign all of our electronics from scratch to reflect the latest developments in the league and also in the industry. The main goals are:
+
+\begin{enumerate}
+    \item[$\bullet$] reliability
+    \item[$\bullet$] expandability
+    \item[$\bullet$] being more competitive
+\end{enumerate}
 
 \begin{figure}
 	\centering
@@ -91,51 +98,68 @@ In 2018, changes were made to the electronics to modernize the designs and repla
 	\label{fig:electronics-architecture}
 \end{figure}
 
+The new architecture can be seen in Fig. \ref{fig:electronics-architecture}. It should be mentioned that at the time of this writing, the design work is still ongoing and we don't have the final boards manufactured. We hope to equip at least half of our robots with the new parts in RoboCup 2023. We will publish the designs on our GitHub page~\cite{ref_github} shortly after the competition.
+
 \subsection{Main board}
-The current main board used by the team was designed in 2010 and has been used in its original form ever since, except for minor changes. It uses a Xilinx Spartan3 FPGA as the main and only processor. A soft processor (TSK3000) is used inside the FPGA to handle more sequential logic, while the FPGA itself is used to read encoders, drive BLDC motors, drive the boost converter, etc.
+The current main board used by the team was designed in 2010 and has been used in its original form ever since, except for minor changes. It uses a Xilinx Spartan3 FPGA as the main and only processor. A soft processor, TASKING TSK3000, is used inside the FPGA to handle more sequential logic, while the FPGA itself is used to read encoders, drive BLDC motors, drive the boost converter, etc.
 While this design is flexible and comparatively cheap to produce, it has shown its age in recent years. The main drawbacks are:
 \begin{enumerate}
-    \item[$\bullet$] The TSK3000 runs at around 36 MHz and in its current configuration is way too limited to develop any more sophisticated local processing and motion planning. Some efforts were done in the past to move parts of performance-critical C code to the logic gates, but it would make the implementation harder to change and extend. On the other hand the debugging workflow was too limiting, and any changes to the code needed a full rebuild of the FPGA project. All these factors resulted in the team using pretty much the same framework for several years, without being able to make major changes.
-    \item[$\bullet$] The BLDC motor commutation is a simple 6-step trapezoidal commutation. It is easy to implement, but is inefficient and causes a high amount of torque ripple. Implementing a more sophisticated method, e.g. Field Oriented Control, requires massive changes to the PCB.
-    \item[$\bullet$] We use nRF24L01 chip for wireless communication, with a custom payload layout on top of its Enhanced ShockBurst (ESB) protocol. This gives us a lot of flexibility, but being a low-level protocol means we need to add any higher-level feature needed, e.g. discovery.
-    \item[$\bullet$] The waveform needed to drive the boost converter in the kicking board is generated by the FPGA. This meant that we were able to freely change it to match our needs, but in practice deemed too fragile.
-    \item[$\bullet$] There are no current protections in the board. Any malfunction in the board itself or in another part of the robot, e.g. a stuck wheel, causes damage to the parts. This hugely reduces reliability and increases maintenance costs, and caused damage to the battery.
+    \item[$\bullet$] The TSK3000 runs at about 36 MHz and is far too limited in its current configuration to develop more sophisticated local processing and motion planning. Some effort has been made in the past to move parts of the performance-critical C code to the logic gates, but this would make the implementation more difficult to modify and extend. On the other hand, the debugging workflow was too restrictive, and any changes to the code required a complete rebuild of the FPGA project. All of these factors resulted in the team using pretty much the same framework for several years without being able to make major changes.
+    \item[$\bullet$] BLDC motor commutation is a simple 6-step trapezoidal commutation. It is easy to implement, but is inefficient and causes high torque ripples. Implementing a more sophisticated method, such as Field Oriented Control, requires massive changes to the PCB.
+    \item[$\bullet$] We use the nRF24L01 chip for wireless communications, with a custom payload layout on top of its Enhanced ShockBurst (ESB) protocol. This gives us a lot of flexibility, but because it is a low-level protocol, we have to add any higher-level functionality we need, such as discovery.
+    \item[$\bullet$] The waveform needed to drive the boost converter in the kicking board is generated by the FPGA. This meant that we were free to change it to suit our needs, but in practice, it was considered too fragile.
+    \item[$\bullet$] There are no current protections on the board. Any malfunction in the board itself or in any other part of the robot, such as a stuck wheel, will cause damage to the parts. This greatly reduces reliability, increases maintenance costs, and causes damage to the battery.
 \end{enumerate}
 
 To resolve these issues the work started on designing a new main board from scratch. The main features are:
 \begin{enumerate}
-    \item[$\bullet$] Raspberry Pi Compute Module 4 as the local compute unit on robot. We intend to move parts of the skill execution, data fusion and prediction, and motion planning to it.
-    \item[$\bullet$] Raspberry Pi Compute Module's 5GHz WiFi as the wireless. This will greatly enhance the bandwidth and the feature-set of the link and will allow us to add robots as regular links to our software stack. This way they will receive world state and the AI output necessary to execute local skills.\\
-    The latency characteristics of using WiFi instead of a low-level protocol in the lab environment has been satisfacroty. Using the default PCB-antenna at a distance of 20m to the access point, we were able to achieve a latency of ~2ms with a data loss of ~\%3. The latency requirements after moving more processing to the robot's local processor will be more relaxed. But, we are still considering adding a separate nRF chip to handle latency-sensitive if the new approach causes issues.
-    \item[$\bullet$] CAN protocol will be used to connect the main board to other boards, including the kicking board, motor drivers, and the battery monioring board. This will give us a more robust and flexible base that we can build on top of.
+    \item[$\bullet$] Raspberry Pi Compute Module (CM) 4 as the local compute unit on the robot. We intend to move parts of the skill execution, data fusion and prediction, and motion planning to it.
+    \item[$\bullet$] Compute Module's 5GHz WiFi as the wireless communication link. This will greatly increase the bandwidth and capabilities of the link and allow us to add robots as regular links to our software stack. This will allow them to receive world state and the AI output necessary to perform local skills.\\
+    The latency characteristics of using WiFi instead of a low-level protocol in the lab environment were satisfactory. Using the standard PCB antenna at a distance of 20m from the access point, we were able to achieve a latency of ~2ms with a data loss of ~\%3. The latency requirements will be more relaxed after moving more processing to the robot's local processor. However, we are still considering adding a separate nRF chip for latency-sensitive processing if the new approach causes problems.
+    \item[$\bullet$] CAN protocol to connect the main board to external boards, including the kicking board, motor drivers, proximity sensors, and battery monitoring. This will give us a more robust and flexible base to build on.
 \end{enumerate}
 
 \subsection{Motor driver}
-In the past competitions, motor driving ciruitury was one of the common failure points of the robot. As they were placed on the same PCB, the repair would require a complete reflow of the broken parts. In more severe cases, e.g. when the traces especially on the internal layers get damaged, it could mean the board will become irreparable.\\
-This year we decided to design separate modular motor driving boards that will be placed on the main board for each motor. This will greatly enhance our ability to repair robots in case of a failure in one of the drivers. It would also make it easier to upgrade the main board and motor drivers separately.\\
+In past competitions, the motor control circuitry was one of the most common points of failure for the robot. Since they were on the same PCB, repairing them would require a complete reflow of the broken parts. In more severe cases, such as when the traces are damaged, especially on the inner layers, this could mean that the board becomes irreparable.\\
+This year, we decided to design separate modular motor driver boards that will be placed on the main board for each motor. This will greatly improve our ability to repair robots if one of the drivers fails. It would also make it easier to develop the main board and the motor drivers separately.\\
 This new driving board is based on:
 \begin{enumerate}
-    \item[$\bullet$] A dedicated BLDC driving IC, TMC4671. It implements  Field Oriented Control (FOC) for BLDC motors, and includes various closed-loop control methods. This offloads the local motor control functionality from the main MCU to the dedicated HW, which is more reliable in terms of latency. It has an SPI interface to receive both configuration and command, and send back sensory data including speed and position.
-    \item[$\bullet$] A power mosfet driver IC, TMC6100. It drives the mosfets and senses the motor currents that is needed for the FOC algorithm. It also contains a fault detection mechanism.
-    \item[$\bullet$] A small Arm processor, STM32F042G6Ux, that acts as a CAN client link to the main processor. It communicates with both the TMC4671 and the TMC6200 via SPI, and also reads the current sensor.
+    \item[$\bullet$] A dedicated brushless DC (BLDC) motor driver IC, TMC4671. It implements Field Oriented Control (FOC) for BLDC motors and includes various control methods. This offloads the local motor control functionality from the main processor to dedicated hardware, which is more reliable in terms of latency. It has an SPI interface to receive both configuration and commands and to send back sensor data including speed and position.
+    \item[$\bullet$] A power MOSFET driver IC, TMC6200. It drives the MOSFETs and senses the motor currents needed for the FOC algorithm. It also includes a fault detection mechanism.
+    \item[$\bullet$] A small Arm processor, STM32F042G6Ux, acts as a CAN client link to the main processor. It communicates with both the TMC4671 and the TMC6200 via SPI and also reads the current sensor.
 \end{enumerate}
+
 \subsection{Kicking board}
-In the previous years, we used a boost converter that was drived by the FPGA from the main board. There were also two discharge and a charged state pin connected directly to FPGA's IO pins. The were major issues with this design both in terms of reliability and charging performance.\\
-This year we redesigned the kicking board with the following features:
-\begin{enumerate}
-    \item[$\bullet$] A dedicated flyback capacitor charging IC, LT3570, is used. This simplifies the design and improves performance and reliability at the same time. We use DA2034 transformer and the BSC109N10NS3G MOSFET.
-    \item[$\bullet$] A STM32F042G6Ux MCU is used on the board to handle CAN protocol to the main board, and controls the charging IC, variable resistors, and discharge IGBTs.
-    \item[$\bullet$] A high-power resistor network composed of three 2.4K 3W resistors is added to the board to discharge the capacitors when needed, without using the kicker magnets. The STN3N40K3 MOSFET drived by a ZXGD3009E6 is used to control the discharge.
-    \item[$\bullet$] Two IGB50N60T IGBTs drived by a single IX4427MTR are used to discharge the capacitors to the kicking magnets. 
-\end{enumerate}
+In previous years, we used a boost converter driven by the FPGA from the main board. There were also two discharge pins and one charge pin connected directly to the FPGA's IO pins. These were major problems with this design both in terms of reliability and charge performance.\\
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.6\textwidth]{images/mikona.png}
-	\caption{The new kicking board design}
-	\label{fig:MIKONA}
+    \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{images/mikona_top.png}
+         \caption{top-view}
+         \label{fig:mikona_top}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/mikona_bottom.png}
+        \caption{bottom-view}
+        \label{fig:mikona_bottom}
+    \end{subfigure}
+
+    \caption{The new kicking board design}
+    \label{fig:mikona}
 \end{figure}
 
+This year we redesigned the kicking board (Fig. \ref{fig:mikona}) with the following features:
+\begin{enumerate}
+    \item[$\bullet$] A dedicated LT3570 flyback capacitor charger IC is used. This simplifies the design while improving performance and reliability. We use the DA2034 transformer and the BSC109N10NS3G MOSFET for this circuit.
+    \item[$\bullet$] A STM32F042G6Ux MCU is used on the board to handle the CAN protocol to the main board and to control the charger IC, variable resistors, and discharge IGBTs.
+    \item[$\bullet$] A high-power resistor network consisting of three 2.4K 3W resistors is added to the board to discharge the capacitors when needed without using the kicker magnets. The STN3N40K3 MOSFET driven by a ZXGD3009E6 is used to control the discharge.
+    \item[$\bullet$] Two IGB50N60T IGBTs driven by a single IX4427MTR are used to discharge the capacitors to the kicking magnets.
+    \item[$\bullet$] An MCP4562 variable resistor to set the target voltage of the flyback converter. This allows us to change the voltage by simply changing a configuration variable in the main software and communicating it down to the kicking board.
+\end{enumerate}
 
 \section{Software}
 Our current software stack was developed in 2009 in C++ and has seen several additions and improvements throughout the years. This has resulted in a performant and robust software, and at the same time hard to maintain codebase that is too fragile to the new changes.\\
@@ -491,11 +515,8 @@ Immortals 2019 Team Description Paper, \url{https://ssl.robocup.org/wp-content/u
 \bibitem{ref_ETDP2018}
 Immortals 2018 Team Description Paper, \url{https://ssl.robocup.org/wp-content/uploads/2019/01/2018\_TDP\_Immortals.pdf}.
 
-\bibitem{ref_opensource}
-Immortals Open Source Project. \url{https://github.com/Ma-Ghasemieh/Immortals\_ssl\_opensource\_mech}.
-
-\bibitem{ref_opensource}
-Immortals Open Source Publish in RoboCup 2016. \url{https://github.com/lordhippo/immortalsSSL}.
+\bibitem{ref_github}
+Immortals Open Source Project. \url{https://github.com/Immortals-Robotics}.
 
 \bibitem{ref_grsim}
 Monajjemi, Valiallah (Mani), Ali Koochakzadeh, and Saeed Shiry Ghidary. "grSim – RoboCup Small Size Robot Soccer Simulator." In Robot Soccer World Cup, pp. 450-460. Springer Berlin Heidelberg, 2011.
