@@ -162,11 +162,13 @@ This year we redesigned the kicking board (Fig. \ref{fig:mikona}) with the follo
 \end{enumerate}
 
 \section{Software}
-Our current software stack was developed in 2009 in C++ and has seen several additions and improvements throughout the years. This has resulted in a performant and robust software, and at the same time hard to maintain codebase that is too fragile to the new changes.\\
-\indent This year the main focuses are to make our software:
+Our current software stack was developed in C++ in 2009 and has seen several additions and improvements over the years. This has resulted in a high performance and robust software but at the same time a difficult-to-maintain code base that is too fragile for the new changes.
+
+This year the main focuses are to make our software:
+
 \begin{enumerate}
     \item more robust
-    \item easier to read/understand, and change/extend
+    \item easier to read and understand
     \item faster to iterate and extend
     \item more competitive
 \end{enumerate}
@@ -212,11 +214,12 @@ One of the main weaknesses of our software in the previous competition was the l
 
 \indent Visualization data is received over the network and can be sent from any node in the system, including the tracker, the soccer ball, and even the robots' embedded firmware.
 
-\subsection{Architecture}
+\subsection{Improving readability}
 
-Our current software is a single application that handles world state estimation, AI, and motion planning of the robots. This has the added benefit of being able to change the data flow between various parts quite easily. But forces us to implement everything in C++ to produce one single application that runs on one machine. Another side effect of such a monolithic design was that it encouraged more coupling between the soccer and the vision parts of the software and as a result made it harder to make changes to each of them.\\
-\indent The goal this year is to refactor the codebase into separate parts that are connected via the network. This allows us to move the lower-level motion planning and skill execution to the robots' local processor, and develop GUIs using other technologies. \\
-\indent At the time of writing this paper, this effort is still ongoing, but we are confident that we can make the transition to the new stack in time for RoboCup 2023.
+\subsubsection{Architecture}
+Our current software is a single monolithic application that handles world state estimation, AI, and robot motion planning. This has the advantage of allowing us to easily change the flow of data between different parts. But it forces us to implement everything in C++ to produce a single application that runs on a single machine. Another side effect of such a monolithic design was that it encouraged more coupling between the soccer and vision parts of the software, making it harder to make changes to either.
+
+The goal this year is to refactor the code base into separate parts that are connected via the network as shown in Fig. \ref{fig:software-architecture}. This will allow us to move the lower-level motion planning and skill execution to the robot's local processor and develop the graphical user interface (GUI) using other technologies.
 
 \begin{figure}
 	\centering
@@ -225,7 +228,16 @@ Our current software is a single application that handles world state estimation
 	\label{fig:software-architecture}
 \end{figure}
 
-This year the main software also known as the AI software is redesigned in order to be more understandable and extendable. In previous years the software core was the same for each year but with slight changes according to rules and new referee commands. The new members who wanted to implement a new idea in the software needed to spend a great amount of time to understand the methods to use for the robot navigation and data input.
+At the time of writing, these efforts are still ongoing, but we are confident that we will be able to transition to the new stack in time for RoboCup 2023.
+
+\subsubsection{Coding standards}
+One of the most important observations in the past has been the complexity of the C++ language when used incorrectly. This is especially important to us because the code is typically developed by students who do not have extensive experience with the language.
+
+To address this issue, we have chosen a coding standard~\cite{ref_cppbestpractices} and agreed on a set of style and naming conventions to be used throughout the code base. These will improve readability and maintainability, and promote consistency. These style checks are implemented as \textbf{\textit{clang-tidy}} and \textbf{\textit{clang-format}} configurations which can be used both locally within the IDEs, and as an automated gate in our CI pipeline when creating a pull-request to the main branch.
+
+As a first step in implementing the coding standard, we have begun to move away from the use of raw pointers in favor of smart pointers. This can help simplify memory management, improve code clarity and maintainability, and reduce the risk of errors related to object ownership and lifetime.
+
+We are also in the process of making the code base warning-free and treating the new warnings as bugs. These warnings are issued by the compiler when it detects potential problems in the code that could lead to bugs or undefined behavior. Treating them as errors force developers to address them and fix potential problems early in the development process, which can help prevent the accumulation of technical debt and reduce the risk of introducing bugs later. Some of these warnings are based on the C++ Core Guidelines~\cite{ref_cppcoreguidelines}, which should be used in most C++ code to avoid common pitfalls seen in other projects.
 
 % Written by Omid (We need to merge this with the above soon.
 
@@ -520,6 +532,12 @@ Immortals Open Source Project. \url{https://github.com/Immortals-Robotics}.
 
 \bibitem{ref_grsim}
 Monajjemi, Valiallah (Mani), Ali Koochakzadeh, and Saeed Shiry Ghidary. "grSim – RoboCup Small Size Robot Soccer Simulator." In Robot Soccer World Cup, pp. 450-460. Springer Berlin Heidelberg, 2011.
+
+\bibitem{ref_cppbestpractices}
+Turner, Jason. "C++ Best Practices"
+
+\bibitem{ref_cppcoreguidelines}
+Stroustrup, Bjarne and Sutter, Herb. "C++ Core Guidelines"
 
 % 3rd-party libraries
 \bibitem{ref_3rd-party_gtest}
