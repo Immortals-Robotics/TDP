@@ -174,6 +174,15 @@ This year we started using several third-party libraries for parts of our softwa
 
 \indent To make it even easier to use other libraries, we started using a C++ dependency manager, \textbf{\textit{vcpkg}}~\cite{ref_3rd-party_vcpkg}. This simplifies the installation and maintenance of third-party libraries, ensures compatibility between them, and improves reproducibility on different local machines and in the CI pipeline.
 
+\subsubsection{Improved debugging}
+One of the main weaknesses of our software in the previous competition was the lack of understanding of why the software and robots were behaving the way they were and what might be causing the problems. We knew that by providing more detailed and informative logs, we could gain a better understanding, which could lead to faster and more effective debugging and troubleshooting.
+
+\indent This year, we improved our logging system with an extensible system that can output to the command line, to a file, and over the network. This allows us to later analyze any part of the runtime to better understand the behavior of the system and narrow down the problem to a specific point in time.
+
+\indent We have also expanded the use of our visualization GUI. Having a graphical representation of the internals of different algorithms, as well as real-time sensory data from the robots, helps us better understand how different parts of the software work and make more informed decisions about how to improve the robots' performance and troubleshoot problems. The GUI also provides a more intuitive and user-friendly way to interact with the software and make configuration changes.
+
+\indent Visualization data is received over the network and can be sent from any node in the system, including the tracker, the soccer ball, and even the robots' embedded firmware.
+
 \subsection{Architecture}
 
 Our current software is a single application that handles world state estimation, AI, and motion planning of the robots. This has the added benefit of being able to change the data flow between various parts quite easily. But forces us to implement everything in C++ to produce one single application that runs on one machine. Another side effect of such a monolithic design was that it encouraged more coupling between the soccer and the vision parts of the software and as a result made it harder to make changes to each of them.\\
