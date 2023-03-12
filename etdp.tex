@@ -146,8 +146,18 @@ In the following sections, we will describe the efforts made to reach these goal
 
 \subsection{Improving robustness}
 
-\subsubsection{Third-party libraries}
+\subsubsection{Continuous integration}
+This year, we created a continuous integration (CI) system based on GitHub workflows. It builds the software, performs style checks, and runs automated unit tests, and optionally publishes the result as a release to GitHub. This is an essential part of our development process, as it provides several important benefits that contribute to the quality and reliability of our software.
 
+\indent It helps ensure that the software can be built across environments without problems. This is particularly important as we currently target \textbf{Windows} (\textit{MSVC} and \textit{Clang}), \textbf{Ubuntu} (\textit{GCC} and \textit{Clang}), and \textbf{macOS} (\textit{Clang}) with a specific configuration of library dependencies. The system uses the same CMake presets that we use locally to ensure that the software is built in a consistent and reproducible way.
+
+\indent It also performs style checks using clang-format and clang-tidy with the same configurations we use in our local IDEs. This can help enforce a consistent coding style across the codebase, which can make the code easier to read and maintain, and can also help prevent problems that can arise from inconsistent code formatting, such as merge conflicts.
+
+\indent Another important aspect of the pipeline is the ability to run automated unit tests developed with \textbf{\textit{GoogleTest}}~\cite{ref_3rd-party_gtest}. This can help identify problems and regressions in the software early in the development process. This can help prevent problems from being introduced into the software, and can help ensure that the software meets the project's requirements and specifications. At the time of writing, the code coverage of these tests is not adequate and we plan to improve this over time. We also plan to introduce more automated tests other than unit tests in the future, such as testing our tracker with known input and output data.
+
+\indent We also have an automatic release submission pipeline when a tag starting with \textbf{\textit{v}} is pushed to our repositories. This automatically packages the resulting artifacts, creates a release on GitHub, and publishes the artifact along with the source code and data used to build it. Even this TDP was created using this mechanism.
+
+\subsubsection{Third-party libraries}
 This year we started using several third-party libraries for parts of our software:
 \begin{enumerate}
     \item \textbf{\textit{Asio}}~\cite{ref_3rd-party_asio} for networking 
@@ -474,6 +484,9 @@ Immortals Open Source Publish in RoboCup 2016. \url{https://github.com/lordhippo
 Monajjemi, Valiallah (Mani), Ali Koochakzadeh, and Saeed Shiry Ghidary. "grSim – RoboCup Small Size Robot Soccer Simulator." In Robot Soccer World Cup, pp. 450-460. Springer Berlin Heidelberg, 2011.
 
 % 3rd-party libraries
+\bibitem{ref_3rd-party_gtest}
+GoogleTest, Google Testing and Mocking Framework \url{https://github.com/google/googletest}
+
 \bibitem{ref_3rd-party_asio}
 Asio, cross-platform C++ library for network and low-level I/O programming \url{https://think-async.com/Asio/}
 
