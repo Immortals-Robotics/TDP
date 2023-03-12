@@ -50,7 +50,7 @@ This paper describes the recent work that has been done by the Immortals Robotic
 \section{Introduction}
 The Immortals Small Size League team was founded in 2008 and participated for the first time in RoboCup 2009 in Graz. The team consists of computer and electrical engineers and currently focuses on the Small Size League.
 
-There have been some changes in the mechanics and electronics of our robots (Fig. \ref{fig:std_robot}) in the last few years. The process can be seen in the previous TDPs and ETDPs~\cite{ref_ETDP2019}.
+There have been some changes in the mechanics and electronics of our robots (Fig. \ref{fig:std_robot}) in the last few years. The process can be seen in the previous TDPs and ETDPs \cite{ref_ETDP2019}, \cite{ref_ETDP2020}.
  
 This year, the team focused on modernizing the electronics and software architecture. Efforts were also made to resolve issues observed during recent competitions, including RoboCup 2018 in Montréal. In addition to the current robot, there is a 3D-printed prototype robot that was presented in 2018 and has been improved and tested since then. The goal is to achieve a modular, flexible, and reliable platform that would reduce the maintenance and future development costs of the robots.
 
@@ -98,7 +98,7 @@ In 2018, changes were made to the electronics to modernize the designs and repla
 	\label{fig:electronics-architecture}
 \end{figure}
 
-The new architecture can be seen in Fig. \ref{fig:electronics-architecture}. It should be mentioned that at the time of this writing, the design work is still ongoing and we don't have the final boards manufactured. We hope to equip at least half of our robots with the new parts in RoboCup 2023. We will publish the designs on our GitHub page~\cite{ref_github} shortly after the competition.
+The new architecture can be seen in Fig. \ref{fig:electronics-architecture}. It should be mentioned that at the time of this writing, the design work is still ongoing and we don't have the final boards manufactured. We hope to equip at least half of our robots with the new parts in RoboCup 2023. We will publish the designs on our GitHub page \cite{ref_github} shortly after the competition.
 
 \subsection{Main board}
 The current main board used by the team was designed in 2010 and has been used in its original form ever since, except for minor changes. It uses a Xilinx Spartan3 FPGA as the main and only processor. A soft processor, TASKING TSK3000, is used inside the FPGA to handle more sequential logic, while the FPGA itself is used to read encoders, drive BLDC motors, drive the boost converter, etc.
@@ -183,18 +183,19 @@ This year, we created a continuous integration (CI) system based on GitHub workf
 
 \indent It also performs style checks using clang-format and clang-tidy with the same configurations we use in our local IDEs. This can help enforce a consistent coding style across the codebase, which can make the code easier to read and maintain, and can also help prevent problems that can arise from inconsistent code formatting, such as merge conflicts.
 
-\indent Another important aspect of the pipeline is the ability to run automated unit tests developed with \textbf{\textit{GoogleTest}}~\cite{ref_3rd-party_gtest}. This can help identify problems and regressions in the software early in the development process. This can help prevent problems from being introduced into the software, and can help ensure that the software meets the project's requirements and specifications. At the time of writing, the code coverage of these tests is not adequate and we plan to improve this over time. We also plan to introduce more automated tests other than unit tests in the future, such as testing our tracker with known input and output data.
+\indent Another important aspect of the pipeline is the ability to run automated unit tests developed with \textbf{\textit{GoogleTest}} \cite{ref_3rd-party_gtest}. This can help identify problems and regressions in the software early in the development process. This can help prevent problems from being introduced into the software, and can help ensure that the software meets the project's requirements and specifications. At the time of writing, the code coverage of these tests is not adequate and we plan to improve this over time. We also plan to introduce more automated tests other than unit tests in the future, such as testing our tracker with known input and output data.
 
 \indent We also have an automatic release submission pipeline when a tag starting with \textbf{\textit{v}} is pushed to our repositories. This automatically packages the resulting artifacts, creates a release on GitHub, and publishes the artifact along with the source code and data used to build it. Even this TDP was created using this mechanism.
 
 \subsubsection{Third-party libraries}
 This year we started using several third-party libraries for parts of our software:
 \begin{enumerate}
-    \item[$\bullet$] \textbf{\textit{Asio}}~\cite{ref_3rd-party_asio} for networking 
-    \item[$\bullet$] \textbf{\textit{Quill}}~\cite{ref_3rd-party_quill} for logging
-    \item[$\bullet$] \textbf{\textit{toml++}}~\cite{ref_3rd-party_tomlplusplus} for configuration files
-    \item[$\bullet$] \textbf{\textit{Eigen}}~\cite{ref_3rd-party_eigen} for linear algebra
-    \item[$\bullet$] \textbf{\textit{homog2d}}~\cite{ref_3rd-party_homog2d} for 2D math
+    \item[$\bullet$] \textbf{\textit{BehaviorTree.CPP}} \cite{ref_3rd-party_btcpp} for Behavior Trees
+    \item[$\bullet$] \textbf{\textit{Asio}} \cite{ref_3rd-party_asio} for networking
+    \item[$\bullet$] \textbf{\textit{Quill}} \cite{ref_3rd-party_quill} for logging
+    \item[$\bullet$] \textbf{\textit{toml++}} \cite{ref_3rd-party_tomlplusplus} for configuration files
+    \item[$\bullet$] \textbf{\textit{Eigen}} \cite{ref_3rd-party_eigen} for linear algebra
+    \item[$\bullet$] \textbf{\textit{homog2d}} \cite{ref_3rd-party_homog2d} for 2D math
 \end{enumerate}
 
 \indent Using these libraries over our custom solutions can help improve code quality, both in terms of robustness and ease of use.
@@ -203,7 +204,7 @@ This year we started using several third-party libraries for parts of our softwa
 
 \indent They also often come with a broader set of features that have detailed documentation, making them easier to integrate and use. This allows developers to focus on implementing the core logic without worrying about the underlying infrastructure. This results in more readable code that is less prone to bugs.
 
-\indent To make it even easier to use other libraries, we started using a C++ dependency manager, \textbf{\textit{vcpkg}}~\cite{ref_3rd-party_vcpkg}. This simplifies the installation and maintenance of third-party libraries, ensures compatibility between them, and improves reproducibility on different local machines and in the CI pipeline.
+\indent To make it even easier to use other libraries, we started using a C++ dependency manager, \textbf{\textit{vcpkg}} \cite{ref_3rd-party_vcpkg}. This simplifies the installation and maintenance of third-party libraries, ensures compatibility between them, and improves reproducibility on different local machines and in the CI pipeline.
 
 \subsubsection{Improved debugging}
 One of the main weaknesses of our software in the previous competition was the lack of understanding of why the software and robots were behaving the way they were and what might be causing the problems. We knew that by providing more detailed and informative logs, we could gain a better understanding, which could lead to faster and more effective debugging and troubleshooting.
@@ -240,11 +241,11 @@ At the time of writing, these efforts are still ongoing, but we are confident th
 \subsubsection{Coding standards}
 One of the most important observations in the past has been the complexity of the C++ language when used incorrectly. This is especially important to us because the code is typically developed by students who do not have extensive experience with the language.
 
-To address this issue, we have chosen a coding standard~\cite{ref_cppbestpractices} and agreed on a set of style and naming conventions to be used throughout the code base. These will improve readability and maintainability, and promote consistency. These style checks are implemented as \textbf{\textit{clang-tidy}} and \textbf{\textit{clang-format}} configurations which can be used both locally within the IDEs, and as an automated gate in our CI pipeline when creating a pull-request to the main branch.
+To address this issue, we have chosen a coding standard \cite{ref_cppbestpractices} and agreed on a set of style and naming conventions to be used throughout the code base. These will improve readability and maintainability, and promote consistency. These style checks are implemented as \textbf{\textit{clang-tidy}} and \textbf{\textit{clang-format}} configurations which can be used both locally within the IDEs, and as an automated gate in our CI pipeline when creating a pull-request to the main branch.
 
 As a first step in implementing the coding standard, we have begun to move the code base to a more modern C++ revision (C++20 at the time of this writing). This means moving away from the use of raw pointers in favor of smart pointers. This can help simplify memory management, improve code clarity and maintainability, and reduce the risk of errors related to object ownership and lifetime.
 
-We are also in the process of making the code base warning-free and treating the new warnings as bugs. These warnings are issued by the compiler when it detects potential problems in the code that could lead to bugs or undefined behavior. Treating them as errors force developers to address them and fix potential problems early in the development process, which can help prevent the accumulation of technical debt and reduce the risk of introducing bugs later. Some of these warnings are based on the C++ Core Guidelines~\cite{ref_cppcoreguidelines}, which should be used in most C++ code to avoid common pitfalls seen in other projects.
+We are also in the process of making the code base warning-free and treating the new warnings as bugs. These warnings are issued by the compiler when it detects potential problems in the code that could lead to bugs or undefined behavior. Treating them as errors force developers to address them and fix potential problems early in the development process, which can help prevent the accumulation of technical debt and reduce the risk of introducing bugs later. Some of these warnings are based on the C++ Core Guidelines \cite{ref_cppcoreguidelines}, which should be used in most C++ code to avoid common pitfalls seen in other projects.
 
 % Written by Omid (We need to merge this with the above soon.
 
@@ -269,11 +270,15 @@ We are also in the process of making the code base warning-free and treating the
 %%%%%%%%%%%
 
 \subsection{Improving extensibility}
-Our current AI is based on finite-state machines (FSMs)~\cite{ref_ETDP2020}. While this structure made it easier to decompose robot behavior into distinct states, it made it difficult to reuse states and increased the number of transitions exponentially. To overcome these problems, we switched to Behavior Trees (BT) this year.
 
 \subsubsection{Behavior trees}
-Behavior Trees (BT) are hierarchical structures composed of nodes representing actions, conditions, or other behaviors, and their connections define the order in which those behaviors should be executed. BT can be used to develop AI for soccer-playing robots by providing a framework for creating complex decision-making algorithms that can handle multiple goals and constraints.
+Our current AI is based on finite-state machines (FSMs) \cite{ref_ETDP2020}. While this structure made it easier to decompose robot behavior into distinct states, it made it difficult to reuse states and increased the number of transitions exponentially. 
+% explain the issues with FSMs in more detail here
 
+To overcome these problems, we switched to Behavior Trees (BT) this year. BTs are hierarchical structures composed of nodes representing actions, conditions, or other behaviors, and their connections define the order in which those behaviors should be executed. BT can be used to develop AI for soccer-playing robots by providing a framework for creating complex decision-making algorithms that can handle multiple goals and constraints.
+
+% clean-up this table with actual behaviors
+% add non-action nodes, such as finding mark opponents, finding suitable robots to execute the behavior, etc.
 \begin{table}[H]
     \footnotesize
     \caption{Example of low-level behaviors.}
@@ -298,6 +303,7 @@ Behavior Trees (BT) are hierarchical structures composed of nodes representing a
 
 Table~\ref{tab:low-level-behaviors} shows the low-level behaviors that can be used as building blocks to create more complex behaviors as shown in Fig. \ref{fig:bt-move}. They are self-contained and easy to understand, so they can be developed and tested once, which is much less time-consuming than maintaining complex and interconnected systems developed together.
 
+% replace this with a proper tree
 \begin{figure}
 	\centering
 	\includegraphics[width=0.8\textwidth]{images/bt-move.png}
@@ -310,12 +316,32 @@ By using BTs in the development of our AI, we can create flexible, modular, and 
 \subsubsection{Config system}
 Previously, all parameters were hard-coded into the C++ code. This made it time-consuming to change anything, resulting in unacceptably long iteration times. Using a config file instead makes it easier to maintain and update the values, as they can be changed in a central location instead of having to search for each instance of the hard-coded value. It also makes the code more flexible and reusable, since you can easily switch between different configurations without having to change the code itself. This also makes it easier to test different scenarios without restarting the system.
 
-This year we started using \textbf{\textit{toml}}~\cite{ref_toml} as our configuration format, along with a \textbf{\textit{json schema}}~\cite{ref_json-schema} that we generate based on our C++ config structure to validate the toml file in both text editors and as a CI step. This schema is also used by our GUI to create a persistent config editor with the correct types, names, and defaults, even in the absence of a config file. The system uses a layered architecture; multiple toml configs, both from disk files and from the network, are fed into the system, each with a priority field. The configuration system then returns a single compiled configuration that all nodes in the system can use (Fig. \ref{fig:software-architecture}) . The system can also prompt the nodes in the system to persist the received config.
+This year we started using \textbf{\textit{toml}} \cite{ref_toml} as our configuration format, along with a \textbf{\textit{json schema}} \cite{ref_json-schema} that we generate based on our C++ config structure to validate the toml file in both text editors and as a CI step. This schema is also used by our GUI to create a persistent config editor with the correct types, names, and defaults, even in the absence of a config file. The system uses a layered architecture; multiple toml configs, both from disk files and from the network, are fed into the system, each with a priority field. The configuration system then returns a single compiled configuration that all nodes in the system can use (Fig. \ref{fig:software-architecture}) . The system can also prompt the nodes in the system to persist the received config.
+
+\subsubsection{Improving build time}
+One of the common pitfalls of any C++ code base is the time it takes to build the project. This problem became more apparent as our software grew in size and dependencies. Before doing any optimizations, it took about 15 minutes to do a complete rebuild on a modern desktop CPU with 6 physical and 12 logical processors.
+
+As a first step, we enabled multi-threaded compilation with \textbf{\textit{/MP}} flag on MSVC and using \textbf{\textit{Ninja}} \cite{ref_ninja} instead of make. This greatly reduced the build time to about 3 minutes. But it was still unacceptable for the iteration times we were looking for.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{images/time-trace.png}
+	\caption{The output of the \textit{-ftime-trace} for one of the source files.}
+	\label{fig:time-trace}
+\end{figure}
+
+We then used the \textit{-ftime-trace} flag with Clang to see where the time is spent during the build. As shown in the Fig. \ref{fig:time-trace}, most of the time is spent in the frontend, in this example about \%96 of it. Upon closer inspection, it is clear that this is caused by excessive use of include files, which the compiler frontend has to process multiple times.
+
+To solve this problem, we started using \textit{unity build}, so that the headers are processed once for a set of source files. This resulted in a massive reduction in build times. A full rebuild took about 20 seconds on the same machine. But touching a single source file still triggered compilation of a set of files, which is inefficient.
+
+The last step to improve build time was to use \textit{pre-compiled header} (PCH). All header files from the 3rd party libraries, and the common code used by both vision and soccer modules except the generated protobuf header files are pre-compiled. This is then used by the compiler when compiling the vision and soccer modules. This way, the time to do a full rebuild is almost the same as the unity build. But the time to build the modules when only a few source files are changed became about 2 seconds, which shows a reduction of about \%80 compared to the unity build.
+
+We currently use PCH locally, and unity build together with PCH for our CI pipeline.
 
 % \subsection{Analyzing}
 % With the tools and designs which were introduced above, it is now possible to demonstrate different features of this project. Below, we will describe the analyzing process in the AI with an example. In the example the goal is to find the best spot in order for a robot to perform a one-touch kick\footnote{A one-touch kick is a robots action where a ball is kicked immediately it touches the front of the robot.}.
 
-% There are many parameters to notice while performing a successful one-touch kick (e.g. Initial Ball Velocity, Robots Angle, Velocity of the robot, Target position of the kick). A simple solution to find the optimum values for the parameters is to run tests with different initializations of the parameters. Here, the tests are performed in grSim~\cite{ref_grsim}.
+% There are many parameters to notice while performing a successful one-touch kick (e.g. Initial Ball Velocity, Robots Angle, Velocity of the robot, Target position of the kick). A simple solution to find the optimum values for the parameters is to run tests with different initializations of the parameters. Here, the tests are performed in grSim \cite{ref_grsim}.
 
 % For this example at first, a ball and two robots are stationed at defined locations and a target position is randomly picked in a defined window.
 
@@ -524,12 +550,18 @@ TOML, A config file format for humans. \url{https://toml.io/}.
 \bibitem{ref_json-schema}
 JSON Schema, a declarative language that allows you to annotate and validate JSON documents. \url{https://json-schema.org/}.
 
+\bibitem{ref_ninja}
+Ninja, a small build system with a focus on speed. \url{https://ninja-build.org/}.
+
 % 3rd-party libraries
 \bibitem{ref_3rd-party_gtest}
 GoogleTest, Google Testing and Mocking Framework \url{https://github.com/google/googletest}
 
 \bibitem{ref_3rd-party_vcpkg}
 vcpkg, cross-platform C/C++ dependency manager from Microsoft \url{https://vcpkg.io/}
+
+\bibitem{ref_3rd-party_btcpp}
+BehaviorTree.CPP, a C++ library to build Behavior Trees. \url{https://www.behaviortree.dev/}
 
 \bibitem{ref_3rd-party_asio}
 Asio, cross-platform C++ library for network and low-level I/O programming \url{https://think-async.com/Asio/}
