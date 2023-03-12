@@ -260,23 +260,24 @@ To overcome these problems, we switched to Behavior Trees (BT) this year. BTs ar
 % clean-up this table with actual behaviors
 % add non-action nodes, such as finding mark opponents, finding suitable robots to execute the behavior, etc.
 \begin{table}[H]
+    \centering
     \footnotesize
     \caption{Example of low-level behaviors.}
     \label{tab:low-level-behaviors}
-    \begin{tabular}{|p{7.5cm}|p{6cm}|}
+    \begin{tabular}{|p{0.5\textwidth}|p{6cm}|}
         \hline
         \bf{Behavior} &  \bf{Explanation} \\
         \hline
-        {\itshape Navigate2Point(robot, destination, maxSpeed)} & Navigate the robot to a destination.\\
-        {\itshape ERRTNavigate2Point(robot, destination, maxSpeed)} & Navigate the robot while avoiding obstacles.\\
-        {\itshape Mark(robot, oppRobot)} & Position between the goal and an opponent robot.\\
-        {\itshape FetchBall(robot, point)} & Navigate the robot to a position on line which the ball is moving on and most close to the \textit{point}.\\
-        {\itshape OneTouchDirect(robot, point, target)} & Navigate the robot to a position on line which the ball is moving on and most close to the \textit{point}. Kick the ball towards the \textit{target}.\\
-        {\itshape CircleBall(robot, radius, angle)} & Position robot on a circle around the ball in a specific angle.\\
-        {\itshape Face(robot, point)} & Face the robot towards a point.\\
-        {\itshape Chip(robot, power)} & Robot should perform a chip kick whenever the ball was intercepted.\\
-        {\itshape Direct(robot, power)} & Robot should perform a direct kick whenever the ball was intercepted.\\
-        {\itshape CircleKickBall(robot, target, power)} & Position robot on a circle around the ball and towards the \textit{target}, then kick the ball.\\
+        {\itshape Navigate2Point(destination, maxSpeed)} & Navigate the robot to a destination.\\
+        {\itshape ERRTNavigate2Point(destination, maxSpeed)} & Navigate the robot while avoiding obstacles.\\
+        {\itshape Mark(oppRobot)} & Position between the goal and an opponent robot.\\
+        {\itshape FetchBall(point)} & Navigate the robot to a position on line which the ball is moving on and most close to the \textit{point}.\\
+        {\itshape OneTouchDirect(point, target)} & Navigate the robot to a position on line which the ball is moving on and most close to the \textit{point}. Kick the ball towards the \textit{target}.\\
+        {\itshape CircleBall(radius, angle)} & Position robot on a circle around the ball in a specific angle.\\
+        {\itshape Face(point)} & Face the robot towards a point.\\
+        {\itshape Chip(power)} & Robot should perform a chip kick whenever the ball was intercepted.\\
+        {\itshape Direct(power)} & Robot should perform a direct kick whenever the ball was intercepted.\\
+        {\itshape CircleKickBall(target, power)} & Position robot on a circle around the ball and towards the \textit{target}, then kick the ball.\\
         \hline
     \end{tabular}
 \end{table}
