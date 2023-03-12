@@ -300,205 +300,190 @@ Table~\ref{tab:low-level-behaviors} shows the low-level behaviors that can be us
 
 By using BTs in the development of our AI, we can create flexible, modular, and easy-to-maintain decision-making algorithms that can handle the complexity and variability of the games. The hierarchical structure of the BT also allows for a high degree of customization and adaptability, making it easier for us to adjust our strategy based on the specific conditions of each game.
 
-\subsection{Analyzing}
-With the tools and designs which were introduced above, it is now possible to demonstrate different features of this project. Below, we will describe the analyzing process in the AI with an example. In the example the goal is to find the best spot in order for a robot to perform a one-touch kick\footnote{A one-touch kick is a robots action where a ball is kicked immediately it touches the front of the robot.}.
+\subsubsection{Config system}
+Previously, all parameters were hard-coded into the C++ code. This made it time-consuming to change anything, resulting in unacceptably long iteration times. Using a config file instead makes it easier to maintain and update the values, as they can be changed in a central location instead of having to search for each instance of the hard-coded value. It also makes the code more flexible and reusable, since you can easily switch between different configurations without having to change the code itself. This also makes it easier to test different scenarios without restarting the system.
 
-There are many parameters to notice while performing a successful one-touch kick (e.g. Initial Ball Velocity, Robots Angle, Velocity of the robot, Target position of the kick). A simple solution to find the optimum values for the parameters is to run tests with different initializations of the parameters. Here, the tests are performed in grSim~\cite{ref_grsim}.
+This year we started using \textbf{\textit{toml}}~\cite{ref_toml} as our configuration format, along with a \textbf{\textit{json schema}}~\cite{ref_json-schema} that we generate based on our C++ config structure to validate the toml file in both text editors and as a CI step. This schema is also used by our GUI to create a persistent config editor with the correct types, names, and defaults, even in the absence of a config file. The system uses a layered architecture; multiple toml configs, both from disk files and from the network, are fed into the system, each with a priority field. The configuration system then returns a single compiled configuration that all nodes in the system can use (Fig. \ref{fig:software-architecture}) . The system can also prompt the nodes in the system to persist the received config.
 
-For this example at first, a ball and two robots are stationed at defined locations and a target position is randomly picked in a defined window.
+% \subsection{Analyzing}
+% With the tools and designs which were introduced above, it is now possible to demonstrate different features of this project. Below, we will describe the analyzing process in the AI with an example. In the example the goal is to find the best spot in order for a robot to perform a one-touch kick\footnote{A one-touch kick is a robots action where a ball is kicked immediately it touches the front of the robot.}.
 
-Second, after waiting for a while, one of the robots moves toward the ball and kicks it towards the target position. Meanwhile, the other robot tries to reach to the target position.
+% There are many parameters to notice while performing a successful one-touch kick (e.g. Initial Ball Velocity, Robots Angle, Velocity of the robot, Target position of the kick). A simple solution to find the optimum values for the parameters is to run tests with different initializations of the parameters. Here, the tests are performed in grSim~\cite{ref_grsim}.
 
-Third, After the ball has been moved the second robot is commanded to perform a one touch kick and direct the ball to the center of the goal. This process continues until the ball passes the fields side line or the ball stops moving. If the ball enters the goal, the target position is tagged as a success, in other cases it is tagged as a fail. After this the \textit{round} counter increases by one and the process is repeated from the first state.
+% For this example at first, a ball and two robots are stationed at defined locations and a target position is randomly picked in a defined window.
 
-At last, After 500 rounds the process is finished and the results are shown in the debugging tools (i.e. the graphical visualizer).
+% Second, after waiting for a while, one of the robots moves toward the ball and kicks it towards the target position. Meanwhile, the other robot tries to reach to the target position.
 
-Fig~\ref{fig_ANALYZE_SING_ITR} shows how a single round is performed.
+% Third, After the ball has been moved the second robot is commanded to perform a one touch kick and direct the ball to the center of the goal. This process continues until the ball passes the fields side line or the ball stops moving. If the ball enters the goal, the target position is tagged as a success, in other cases it is tagged as a fail. After this the \textit{round} counter increases by one and the process is repeated from the first state.
 
-\begin{figure}
-\centering
-\includegraphics[height=5cm]{images/Analyze_State1.png}
-\includegraphics[height=5cm]{images/Analyze_State2.png}
-\includegraphics[height=5cm]{images/Analyze_State3.png}
-\includegraphics[height=5cm]{images/Analyze_State4.png}\caption{The analysis process shown in the graphical visualizer. Starting from left.} \label{fig_ANALYZE_SING_ITR}
-\end{figure}
+% At last, After 500 rounds the process is finished and the results are shown in the debugging tools (i.e. the graphical visualizer).
 
-To define this process the FSM chart shown in Fig~\ref{fig_ANALYZE_FSM} can be implemented in the project\footnote{The chart was drawn in \url{creately.com}}.
+% Fig~\ref{fig_ANALYZE_SING_ITR} shows how a single round is performed.
 
-\begin{figure}
-\centering
-\includegraphics[width=11cm]{images/Analyze_FSM.png}\caption{The FSM chart for the analysis process.} \label{fig_ANALYZE_FSM}
-\end{figure}
+% \begin{figure}
+% \centering
+% \includegraphics[height=5cm]{images/Analyze_State1.png}
+% \includegraphics[height=5cm]{images/Analyze_State2.png}
+% \includegraphics[height=5cm]{images/Analyze_State3.png}
+% \includegraphics[height=5cm]{images/Analyze_State4.png}\caption{The analysis process shown in the graphical visualizer. Starting from left.} \label{fig_ANALYZE_SING_ITR}
+% \end{figure}
 
-Now that the FSM is known, each state can be implemented. The pseudocodes of the states are defined in Tables~\ref{table_STATE1_IMP},~\ref{table_STATE2_IMP},~\ref{table_STATE3_IMP} and~\ref{table_STATE4_IMP}. These state functions have access to global variables which are defined in Table~\ref{table_GLOBAL_VARS}.
+% To define this process the FSM chart shown in Fig~\ref{fig_ANALYZE_FSM} can be implemented in the project\footnote{The chart was drawn in \url{creately.com}}.
 
-\begin{table}
-\caption{Global variables of the FSM.}
-\center
-\label{table_GLOBAL_VARS}
-\begin{tabular}{|p{10cm}|}
-\hline
-\textbf{var} 
-targetPosition,
-initRobotPositions,
-initBallPosition,\\
-\quad oppGoalPosition:Position;
+% \begin{figure}
+% \centering
+% \includegraphics[width=11cm]{images/Analyze_FSM.png}\caption{The FSM chart for the analysis process.} \label{fig_ANALYZE_FSM}
+% \end{figure}
 
-\textbf{var}
-round, cnt:int;
+% Now that the FSM is known, each state can be implemented. The pseudocodes of the states are defined in Tables~\ref{table_STATE1_IMP},~\ref{table_STATE2_IMP},~\ref{table_STATE3_IMP} and~\ref{table_STATE4_IMP}. These state functions have access to global variables which are defined in Table~\ref{table_GLOBAL_VARS}.
 
-\textbf{var}
-successPositions,failPositions:Position[];
+% \begin{table}
+% \caption{Global variables of the FSM.}
+% \center
+% \label{table_GLOBAL_VARS}
+% \begin{tabular}{|p{10cm}|}
+% \hline
+% \textbf{var} 
+% targetPosition,
+% initRobotPositions,
+% initBallPosition,\\
+% \quad oppGoalPosition:Position;
 
-\textbf{var}
-nextFunc2Run:function;\\
+% \textbf{var}
+% round, cnt:int;
 
-\hline
-\end{tabular}
-\end{table}
+% \textbf{var}
+% successPositions,failPositions:Position[];
 
-In Table~\ref{table_GLOBAL_VARS}, the \textit{targetPosition} is the location where the robot will perform its one-touch kick. This variable is initialized in every round. 
+% \textbf{var}
+% nextFunc2Run:function;\\
 
-The \textit{initRobotPositions} and \textit{initBallPosition} are the initial locations of the robots and the ball in every round. These variables are defined before the start of the test. \textit{oppGoalPosition} is the position of the center of the opponents goal line. This variable is defined before the start of the test.
+% \hline
+% \end{tabular}
+% \end{table}
 
-\textit{successPositions} and \textit{failPositions} are two vectors which store the positions according to their tags, \textbf{fail} or \textbf{success}.
+% In Table~\ref{table_GLOBAL_VARS}, the \textit{targetPosition} is the location where the robot will perform its one-touch kick. This variable is initialized in every round. 
 
-\textit{nextFunc2Run} is the function which will run in the next cycle (i.e. The next time a new vision dataset is received). This variable is defined as a C++ pointer to function in our executable code.
+% The \textit{initRobotPositions} and \textit{initBallPosition} are the initial locations of the robots and the ball in every round. These variables are defined before the start of the test. \textit{oppGoalPosition} is the position of the center of the opponents goal line. This variable is defined before the start of the test.
 
+% \textit{successPositions} and \textit{failPositions} are two vectors which store the positions according to their tags, \textbf{fail} or \textbf{success}.
 
-\begin{table}[H]
-\caption{Implementation of the \textit{Setup} state.}
-\center
-\label{table_STATE1_IMP}
-\begin{tabular}{|p{10cm}|}
-\hline
-
-\textbf{function}
-$ S1\_setup$()\\
-\quad placeRobots(initRobotPositions);\\
-\quad placeBall(initBallPosition);\\
-\quad targetPosition = pickRandomPosition();\\
-\quad logData();\\
-\quad \textbf{if} round >= 500 \textbf{then}\\
-\quad\quad nextFunc2Run := S4\_done;\\
-\quad\quad cnt := 0;\\
-\quad \textbf{else if} cnt >= 130 \textbf{then}\\
-\quad\quad nextFunc2Run := S2\_initKick;\\
-\quad\quad cnt := 0;\\
-\quad \textbf{else}\\
-\quad\quad cnt := cnt + 1;\\
-
-\hline
-\end{tabular}
-\end{table}
-
-In \textit{S1\_setup}(), the robots and the ball have to get placed in the specified positions. This can be done by replacing the balls by hand or by robots and at last navigating the robots towards the specified positions.
-If the test is being performed in a simulator (e.g. grSim) it is possible to immediately place the robot by a command. Since the current test is performed in grSim, the robots will be placed using the placement commands implemented in grSim. These commands are shown as \textit{initRobotPositions}() and \textit{initBallPosition}() in the pseudocode. In every cycle (i.e. every time the function is called) A variable called \textit{cnt} is incremented by one. It is checked in an if statement to check whether it is time to transit to the next state or to stay in the current state. Another if statement checks if the round number has reached to 500, if so, the FSM will transit to the \textit{done} state which brings the process to an end.
-
-\begin{table}[H]
-\caption{Implementation of the \textit{Initial Kick} state.}
-\center
-\label{table_STATE2_IMP}
-\begin{tabular}{|p{10cm}|}
-\hline
-
-\textbf{function}
-$ S2\_initKick$()\\
-\quad circleKickBall(Robot3, targetPosition, 100);\\
-\quad ERRTNavigate2Point(Robot0, targetPosition);\\
-\quad logData();\\
-\quad \textbf{if} cnt >= 5 \textbf{then}\\
-\quad\quad nextFunc2Run := S3\_oneTouchKick;\\
-\quad\quad cnt := 0;\\
-\quad \textbf{else if} ballIsMoving() \textbf{then}\\
-\quad\quad cnt := cnt + 1;\\
-
-\hline
-\end{tabular}
-\end{table}
-
-In \textit{S2\_initKick}(), Robot \#3 tries to aim the \textit{targetPosition} and kick the ball towards it. Meanwhile, Robot \#0 will try to reach the \textit{targetPosition}. After a few moments when the ball is moving, the FSM will transit to the next state.
+% \textit{nextFunc2Run} is the function which will run in the next cycle (i.e. The next time a new vision dataset is received). This variable is defined as a C++ pointer to function in our executable code.
 
 
-\begin{table}[H]
-\caption{Implementation of the \textit{OneTouchKick} state.}
-\center
-\label{table_STATE3_IMP}
-\begin{tabular}{|p{10cm}|}
-\hline
+% \begin{table}[H]
+% \caption{Implementation of the \textit{Setup} state.}
+% \center
+% \label{table_STATE1_IMP}
+% \begin{tabular}{|p{10cm}|}
+% \hline
 
-\textbf{function}
-$ S3\_oneTouchKick$()\\
-\quad halt(Robot3);\\
-\quad oneTouchDirect(Robot0, targetPosition, oppGoalPosition);\\
-\quad logData();\\
-\quad \textbf{if} ballIsOut() \textbf{then}\\
-\quad\quad \textbf{if} ballInGoal() \textbf{then}\\
-\quad\quad\quad successPositions.add(targetPosition);\\
-\quad\quad \textbf{else} \\ 
-\quad\quad\quad failPositions.add(targetPosition);\\
-\quad\quad nextFunc2Run := S1\_setup;\\
-\quad\quad round := round + 1;\\
-\quad \textbf{else if} ballIsNotMoving() \textbf{then}\\
-\quad\quad failPositions.add(targetPosition);\\
-\quad\quad nextFunc2Run := S1\_setup;\\
-\quad\quad round := round + 1;\\
+% \textbf{function}
+% $ S1\_setup$()\\
+% \quad placeRobots(initRobotPositions);\\
+% \quad placeBall(initBallPosition);\\
+% \quad targetPosition = pickRandomPosition();\\
+% \quad logData();\\
+% \quad \textbf{if} round >= 500 \textbf{then}\\
+% \quad\quad nextFunc2Run := S4\_done;\\
+% \quad\quad cnt := 0;\\
+% \quad \textbf{else if} cnt >= 130 \textbf{then}\\
+% \quad\quad nextFunc2Run := S2\_initKick;\\
+% \quad\quad cnt := 0;\\
+% \quad \textbf{else}\\
+% \quad\quad cnt := cnt + 1;\\
 
-\hline
-\end{tabular}
-\end{table}
+% \hline
+% \end{tabular}
+% \end{table}
 
-In \textit{S3\_oneTouchKick}(), Robot \#3 gets into a halt mode and Robot \#0 will wait for the ball to reach it. Once the ball gets fetched by the robot. it will get kicked towards the \textit{oppGoalPosition}. The state transition will not happen until the ball exits the field or stops moving. When one of the transition conditions happen it will be judged whether the test was a success or a fail according to the position of the ball in relation with the goal.
+% In \textit{S1\_setup}(), the robots and the ball have to get placed in the specified positions. This can be done by replacing the balls by hand or by robots and at last navigating the robots towards the specified positions.
+% If the test is being performed in a simulator (e.g. grSim) it is possible to immediately place the robot by a command. Since the current test is performed in grSim, the robots will be placed using the placement commands implemented in grSim. These commands are shown as \textit{initRobotPositions}() and \textit{initBallPosition}() in the pseudocode. In every cycle (i.e. every time the function is called) A variable called \textit{cnt} is incremented by one. It is checked in an if statement to check whether it is time to transit to the next state or to stay in the current state. Another if statement checks if the round number has reached to 500, if so, the FSM will transit to the \textit{done} state which brings the process to an end.
 
-\begin{table}[H]
-\caption{Implementation of the \textit{Done} state.}
-\center
-\label{table_STATE4_IMP}
-\begin{tabular}{|p{10cm}|}
-\hline
+% \begin{table}[H]
+% \caption{Implementation of the \textit{Initial Kick} state.}
+% \center
+% \label{table_STATE2_IMP}
+% \begin{tabular}{|p{10cm}|}
+% \hline
 
-\textbf{function}
-$ S4\_done$()\\
-\quad halt(Robot3);\\
-\quad halt(Robot0);\\
-\quad logData();\\
-\quad logData(successPositions, GREEN);\\
-\quad logData(failPositions, RED);\\
+% \textbf{function}
+% $ S2\_initKick$()\\
+% \quad circleKickBall(Robot3, targetPosition, 100);\\
+% \quad ERRTNavigate2Point(Robot0, targetPosition);\\
+% \quad logData();\\
+% \quad \textbf{if} cnt >= 5 \textbf{then}\\
+% \quad\quad nextFunc2Run := S3\_oneTouchKick;\\
+% \quad\quad cnt := 0;\\
+% \quad \textbf{else if} ballIsMoving() \textbf{then}\\
+% \quad\quad cnt := cnt + 1;\\
 
-\hline
-\end{tabular}
-\end{table}
+% \hline
+% \end{tabular}
+% \end{table}
 
-In \textit{S4\_done}(), the robots are halted and the results are sent to the visualizer as red and green points.
-
-After running the code with 500 rounds in 1 hour and 20 minutes, the results were shown on the visualizer with 142 successful and 358 failed attempts. Fig~\ref{fig_ANALYZE_OUTPUT} shows the visualizer at the end of the test. It is now clearly seen which areas have a high possibility in scoring a goal by a one-touch kick under the tested conditions.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=10cm]{images/Analyze_output.png}\caption{The final results of the analysis.} \label{fig_ANALYZE_OUTPUT}
-\end{figure}
-
-Finally, it is worth to notice that the test has been performed in a simulation to give a better result in a short amount of time. It is clear that this test has to be made on robots in the real world. In that case, the number of rounds will obviously need to decrease to a few tens. The focus of this section was to show how an analysis procedure is taken in the Immortals AI project.
-
-%\section{3D printed robot}
-%As mentioned in the previous years team description papers~\cite{ref_ETDP2019,ref_ETDP2018}, A new type of robot was introduced to the league by this team in order to reduce the time and energy for manufacturing the robots.
-%
-%The design of the 3d printed robots where published and are available for teams and individuals to use~\cite{ref_opensource}. The designs are being updated to increase robustness. However, the robustness of a 3d printed robot is incomparable with a usual SSL robot which is assembled with metal parts. Teams may choose to build this type of robot in order to run tests which require a high number of robots.
-
-%\begin{figure}
-%\centering
-%\includegraphics[width=10cm]{images/solenoid.jpg}
-%\caption{The old solenoid(Left) and the new solenoid(Right).} \label{fig_solenoid}
-%\end{figure}
+% In \textit{S2\_initKick}(), Robot \#3 tries to aim the \textit{targetPosition} and kick the ball towards it. Meanwhile, Robot \#0 will try to reach the \textit{targetPosition}. After a few moments when the ball is moving, the FSM will transit to the next state.
 
 
-%\begin{figure}
-%\centering
-%\includegraphics[width=10cm]{images/5plus1.jpg}
-%\caption{Five old robots and a single 3D printed robot at the front.} \label{fig_5plus1}
-%\end{figure}
+% \begin{table}[H]
+% \caption{Implementation of the \textit{OneTouchKick} state.}
+% \center
+% \label{table_STATE3_IMP}
+% \begin{tabular}{|p{10cm}|}
+% \hline
 
+% \textbf{function}
+% $ S3\_oneTouchKick$()\\
+% \quad halt(Robot3);\\
+% \quad oneTouchDirect(Robot0, targetPosition, oppGoalPosition);\\
+% \quad logData();\\
+% \quad \textbf{if} ballIsOut() \textbf{then}\\
+% \quad\quad \textbf{if} ballInGoal() \textbf{then}\\
+% \quad\quad\quad successPositions.add(targetPosition);\\
+% \quad\quad \textbf{else} \\ 
+% \quad\quad\quad failPositions.add(targetPosition);\\
+% \quad\quad nextFunc2Run := S1\_setup;\\
+% \quad\quad round := round + 1;\\
+% \quad \textbf{else if} ballIsNotMoving() \textbf{then}\\
+% \quad\quad failPositions.add(targetPosition);\\
+% \quad\quad nextFunc2Run := S1\_setup;\\
+% \quad\quad round := round + 1;\\
 
+% \hline
+% \end{tabular}
+% \end{table}
+
+% In \textit{S3\_oneTouchKick}(), Robot \#3 gets into a halt mode and Robot \#0 will wait for the ball to reach it. Once the ball gets fetched by the robot. it will get kicked towards the \textit{oppGoalPosition}. The state transition will not happen until the ball exits the field or stops moving. When one of the transition conditions happen it will be judged whether the test was a success or a fail according to the position of the ball in relation with the goal.
+
+% \begin{table}[H]
+% \caption{Implementation of the \textit{Done} state.}
+% \center
+% \label{table_STATE4_IMP}
+% \begin{tabular}{|p{10cm}|}
+% \hline
+
+% \textbf{function}
+% $ S4\_done$()\\
+% \quad halt(Robot3);\\
+% \quad halt(Robot0);\\
+% \quad logData();\\
+% \quad logData(successPositions, GREEN);\\
+% \quad logData(failPositions, RED);\\
+
+% \hline
+% \end{tabular}
+% \end{table}
+
+% In \textit{S4\_done}(), the robots are halted and the results are sent to the visualizer as red and green points.
+
+% After running the code with 500 rounds in 1 hour and 20 minutes, the results were shown on the visualizer with 142 successful and 358 failed attempts. Fig~\ref{fig_ANALYZE_OUTPUT} shows the visualizer at the end of the test. It is now clearly seen which areas have a high possibility in scoring a goal by a one-touch kick under the tested conditions.
+
+% \begin{figure}[H]
+% \centering
+% \includegraphics[width=10cm]{images/Analyze_output.png}\caption{The final results of the analysis.} \label{fig_ANALYZE_OUTPUT}
+% \end{figure}
+
+% Finally, it is worth to notice that the test has been performed in a simulation to give a better result in a short amount of time. It is clear that this test has to be made on robots in the real world. In that case, the number of rounds will obviously need to decrease to a few tens. The focus of this section was to show how an analysis procedure is taken in the Immortals AI project.
 
 \newpage
 \begin{thebibliography}{8}
@@ -525,6 +510,12 @@ Turner, Jason. "C++ Best Practices"
 
 \bibitem{ref_cppcoreguidelines}
 Stroustrup, Bjarne and Sutter, Herb. "C++ Core Guidelines"
+
+\bibitem{ref_toml}
+TOML, A config file format for humans. \url{https://toml.io/}.
+
+\bibitem{ref_json-schema}
+JSON Schema, a declarative language that allows you to annotate and validate JSON documents. \url{https://json-schema.org/}.
 
 % 3rd-party libraries
 \bibitem{ref_3rd-party_gtest}
