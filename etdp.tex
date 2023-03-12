@@ -226,14 +226,14 @@ The GUI is implemented in Python and receives the visualization data over the ne
 \subsubsection{Architecture}
 Our current software is a single monolithic application that handles world state estimation, AI, and robot motion planning. This has the advantage of allowing us to easily change the flow of data between different parts. But it forces us to implement everything in C++ to produce a single application that runs on a single machine. Another side effect of such a monolithic design was that it encouraged more coupling between the soccer and vision parts of the software, making it harder to make changes to either.
 
-The goal this year is to refactor the code base into separate parts that are connected via the network as shown in Fig. \ref{fig:software-architecture}. This will allow us to move the lower-level motion planning and skill execution to the robot's local processor and develop the graphical user interface (GUI) using other technologies.
-
 \begin{figure}
 	\centering
 	\includegraphics[width=0.9\textwidth]{images/software-architecture.jpg}
 	\caption{The new software architecture}
 	\label{fig:software-architecture}
 \end{figure}
+
+The goal this year is to refactor the code base into separate parts that are connected via the network as shown in Fig. \ref{fig:software-architecture}. This will allow us to move the lower-level motion planning and skill execution to the robot's local processor and develop the graphical user interface (GUI) using other technologies.
 
 At the time of writing, these efforts are still ongoing, but we are confident that we will be able to transition to the new stack in time for RoboCup 2023.
 
@@ -248,23 +248,23 @@ We are also in the process of making the code base warning-free and treating the
 
 % Written by Omid (We need to merge this with the above soon.
 
-Our team's main focus this year has been on designing a more effective AI system for our robot, with a particular emphasis on improving our debugging process. To achieve this goal, we have redesigned our AI system from the ground up, using C++20 and a modular architecture consisting of three classes: ExternalWorld, WorldState, and Player.
+% Our team's main focus this year has been on designing a more effective AI system for our robot, with a particular emphasis on improving our debugging process. To achieve this goal, we have redesigned our AI system from the ground up, using C++20 and a modular architecture consisting of three classes: ExternalWorld, WorldState, and Player.
 
-The ExternalWorld class has different subclasses, each of which works in one of the following ways:
+% The ExternalWorld class has different subclasses, each of which works in one of the following ways:
 
-\begin{itemize}
-\item[$\bullet$] \textbf{RealWorld:} This subclass receives data from a defined SSL-vision and SSL-refbox, and sends robot commands to a defined sender (which forwards the commands to the desired robot).
-\item[$\bullet$] \textbf{SimulatedWorld:} This subclass receives data from a defined SSL-vision and SSL-refbox simulator, or any virtual vision or refbox software that adheres to the official protocols of the SSL Communication Protocol, and sends it to a simulator with its own defined protocol.
-\item[$\bullet$] \textbf{LogfileWorld:} This subclass receives data from a given logfile of a game. In this mode, the robots act according to the information contained in the logfile without any control. This mode is useful for observing how the player acts in various scenarios. For example, the debugger can show what path each robot would take if it were being controlled by our AI or what strategies to use when the gameplay enters a specific state defined in the logfile.
-\end{itemize}
+% \begin{itemize}
+% \item[$\bullet$] \textbf{RealWorld:} This subclass receives data from a defined SSL-vision and SSL-refbox, and sends robot commands to a defined sender (which forwards the commands to the desired robot).
+% \item[$\bullet$] \textbf{SimulatedWorld:} This subclass receives data from a defined SSL-vision and SSL-refbox simulator, or any virtual vision or refbox software that adheres to the official protocols of the SSL Communication Protocol, and sends it to a simulator with its own defined protocol.
+% \item[$\bullet$] \textbf{LogfileWorld:} This subclass receives data from a given logfile of a game. In this mode, the robots act according to the information contained in the logfile without any control. This mode is useful for observing how the player acts in various scenarios. For example, the debugger can show what path each robot would take if it were being controlled by our AI or what strategies to use when the gameplay enters a specific state defined in the logfile.
+% \end{itemize}
 
-The WorldState class contains all the data describing the state of the game. This includes information about the locations of the robots and ball, as well as the current score and other game details. The ExternalWorld class feeds data to the WorldState module, which uses it to update its internal state.
+% The WorldState class contains all the data describing the state of the game. This includes information about the locations of the robots and ball, as well as the current score and other game details. The ExternalWorld class feeds data to the WorldState module, which uses it to update its internal state.
 
-The Player class is responsible for navigating the robot and generating commands for each robot. This is where the actual AI algorithms are implemented, including path planning, obstacle avoidance, and ball tracking. The Player class uses the data from the WorldState module to make decisions about how to move the robot and interact with other objects in the game.
+% The Player class is responsible for navigating the robot and generating commands for each robot. This is where the actual AI algorithms are implemented, including path planning, obstacle avoidance, and ball tracking. The Player class uses the data from the WorldState module to make decisions about how to move the robot and interact with other objects in the game.
 
-We have also added both text-based and graphical loggers to our AI system to improve our debugging process. The text-based logger writes output directly to stdout, allowing us to more easily probe exceptions and debug our code. The graphical logger provides us with a visual representation of what the AI software "sees" and how it makes decisions based on the information it has. By utilizing these logging tools, we hope to more effectively debug and refine our AI system.
+% We have also added both text-based and graphical loggers to our AI system to improve our debugging process. The text-based logger writes output directly to stdout, allowing us to more easily probe exceptions and debug our code. The graphical logger provides us with a visual representation of what the AI software "sees" and how it makes decisions based on the information it has. By utilizing these logging tools, we hope to more effectively debug and refine our AI system.
 
-Throughout the development process, we focused on making our AI software as open and flexible as possible, to allow for easy implementation of new and innovative ideas. We also tested and debugged our software extensively, to ensure that it performs reliably and effectively in different game situations.
+% Throughout the development process, we focused on making our AI software as open and flexible as possible, to allow for easy implementation of new and innovative ideas. We also tested and debugged our software extensively, to ensure that it performs reliably and effectively in different game situations.
 
 %%%%%%%%%%%
 
@@ -272,44 +272,33 @@ Throughout the development process, we focused on making our AI software as open
 Our current AI is based on finite-state machines (FSMs)~\cite{ref_ETDP2020}. While this structure made it easier to decompose robot behavior into distinct states, it made it difficult to reuse states and increased the number of transitions exponentially. To overcome these problems, we switched to Behavior Trees (BT) this year.
 
 \subsubsection{Behavior trees}
-Behavior Trees (BT) are hierarchical structures composed of nodes representing actions, conditions, or other behaviors, and their connections define the order in which those behaviors should be executed. BT can be used to develop AI for soccer-playing robots by providing a framework for creating complex decision-making algorithms that can handle multiple goals and constraints. 
+Behavior Trees (BT) are hierarchical structures composed of nodes representing actions, conditions, or other behaviors, and their connections define the order in which those behaviors should be executed. BT can be used to develop AI for soccer-playing robots by providing a framework for creating complex decision-making algorithms that can handle multiple goals and constraints.
 
-\subsection{Finite-State Machine} 
-After a few years of experience in the Small Size League as a software designer the key idea that every team is looking to implement is to make the robots to take the correct action at the exact time and condition. If the actions are performed correctly, the robots will accomplish their task which is scoring a goal or preventing the opponent from scoring. Unfortunately, there are many conditions that can happen in a match and each one has its own set of solutions these solutions are the sequence of commands which are given to a set of robots. For the software designer it may be hard to implement the solutions with a group of \textit{IF} conditions and no special structures.
-
-In order to simplify the implementation for multiple software designers in the team, a Finite-State Machine implementation structure has been introduced. This gives a great flexibility and readability of implementation in the code. Each state is connected to other states by a condition or a set of conditions. This makes the implementation easier to probe. By tracking each state transition the faulty part of the code will be simply found.
-
-Each state is basically a function which will be called whenever a complete picture of a field is received from the vision. The input of the function, or state, are the vision data.  
-In each state, the set of commands which have to be given to the robots in the field are defined and if there is a condition which a state transition is required the next state will be defined to be called next time.
-Table~\ref{tab1} shows a sample group of commands which can be used in every state:
+Table~\ref{tab:low-level-behaviors} shows the low-level behaviors that can be used as building blocks to create more complex behaviors. They are self-contained and easy to understand, so they can be developed and tested once, which is much less time-consuming than maintaining complex and interconnected systems developed together.
 
 \begin{table}[H]
-\footnotesize
-\caption{Example of low-level behaviors.}\label{tab1}
-\begin{tabular}{|p{7.5cm}|p{6cm}|}
-\hline
-\bf{Behavior} &  \bf{Explanation} \\
-\hline
-{\itshape Navigate2Point(robot, destination, maxSpeed)} & Navigate the robot to a destination.\\
-{\itshape ERRTNavigate2Point(robot, destination, maxSpeed)} & Navigate the robot while avoiding obstacles.\\
-{\itshape Mark(robot, oppRobot)} & Position between the goal and an opponent robot.\\
-{\itshape FetchBall(robot, point)} & Navigate the robot to a position on line which the ball is moving on and most close to the \textit{point}.\\
-{\itshape OneTouchDirect(robot, point, target)} & Navigate the robot to a position on line which the ball is moving on and most close to the \textit{point}. Kick the ball towards the \textit{target}.\\
-{\itshape CircleBall(robot, radius, angle)} & Position robot on a circle around the ball in a specific angle.\\
-{\itshape Face(robot, point)} & Face the robot towards a point.\\
-{\itshape Chip(robot, power)} & Robot should perform a chip kick whenever the ball was intercepted.\\
-{\itshape Direct(robot, power)} & Robot should perform a direct kick whenever the ball was intercepted.\\
-{\itshape CircleKickBall(robot, target, power)} & Position robot on a circle around the ball and towards the \textit{target}, then kick the ball.\\
-%Title (centered) &  {\Large\bfseries Lecture Notes}\\
-%1st-level heading &  {\large\bfseries 1 Introduction}\\
-%2nd-level heading & {\bfseries 2.1 Printing Area}\\
-%3rd-level heading & {\bfseries Run-in Heading in Bold.} Text follows\\
-%4th-level heading & {\itshape Lowest Level Heading.} Text follows\\
-\hline
-\end{tabular}
+    \footnotesize
+    \caption{Example of low-level behaviors.}
+    \label{tab:low-level-behaviors}
+    \begin{tabular}{|p{7.5cm}|p{6cm}|}
+        \hline
+        \bf{Behavior} &  \bf{Explanation} \\
+        \hline
+        {\itshape Navigate2Point(robot, destination, maxSpeed)} & Navigate the robot to a destination.\\
+        {\itshape ERRTNavigate2Point(robot, destination, maxSpeed)} & Navigate the robot while avoiding obstacles.\\
+        {\itshape Mark(robot, oppRobot)} & Position between the goal and an opponent robot.\\
+        {\itshape FetchBall(robot, point)} & Navigate the robot to a position on line which the ball is moving on and most close to the \textit{point}.\\
+        {\itshape OneTouchDirect(robot, point, target)} & Navigate the robot to a position on line which the ball is moving on and most close to the \textit{point}. Kick the ball towards the \textit{target}.\\
+        {\itshape CircleBall(robot, radius, angle)} & Position robot on a circle around the ball in a specific angle.\\
+        {\itshape Face(robot, point)} & Face the robot towards a point.\\
+        {\itshape Chip(robot, power)} & Robot should perform a chip kick whenever the ball was intercepted.\\
+        {\itshape Direct(robot, power)} & Robot should perform a direct kick whenever the ball was intercepted.\\
+        {\itshape CircleKickBall(robot, target, power)} & Position robot on a circle around the ball and towards the \textit{target}, then kick the ball.\\
+        \hline
+    \end{tabular}
 \end{table}
 
-As shown in Table~\ref{tab1} the commands are fairly simple to be understood. This simple implementation saves a great amount of time for the programmers to extend or debug the code.
+By using BTs in the development of our AI, we can create flexible, modular, and easy-to-maintain decision-making algorithms that can handle the complexity and variability of the games. The hierarchical structure of the BT also allows for a high degree of customization and adaptability, making it easier for us to adjust our strategy based on the specific conditions of each game.
 
 \subsection{Analyzing}
 With the tools and designs which were introduced above, it is now possible to demonstrate different features of this project. Below, we will describe the analyzing process in the AI with an example. In the example the goal is to find the best spot in order for a robot to perform a one-touch kick\footnote{A one-touch kick is a robots action where a ball is kicked immediately it touches the front of the robot.}.
