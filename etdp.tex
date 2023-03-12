@@ -208,11 +208,18 @@ This year we started using several third-party libraries for parts of our softwa
 \subsubsection{Improved debugging}
 One of the main weaknesses of our software in the previous competition was the lack of understanding of why the software and robots were behaving the way they were and what might be causing the problems. We knew that by providing more detailed and informative logs, we could gain a better understanding, which could lead to faster and more effective debugging and troubleshooting.
 
-\indent This year, we improved our logging system with an extensible system that can output to the command line, to a file, and over the network. This allows us to later analyze any part of the runtime to better understand the behavior of the system and narrow down the problem to a specific point in time.
+This year, we improved our logging system with an extensible system that can output to the command line, to a file, and over the network. This allows us to later analyze any part of the runtime to better understand the behavior of the system and narrow down the problem to a specific point in time.
 
-\indent We have also expanded the use of our visualization GUI. Having a graphical representation of the internals of different algorithms, as well as real-time sensory data from the robots, helps us better understand how different parts of the software work and make more informed decisions about how to improve the robots' performance and troubleshoot problems. The GUI also provides a more intuitive and user-friendly way to interact with the software and make configuration changes.
+We have also expanded the use of our visualization GUI. Having a graphical representation of the internals of different algorithms, as well as real-time sensory data from the robots, helps us better understand how different parts of the software work and make more informed decisions about how to improve the robots' performance and troubleshoot problems. The GUI also provides a more intuitive and user-friendly way to interact with the software and make configuration changes. Fig~\ref{fig_visualizer} shows an example of visualizing the internals of our ERRT path planning.
 
-\indent Visualization data is received over the network and can be sent from any node in the system, including the tracker, the soccer ball, and even the robots' embedded firmware.
+\begin{figure}
+    \includegraphics[width=\textwidth]{images/visual1.png}
+    \caption{A demonstration of the ERRT path plan in the visualization GUI.}
+    \label{fig_visualizer}
+\end{figure}
+
+The GUI is implemented in Python and receives the visualization data over the network. This means that it can be run on any computer in the same network and receive the data from any node in the system, including the tracker, the soccer ball, and even the robots' embedded firmware.
+
 
 \subsection{Improving readability}
 
@@ -296,22 +303,6 @@ Table~\ref{tab1} shows a sample group of commands which can be used in every sta
 \end{table}
 
 As shown in Table~\ref{tab1} the commands are fairly simple to be understood. This simple implementation saves a great amount of time for the programmers to extend or debug the code.
-
-\subsection{Debugging}
-Another experience with the previous AI software was the process of debugging the algorithms and, in general, the code itself. To overcome this problem, a logging protocol has been implemented which defines the messages that are sent from the AI software while operating. Using that protocol, whenever a computer is running the AI software while connected to the network, any other computer in the same network can run a logging software and monitor the AI software's parameters including not just the simple inputs from the vision, but also the state, predictions of the algorithms and et al. Fig~\ref{fig_visualizer} shows the graphical visualizer which monitors and records the parameters in the AI software. The visualizer is implement in python while the AI is written in C++ as mentioned before.
-
-\begin{figure}
-\includegraphics[width=\textwidth]{images/visual1.png}
-\caption{A demonstration of the ERRT path plan in the graphical visualizer.} \label{fig_visualizer}
-\end{figure}
-
-Fig~\ref{fig1_plotter} shows a simple plotter which  visualizes the changes in the speed and commanded velocity of a single robot. This logging tool is also written in python.
-
-\begin{figure}
-\centering
-\includegraphics[width=0.8\textwidth]{images/plotter.jpg}
-\caption{An example logging program compatible with the new AI software.} \label{fig1_plotter}
-\end{figure}
 
 \subsection{Analyzing}
 With the tools and designs which were introduced above, it is now possible to demonstrate different features of this project. Below, we will describe the analyzing process in the AI with an example. In the example the goal is to find the best spot in order for a robot to perform a one-touch kick\footnote{A one-touch kick is a robots action where a ball is kicked immediately it touches the front of the robot.}.
