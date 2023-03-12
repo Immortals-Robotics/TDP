@@ -267,6 +267,13 @@ We have also added both text-based and graphical loggers to our AI system to imp
 Throughout the development process, we focused on making our AI software as open and flexible as possible, to allow for easy implementation of new and innovative ideas. We also tested and debugged our software extensively, to ensure that it performs reliably and effectively in different game situations.
 
 %%%%%%%%%%%
+
+\subsection{Improving extensibility}
+Our current AI is based on finite-state machines (FSMs)~\cite{ref_ETDP2020}. While this structure made it easier to decompose robot behavior into distinct states, it made it difficult to reuse states and increased the number of transitions exponentially. To overcome these problems, we switched to Behavior Trees (BT) this year.
+
+\subsubsection{Behavior trees}
+Behavior Trees (BT) are hierarchical structures composed of nodes representing actions, conditions, or other behaviors, and their connections define the order in which those behaviors should be executed. BT can be used to develop AI for soccer-playing robots by providing a framework for creating complex decision-making algorithms that can handle multiple goals and constraints. 
+
 \subsection{Finite-State Machine} 
 After a few years of experience in the Small Size League as a software designer the key idea that every team is looking to implement is to make the robots to take the correct action at the exact time and condition. If the actions are performed correctly, the robots will accomplish their task which is scoring a goal or preventing the opponent from scoring. Unfortunately, there are many conditions that can happen in a match and each one has its own set of solutions these solutions are the sequence of commands which are given to a set of robots. For the software designer it may be hard to implement the solutions with a group of \textit{IF} conditions and no special structures.
 
@@ -278,10 +285,10 @@ Table~\ref{tab1} shows a sample group of commands which can be used in every sta
 
 \begin{table}[H]
 \footnotesize
-\caption{Example commands which can be used in every state.}\label{tab1}
+\caption{Example of low-level behaviors.}\label{tab1}
 \begin{tabular}{|p{7.5cm}|p{6cm}|}
 \hline
-\bf{Function} &  \bf{Explanation} \\
+\bf{Behavior} &  \bf{Explanation} \\
 \hline
 {\itshape Navigate2Point(robot, destination, maxSpeed)} & Navigate the robot to a destination.\\
 {\itshape ERRTNavigate2Point(robot, destination, maxSpeed)} & Navigate the robot while avoiding obstacles.\\
