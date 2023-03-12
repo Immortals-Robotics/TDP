@@ -274,8 +274,6 @@ Our current AI is based on finite-state machines (FSMs)~\cite{ref_ETDP2020}. Whi
 \subsubsection{Behavior trees}
 Behavior Trees (BT) are hierarchical structures composed of nodes representing actions, conditions, or other behaviors, and their connections define the order in which those behaviors should be executed. BT can be used to develop AI for soccer-playing robots by providing a framework for creating complex decision-making algorithms that can handle multiple goals and constraints.
 
-Table~\ref{tab:low-level-behaviors} shows the low-level behaviors that can be used as building blocks to create more complex behaviors. They are self-contained and easy to understand, so they can be developed and tested once, which is much less time-consuming than maintaining complex and interconnected systems developed together.
-
 \begin{table}[H]
     \footnotesize
     \caption{Example of low-level behaviors.}
@@ -297,6 +295,15 @@ Table~\ref{tab:low-level-behaviors} shows the low-level behaviors that can be us
         \hline
     \end{tabular}
 \end{table}
+
+Table~\ref{tab:low-level-behaviors} shows the low-level behaviors that can be used as building blocks to create more complex behaviors as shown in Fig. \ref{fig:bt-move}. They are self-contained and easy to understand, so they can be developed and tested once, which is much less time-consuming than maintaining complex and interconnected systems developed together.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/bt-move.png}
+	\caption{A sample Behavior Tree for moving to a point}
+	\label{fig:bt-move}
+\end{figure}
 
 By using BTs in the development of our AI, we can create flexible, modular, and easy-to-maintain decision-making algorithms that can handle the complexity and variability of the games. The hierarchical structure of the BT also allows for a high degree of customization and adaptability, making it easier for us to adjust our strategy based on the specific conditions of each game.
 
