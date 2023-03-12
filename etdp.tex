@@ -176,7 +176,7 @@ This year the main focuses are to make our software:
 \end{enumerate}
 In the following sections, we will describe the efforts made to reach these goals.
 
-\subsection{Improving robustness}
+\subsection{Robustness}
 
 \subsubsection{Continuous integration}
 This year, we created a continuous integration (CI) system based on GitHub workflows. It builds the software, performs style checks, and runs automated unit tests, and optionally publishes the result as a release to GitHub. This is an essential part of our development process, as it provides several important benefits that contribute to the quality and reliability of our software.
@@ -224,7 +224,7 @@ We have also expanded the use of our visualization GUI. Having a graphical repre
 The GUI is implemented in Python and receives the visualization data over the network. This means that it can be run on any computer in the same network and receive the data from any node in the system, including the tracker, the soccer ball, and even the robots' embedded firmware.
 
 
-\subsection{Improving readability}
+\subsection{Readability}
 
 \subsubsection{Architecture}
 Our current software is a single monolithic application that handles world state estimation, AI, and robot motion planning. This has the advantage of allowing us to easily change the flow of data between different parts. But it forces us to implement everything in C++ to produce a single application that runs on a single machine. Another side effect of such a monolithic design was that it encouraged more coupling between the soccer and vision parts of the software, making it harder to make changes to either.
@@ -249,7 +249,7 @@ As a first step in implementing the coding standard, we have begun to move the c
 
 We are also in the process of making the code base warning-free and treating the new warnings as bugs. These warnings are issued by the compiler when it detects potential problems in the code that could lead to bugs or undefined behavior. Treating them as errors force developers to address them and fix potential problems early in the development process, which can help prevent the accumulation of technical debt and reduce the risk of introducing bugs later. Some of these warnings are based on the C++ Core Guidelines \cite{ref_cppcoreguidelines}, which should be used in most C++ code to avoid common pitfalls seen in other projects.
 
-\subsection{Improving extensibility}
+\subsection{Extensibility}
 
 \subsubsection{Behavior trees}
 Our current AI is based on finite-state machines (FSMs) \cite{ref_ETDP2020}. While this structure made it easier to decompose robot behavior into distinct states, it made it difficult to reuse states and increased the number of transitions exponentially. 
