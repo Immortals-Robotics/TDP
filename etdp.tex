@@ -173,6 +173,8 @@ This year we started using several third-party libraries for parts of our softwa
 
 \indent They also often come with a broader set of features that have detailed documentation, making them easier to integrate and use. This allows developers to focus on implementing the core logic without worrying about the underlying infrastructure. This results in more readable code that is less prone to bugs.
 
+\indent To make it even easier to use other libraries, we started using a C++ dependency manager, \textbf{\textit{vcpkg}}~\cite{ref_3rd-party_vcpkg}. This simplifies the installation and maintenance of third-party libraries, ensures compatibility between them, and improves reproducibility on different local machines and in the CI pipeline.
+
 \subsection{Architecture}
 
 Our current software is a single application that handles world state estimation, AI, and motion planning of the robots. This has the added benefit of being able to change the data flow between various parts quite easily. But forces us to implement everything in C++ to produce one single application that runs on one machine. Another side effect of such a monolithic design was that it encouraged more coupling between the soccer and the vision parts of the software and as a result made it harder to make changes to each of them.\\
@@ -486,6 +488,9 @@ Monajjemi, Valiallah (Mani), Ali Koochakzadeh, and Saeed Shiry Ghidary. "grSim â
 % 3rd-party libraries
 \bibitem{ref_3rd-party_gtest}
 GoogleTest, Google Testing and Mocking Framework \url{https://github.com/google/googletest}
+
+\bibitem{ref_3rd-party_vcpkg}
+vcpkg, cross-platform C/C++ dependency manager from Microsoft \url{https://vcpkg.io/}
 
 \bibitem{ref_3rd-party_asio}
 Asio, cross-platform C++ library for network and low-level I/O programming \url{https://think-async.com/Asio/}
