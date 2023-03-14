@@ -103,7 +103,8 @@ In 2018, changes were made to the electronics to modernize the designs and repla
 The new architecture can be seen in Fig. \ref{fig:electronics-architecture}. It should be mentioned that at the time of this writing, the design work is still ongoing and we don't have the final boards manufactured. We hope to equip at least half of our robots with the new parts in RoboCup 2023.
 
 \subsection{Main board}
-The current main board used by the team was designed in 2010 and has been used in its original form ever since, except for minor changes. It uses a Xilinx Spartan3 FPGA as the main and only processor. A soft processor, TASKING TSK3000, is used inside the FPGA to handle more sequential logic, while the FPGA itself is used to read encoders, drive BLDC motors, drive the boost converter, etc.
+The current main board used by the team was designed in 2010 and has been used in its original form ever since, except for minor changes. It uses a Xilinx Spartan3 FPGA as the main processor. A soft processor, TASKING TSK3000, is used inside the FPGA to handle more sequential logic, while the FPGA itself is used to read encoders, drive BLDC motors, drive the boost converter, etc. We later added an nRF52832 SoC to handle wireless communication, control the I/O switches and LEDs, and read the current sensors \cite{ref_ETDP2018}.
+
 While this design is flexible and comparatively cheap to produce, it has shown its age in recent years. The main drawbacks are:
 \begin{enumerate}
     \item[$\bullet$] The TSK3000 runs at about 36 MHz and is far too limited in its current configuration to develop more sophisticated local processing and motion planning. Some effort has been made in the past to move parts of the performance-critical C code to the logic gates, but this would make the implementation more difficult to modify and extend. On the other hand, the debugging workflow was too restrictive, and any changes to the code required a complete rebuild of the FPGA project. All of these factors resulted in the team using pretty much the same framework for several years without being able to make major changes.
@@ -156,7 +157,7 @@ In previous years, we used a boost converter driven by the FPGA from the main bo
 
 This year we redesigned the kicking board (Fig. \ref{fig:mikona}) with the following features:
 \begin{enumerate}
-    \item[$\bullet$] A dedicated LT3570 flyback capacitor charger IC is used. This simplifies the design while improving performance and reliability. We use the DA2034 transformer and the BSC109N10NS3G MOSFET for this circuit.
+    \item[$\bullet$] Like other teams in the league \cite{ref_tigers_etdp_2020}, it uses a dedicated LT3570 flyback capacitor charger IC.This simplifies the design while improving performance and reliability. We use the DA2034 transformer and the BSC109N10NS3G MOSFET for this circuit.
     \item[$\bullet$] A STM32F042G6Ux MCU is used on the board to handle the CAN protocol to the main board and to control the charger IC, variable resistors, and discharge IGBTs.
     \item[$\bullet$] A high-power resistor network consisting of three 2.4K 3W resistors is added to the board to discharge the capacitors when needed without using the kicker magnets. The STN3N40K3 MOSFET driven by a ZXGD3009E6 is used to control the discharge.
     \item[$\bullet$] Two IGB50N60T IGBTs driven by a single IX4427MTR are used to discharge the capacitors to the kicking magnets.
@@ -335,6 +336,13 @@ Immortals 2020 Extended Team Description Paper, \url{https://ssl.robocup.org/wp-
 
 \bibitem{ref_ETDP2019}
 Immortals 2019 Team Description Paper, \url{https://ssl.robocup.org/wp-content/uploads/2019/03/2019\_ETDP\_Immortals.pdf}.
+
+\bibitem{ref_ETDP2018}
+O. Najafi Koopai, M.A. Ghasemieh, M. Khanloghi. Immortals 2018 Team Description Paper.
+
+\bibitem{ref_tigers_etdp_2020}
+Ryll, Andre and Jut, Sabolc. TIGERS Extended Team Description for RoboCup 2020
+
 
 \bibitem{ref_github}
 Immortals Open Source Project. \url{https://github.com/Immortals-Robotics}.
