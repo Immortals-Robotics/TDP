@@ -5,6 +5,7 @@
 \documentclass[runningheads]{llncs}
 %
 \usepackage{subcaption}
+\captionsetup{compatibility=false}
 \usepackage{graphicx}
 \usepackage{placeins}
 \usepackage{float}
@@ -252,10 +253,13 @@ We are also in the process of making the code base warning-free and treating the
 
 \subsection{Extensibility}
 
-\subsubsection{Behavior trees}
-Our current AI is based on finite-state machines (FSMs) \cite{ref_ETDP2020}. While this structure made it easier to decompose robot behavior into distinct states, it made it difficult to reuse states and increased the number of transitions exponentially. 
-% explain the issues with FSMs in more detail here
+\subsubsection{Moving Beyond Finite-State Machines}
+Our current AI is based on finite-state machines (FSMs) \cite{ref_ETDP2020}. While this structure made it easier to decompose robot behavior into distinct states and implement every event as a transition between two states, it made it difficult to reuse states and increased the number of transitions exponentially. It also became really challenging to debug or extend the FSM to handle new behaviors and implement fallback tactics.
 
+When implementing each state of an FSM, the developer has to consider the other states and how they are transitioned to the current state and how it will transition to the next state. For a state machine consisting of only a few states, this can be more easily handled. However, considering the number of robots and the various tactics that the opponent can use, it is required by the developer to implement a high number of states to handle every possible situation in the FSM.
+
+
+\subsubsection{Behavior trees}
 To overcome these problems, we switched to Behavior Trees (BT) this year. BTs are hierarchical structures composed of nodes representing actions, conditions, or other behaviors, and their connections define the order in which those behaviors should be executed. BT can be used to develop AI for soccer-playing robots by providing a framework for creating complex decision-making algorithms that can handle multiple goals and constraints.
 
 % clean-up this table with actual behaviors
