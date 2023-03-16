@@ -271,16 +271,22 @@ To overcome these problems, we switched to Behavior Trees (BT) this year. BTs ar
         \hline
         \bf{Behavior} &  \bf{Explanation} \\
         \hline
-        {\itshape Navigate2Point(destination, maxSpeed)} & Navigate the robot to a destination.\\
-        {\itshape ERRTNavigate2Point(destination, maxSpeed)} & Navigate the robot while avoiding obstacles.\\
-        {\itshape Mark(oppRobot)} & Position between the goal and an opponent robot.\\
-        {\itshape FetchBall(point)} & Navigate the robot to a position on line which the ball is moving on and most close to the \textit{point}.\\
-        {\itshape OneTouchDirect(point, target)} & Navigate the robot to a position on line which the ball is moving on and most close to the \textit{point}. Kick the ball towards the \textit{target}.\\
-        {\itshape CircleBall(radius, angle)} & Position robot on a circle around the ball in a specific angle.\\
-        {\itshape Face(point)} & Face the robot towards a point.\\
-        {\itshape Chip(power)} & Robot should perform a chip kick whenever the ball was intercepted.\\
-        {\itshape Direct(power)} & Robot should perform a direct kick whenever the ball was intercepted.\\
-        {\itshape CircleKickBall(target, power)} & Position robot on a circle around the ball and towards the \textit{target}, then kick the ball.\\
+        {\itshape Navigate(destination, orientation, profile)} & Navigate the robot to \textit{destination} with the provided velocity \textit{profile} while avoiding obstacles.\\
+        {\itshape Chip(power)} & Request a chip kick with the passed \textit{power} to be executed when the ball is detected.\\
+        \\
+        {\itshape Direct(power)} & Request a direct kick with the passed \textit{power} to be executed when the ball is detected.\\
+        \hline
+        {\itshape Obstacles(situation)} & Returns obstacles for the robot for a given \textit{situation} in the game.\\
+        \\
+        {\itshape Face(point)} & Returns an orientation so that the robot faces the passed \textit{point}.\\
+        \\
+        {\itshape Mark(opponent)} & Returns the defensive marking position for the given \textit{opponent} that is either between our goal and the \textit{opponent}, or the ball and the \textit{opponent}.\\
+        \\
+        {\itshape FetchBall(point)} & Returns the position on line which the ball is moving on and most close to the \textit{point}, and an orientation to fetch the ball.\\
+        \\
+        {\itshape OneTouch(point, target)} & Returns the position on line which the ball is moving on and most close to the \textit{point}, and an orientation to kick the ball towards the \textit{target}.\\
+        \\
+        {\itshape CircleBall(radius, angle)} & Returns a position on a circle around the ball at a specific angle.\\
         \hline
     \end{tabular}
 \end{table}
