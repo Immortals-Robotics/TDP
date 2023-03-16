@@ -49,13 +49,13 @@ This paper describes the recent work that has been done by the Immortals Robotic
 %
 %
 \section{Introduction}
-The Immortals Small Size League team was founded in 2008 and participated for the first time in RoboCup 2009 in Graz. The team consists of computer and electrical engineers and currently focuses on the Small Size League.
+The Immortals Small Size League team was founded in 2008 and participated for the first time in RoboCup 2009 in Graz, and later won several awards, including 2nd place in RoboCup 2011 in Istanbul, and 1st place in RoboCup Asia Pacific 2018 in Kish. The team currently consists of computer and electrical engineers.
 
-There have been some changes in the mechanics and electronics of our robots (Fig. \ref{fig:std_robot}) in the last few years. The process can be seen in the previous TDPs and ETDPs \cite{ref_ETDP2019}, \cite{ref_ETDP2020}.
+There have been some changes to the mechanics and electronics of our robots in the last few years. The process can be seen in the previous TDPs and ETDPs \cite{ref_ETDP2019}, \cite{ref_ETDP2020}.
  
-This year, the team focused on modernizing the electronics and software architecture. Efforts were also made to resolve issues observed during recent competitions, including RoboCup 2018 in Montréal. In addition to the current robot, there is a 3D-printed prototype robot that was presented in 2018 and has been improved and tested since then. The goal is to achieve a modular, flexible, and reliable platform that would reduce the maintenance and future development costs of the robots. 
+This year, the team focused on modernizing the electronics and software architecture. Efforts were also made to address issues observed during recent competitions, including RoboCup 2018 in Montréal. In addition to the standard robot (Fig. \ref{fig:robot_std}), there is a 3D-printed prototype robot (Fig. \ref{fig:robot_printed}), which was presented in 2018 and has been improved and tested since then. The goal is to achieve a modular, flexible, and reliable platform that would reduce the maintenance and future development costs of the robots.
 
-It is worth mentioning that we will publish our designs and software on our GitHub page \cite{ref_github} shortly after the competition.
+It is worth mentioning that we will be publishing our designs and software on our GitHub page \cite{ref_github} shortly after the competition is over.
 
 \begin{figure}
     \centering
@@ -73,7 +73,7 @@ It is worth mentioning that we will publish our designs and software on our GitH
         \label{fig:robot_printed}
     \end{subfigure}
     \caption{Immortals current robots.}
-    \label{fig:std_robot}
+    \label{fig:robots}
 \end{figure}
 
 \section {Mechanics}
@@ -85,7 +85,7 @@ The manufacturing companies are consulted on the technical drawings of the revis
 
 \section{Electronics}
 
-In 2018, changes were made to the electronics to modernize the designs and replace the old parts with their new counterparts. We tested them during RoboCup 2018, and the results show a solid improvement in reliability while reducing production costs. Currently, all robots use these circuits. The reader is referred to this team's previous year's TDP [1] for more details on the main circuit.\\
+Our current electronics were designed in 2010 and have been in use since. In 2018, changes were made to them to modernize the designs and replace the old parts with their new counterparts \cite{ref_ETDP2018}. We tested them during RoboCup 2018, and the results show a solid improvement in reliability while reducing production costs. Currently, all robots use this design.\\
 \indent This year, we're planning to redesign all of our electronics from scratch to reflect the latest developments in the league and also in the industry. The main goals are:
 
 \begin{enumerate}
@@ -104,7 +104,7 @@ In 2018, changes were made to the electronics to modernize the designs and repla
 The new architecture can be seen in Fig. \ref{fig:electronics-architecture}. It should be mentioned that at the time of this writing, the design work is still ongoing and we don't have the final boards manufactured. We hope to equip at least half of our robots with the new parts in RoboCup 2023.
 
 \subsection{Main board}
-The current main board used by the team was designed in 2010 and has been used in its original form ever since, except for minor changes. It uses a Xilinx Spartan3 FPGA as the main processor. A soft processor, TASKING TSK3000, is used inside the FPGA to handle more sequential logic, while the FPGA itself is used to read encoders, drive BLDC motors, drive the boost converter, etc. We later added an nRF52832 SoC to handle wireless communication, control the I/O switches and LEDs, and read the current sensors \cite{ref_ETDP2018}.
+The current main board used by the team was designed in 2010 and has been used in its original form ever since, except for minor changes. It uses a Xilinx Spartan3 FPGA as the main processor. A soft processor, TASKING TSK3000, is used inside the FPGA to handle more sequential logic, while the FPGA itself is used to read encoders, drive brushless DC (BLDC) motors, drive the boost converter, etc. We later added an nRF52832 SoC to handle wireless communication, control the I/O switches and LEDs, and read the current sensors \cite{ref_ETDP2018}.
 
 While this design is flexible and comparatively cheap to produce, it has shown its age in recent years. The main drawbacks are:
 \begin{enumerate}
@@ -128,7 +128,7 @@ In past competitions, the motor control circuitry was one of the most common poi
 This year, we decided to design separate modular motor driver boards that will be placed on the main board for each motor. This will greatly improve our ability to repair robots if one of the drivers fails. It would also make it easier to develop the main board and the motor drivers separately.\\
 This new driving board is based on:
 \begin{enumerate}
-    \item[$\bullet$] A dedicated brushless DC (BLDC) motor driver IC, TMC4671. It implements Field Oriented Control (FOC) for BLDC motors and includes various control methods. This offloads the local motor control functionality from the main processor to dedicated hardware, which is more reliable in terms of latency. It has an SPI interface to receive both configuration and commands and to send back sensor data including speed and position.
+    \item[$\bullet$] A dedicated BLDC motor driver IC, TMC4671. It implements Field Oriented Control (FOC) for BLDC motors and includes various control methods. This offloads the local motor control functionality from the main processor to dedicated hardware, which is more reliable in terms of latency. It has an SPI interface to receive both configuration and commands and to send back sensor data including speed and position.
     \item[$\bullet$] A power MOSFET driver IC, TMC6200. It drives the MOSFETs and senses the motor currents needed for the FOC algorithm. It also includes a fault detection mechanism.
     \item[$\bullet$] A small Arm processor, STM32F042G6Ux, acts as a CAN client link to the main processor. It communicates with both the TMC4671 and the TMC6200 via SPI and also reads the current sensor.
 \end{enumerate}
@@ -166,7 +166,7 @@ This year we redesigned the kicking board (Fig. \ref{fig:mikona}) with the follo
 \end{enumerate}
 
 \section{Software}
-Our current software stack was developed in C++ in 2009 and has seen several additions and improvements over the years. This has resulted in a high performance and robust software but at the same time a difficult-to-maintain code base that is too fragile for the new changes.
+Our current software stack was developed in C++ in 2010 and has seen several additions and improvements over the years. This has resulted in a high performance and robust software but at the same time a difficult-to-maintain code base that is too fragile for the new changes.
 
 This year the main focuses are to make our software:
 
@@ -181,17 +181,18 @@ In the following sections, we will describe the efforts made to reach these goal
 \subsection{Robustness}
 
 \subsubsection{Continuous integration}
-This year, we created a continuous integration (CI) system based on GitHub workflows. It builds the software, performs style checks, and runs automated unit tests, and optionally publishes the result as a release to GitHub. This is an essential part of our development process, as it provides several important benefits that contribute to the quality and reliability of our software.
+\label{section:software_ci}
+This year, we created a continuous integration (CI) system based on GitHub workflows. It builds the software, performs style checks, runs automated unit tests, and optionally publishes the result as a release to GitHub. This is an essential part of our development process, as it provides several important benefits that contribute to the quality and reliability of our software.
 
-\indent It helps ensure that the software can be built across environments without problems. This is particularly important as we currently target \textbf{Windows} (\textit{MSVC} and \textit{Clang}), \textbf{Ubuntu} (\textit{GCC} and \textit{Clang}), and \textbf{macOS} (\textit{Clang}) with a specific configuration of library dependencies. The system uses the same CMake presets that we use locally to ensure that the software is built in a consistent and reproducible way.
+\indent It helps ensure that the software can be built across environments without problems. This is particularly important as we currently target \textbf{Windows} (\textit{MSVC} and \textit{Clang}), \textbf{Ubuntu} (\textit{GCC} and \textit{Clang}), and \textbf{macOS} (\textit{Clang}) with a collection of library dependencies as will be described in \ref{section:software_3rdparty}. The system uses the same CMake presets that we use locally to ensure that the software is built in a consistent and reproducible way.
 
-\indent It also performs style checks using clang-format and clang-tidy with the same configurations we use in our local integrated development environments (IDEs). This can help enforce a consistent coding style across the codebase, which can make the code easier to read and maintain, and can also help prevent problems that can arise from inconsistent code formatting, such as merge conflicts.
+\indent It also performs style checks described in \ref{section:software_coding_standard} using clang-format and clang-tidy with the same configurations we use in our local integrated development environments (IDEs). This can help enforce a consistent coding style across the codebase, which can make the code easier to read and maintain.
 
-\indent Another important aspect of the pipeline is the ability to run automated unit tests developed with \textbf{\textit{GoogleTest}} \cite{ref_3rd-party_gtest}. This can help identify problems and regressions in the software early in the development process. This can help prevent problems from being introduced into the software, and can help ensure that the software meets the project's requirements and specifications. At the time of writing, the code coverage of these tests is not adequate and we plan to improve this over time. We also plan to introduce more automated tests other than unit tests in the future, such as testing our tracker with known input and output data.
+\indent Another important aspect of the pipeline is the ability to run automated unit tests developed with \textbf{\textit{GoogleTest}} \cite{ref_3rd-party_gtest}. This can help identify problems and regressions in the software early in the development process. At the time of writing, the code coverage of these tests is not adequate and we plan to improve this over time. We also plan to introduce other ways of automated testing other than unit tests in the future, such as testing our tracker with known input and output data, and testing our defensive marking algorithm with situations from the past competitions.
 
-\indent We also have an automatic release submission pipeline when a tag starting with \textbf{\textit{v}} is pushed to our repositories. This automatically packages the resulting artifacts, creates a release on GitHub, and publishes the artifact along with the source code and data used to build it. Even this TDP was created using this mechanism.
+\indent We also have an automatic release submission pipeline when a tag starting with \textbf{\textit{v}}, e.g. \textit{v.1.0.0} is pushed to our repositories. This automatically packages the resulting artifacts, creates a release on GitHub, and publishes the artifact along with the source code and data used to build it. Even this TDP was created using this mechanism.
 
-\subsubsection{Third-party libraries}
+\subsubsection{Third-party libraries} \label{section:software_3rdparty}
 This year we started using several third-party libraries for parts of our software:
 \begin{enumerate}
     \item[$\bullet$] \textbf{\textit{BehaviorTree.CPP}} \cite{ref_3rd-party_btcpp} for Behavior Trees
@@ -204,18 +205,18 @@ This year we started using several third-party libraries for parts of our softwa
 
 \indent Using these libraries over our custom solutions can help improve code quality, both in terms of robustness and ease of use.
 
-\indent These open-source projects have a proven track record and have been extensively reviewed and stabilized by experts over time. This means they are more reliable than custom-built solutions and better suited to handle common tasks with reasonable performance and reliability.
+\indent These open-source projects have a proven track record and have been extensively reviewed and stabilized over time. This means they are more reliable than custom-built solutions and better suited to handle common tasks with reasonable performance and reliability.
 
-\indent They also often come with a broader set of features that have detailed documentation, making them easier to integrate and use. This allows developers to focus on implementing the core logic without worrying about the underlying infrastructure. This results in more readable code that is less prone to bugs.
+\indent They also often come with a broader set of features that have detailed documentation, making them easier to integrate and use. This allows us to focus on implementing the core logic without worrying about the underlying infrastructure. This results in more readable code that is less prone to bugs.
 
-\indent To make it even easier to use other libraries, we started using a C++ dependency manager, \textbf{\textit{vcpkg}} \cite{ref_3rd-party_vcpkg}. This simplifies the installation and maintenance of third-party libraries, ensures compatibility between them, and improves reproducibility on different local machines and in the CI pipeline.
+\indent To make it easier to integrate other libraries, we started using a C++ dependency manager, \textbf{\textit{vcpkg}} \cite{ref_3rd-party_vcpkg}. This simplifies the installation and maintenance of third-party libraries, ensures compatibility between them, and improves reproducibility on different local machines and in the CI pipeline.
 
 \subsubsection{Improved debugging}
-One of the main weaknesses of our software in the previous competition was the lack of understanding of why the software and robots were behaving the way they were and what might be causing the problems. We knew that by providing more detailed and informative logs, we could gain a better understanding, which could lead to faster and more effective debugging and troubleshooting.
+One of the main weaknesses of our software in the previous competition was the lack of understanding of why the software and robots were behaving the way they were and what might be causing the problems we were seeing. We knew that by providing more detailed and informative logs, we could gain a better understanding, which could lead to faster and more effective debugging and troubleshooting.
 
-This year, we improved our logging system with an extensible system that can output to the command line, to a file, and over the network. This allows us to later analyze any part of the runtime to better understand the behavior of the system and narrow down the problem to a specific point in time.
+This year, we improved our logging system with an extensible system that can output to multiple outputs, including the standard output, file, and over the network. This allows us to record the logs and later analyze any part of the runtime to better understand the behavior of the system and narrow down the problem to a specific point in time.
 
-We have also expanded the use of our visualization GUI. Having a graphical representation of the internals of different algorithms, as well as real-time sensory data from the robots, helps us better understand how different parts of the software work and make more informed decisions about how to improve the robots' performance and troubleshoot problems. The GUI also provides a more intuitive and user-friendly way to interact with the software and make configuration changes. Fig. \ref{fig_visualizer} shows an example of visualizing the internals of our ERRT path planning.
+We have also expanded the use of our visualization GUI. Having a graphical representation of the internals of different algorithms, as well as real-time sensory data from the robots, helps us better understand how different parts of the software work and make more informed decisions about how to improve the robots' performance and troubleshoot problems. The GUI also provides a more intuitive and user-friendly way to interact with the software and make configuration changes. Fig. \ref{fig_visualizer} shows an example of visualizing the internals of our path planning.
 
 \begin{figure}
     \includegraphics[width=\textwidth]{images/visual1.png}
@@ -243,51 +244,51 @@ The goal this year is to refactor the code base into separate parts that are con
 At the time of writing, these efforts are still ongoing, but we are confident that we will be able to transition to the new stack in time for RoboCup 2023.
 
 \subsubsection{Coding standards}
-One of the most important observations in the past has been the complexity of the C++ language when used incorrectly. This is especially important to us because the code is typically developed by students who do not have extensive experience with the language.
+\label{section:software_coding_standard}
+One of the most important observations in the past has been the complexity of the C++ language and the large number of problems that can arise when it is used incorrectly. This is especially important to us because the code is typically developed by students who do not have extensive experience with the language.
 
-To address this issue, we have chosen a coding standard \cite{ref_cppbestpractices} and agreed on a set of style and naming conventions to be used throughout the code base. These will improve readability and maintainability, and promote consistency. These style checks are implemented as \textbf{\textit{clang-tidy}} and \textbf{\textit{clang-format}} configurations which can be used both locally within the IDEs, and as an automated gate in our CI pipeline when creating a pull-request to the main branch.
+To address this issue, we have chosen a coding standard \cite{ref_cppbestpractices} and agreed on a set of style and naming conventions to be used throughout the code base. These will improve readability and maintainability, and promote consistency. These style checks are implemented as \textbf{\textit{clang-tidy}} and \textbf{\textit{clang-format}} configurations which can be used both locally within the IDEs, and as an automated gate in our CI pipeline as described in \ref{section:software_ci} when creating a pull-request to the main branch.
 
-As a first step in implementing the coding standard, we have begun to move the code base to a more modern C++ revision (C++20 at the time of this writing). This means moving away from the use of raw pointers in favor of smart pointers. This can help simplify memory management, improve code clarity and maintainability, and reduce the risk of errors related to object ownership and lifetime.
+As a first step in implementing the coding standard, we have begun to move the code base to a more modern C++ revision (C++20 at the time of this writing). It includes as an example moving away from the use of raw pointers in favor of smart pointers. This can help simplify memory management, improve code clarity and maintainability, and reduce the risk of errors related to object ownership and lifetime.
 
-We are also in the process of making the code base warning-free and treating the new warnings as bugs. These warnings are issued by the compiler when it detects potential problems in the code that could lead to bugs or undefined behavior. Treating them as errors force developers to address them and fix potential problems early in the development process, which can help prevent the accumulation of technical debt and reduce the risk of introducing bugs later. Some of these warnings are based on the C++ Core Guidelines \cite{ref_cppcoreguidelines}, which should be used in most C++ code to avoid common pitfalls seen in other projects.
+We are also in the process of making the code base warning-free and treating the new warnings as bugs. These warnings are issued by the compiler when it detects potential problems in the code that could lead to bugs or undefined behavior based on the C++ Core Guidelines \cite{ref_cppcoreguidelines} or other references. Treating them as errors force developers to address them and fix potential problems early in the development process, which can help prevent the accumulation of technical debt and reduce the risk of introducing bugs later.
 
 \subsection{Extensibility}
 
 \subsubsection{Moving Beyond Finite-State Machines}
 Our current AI is based on finite-state machines (FSMs) \cite{ref_ETDP2020}. While this structure made it easier to decompose robot behavior into distinct states and implement every event as a transition between two states, it made it difficult to reuse states and increased the number of transitions exponentially. It also became really challenging to debug or extend the FSM to handle new behaviors and implement fallback tactics.
 
-When implementing each state of an FSM, the developer has to consider the other states and how they are transitioned to the current state and how it will transition to the next state. For a state machine consisting of only a few states, this can be more easily handled. However, considering the number of robots and the various tactics that the opponent can use, it is required by the developer to implement a high number of states to handle every possible situation in the FSM.
+When implementing each state of an FSM, the developer has to consider the other states and how they are transitioned to the current state and how it will transition to the next state. For a state machine consisting of only a few states, this can be more easily handled. However, considering the number of robots and the various tactics that the opponent can use, it is required by the developer to implement a high number of states to handle every possible situation in the FSM. This can create significant challenges for the developer in implementing all of the states and their relationships.
 
 
 \subsubsection{Behavior trees}
 To overcome these problems, we switched to Behavior Trees (BT) this year. BTs are hierarchical structures composed of nodes representing actions, conditions, or other behaviors, and their connections define the order in which those behaviors should be executed. BT can be used to develop AI for soccer-playing robots by providing a framework for creating complex decision-making algorithms that can handle multiple goals and constraints.
 
-% clean-up this table with actual behaviors
-% add non-action nodes, such as finding mark opponents, finding suitable robots to execute the behavior, etc.
-\begin{table}[H]
+\begin{table}
     \centering
     \footnotesize
-    \caption{Example of low-level behaviors.}
+    \caption{Low-level behaviors.}
     \label{tab:low-level-behaviors}
-    \begin{tabular}{|p{0.5\textwidth}|p{6cm}|}
+    \begin{tabular}{|p{0.5\textwidth}|p{0.45\textwidth}|}
         \hline
-        \bf{Behavior} &  \bf{Explanation} \\
+        \bf{Behavior} & \bf{Description} \\
         \hline
-        {\itshape Navigate2Point(destination, maxSpeed)} & Navigate the robot to a destination.\\
-        {\itshape ERRTNavigate2Point(destination, maxSpeed)} & Navigate the robot while avoiding obstacles.\\
-        {\itshape Mark(oppRobot)} & Position between the goal and an opponent robot.\\
-        {\itshape FetchBall(point)} & Navigate the robot to a position on line which the ball is moving on and most close to the \textit{point}.\\
-        {\itshape OneTouchDirect(point, target)} & Navigate the robot to a position on line which the ball is moving on and most close to the \textit{point}. Kick the ball towards the \textit{target}.\\
-        {\itshape CircleBall(radius, angle)} & Position robot on a circle around the ball in a specific angle.\\
-        {\itshape Face(point)} & Face the robot towards a point.\\
-        {\itshape Chip(power)} & Robot should perform a chip kick whenever the ball was intercepted.\\
-        {\itshape Direct(power)} & Robot should perform a direct kick whenever the ball was intercepted.\\
-        {\itshape CircleKickBall(target, power)} & Position robot on a circle around the ball and towards the \textit{target}, then kick the ball.\\
+        {\itshape Navigate(destination, orientation, profile)} & Navigate the robot to \textit{destination} with the provided velocity \textit{profile} while avoiding obstacles.\\
+        {\itshape Chip(power)} & Request a chip kick with the passed \textit{power} to be executed when the ball is detected.\\
+        {\itshape Direct(power)} & Request a direct kick with the passed \textit{power} to be executed when the ball is detected.\\
+        \hline
+        {\itshape Obstacles(situation)} & Returns obstacles for the robot for a given \textit{situation} in the game.\\
+        {\itshape Face(point)} & Returns an orientation so that the robot faces the passed \textit{point}.\\
+        {\itshape Mark(opponent)} & Returns the defensive marking position for the given \textit{opponent} that is either between our goal and the \textit{opponent}, or the ball and the \textit{opponent}.\\
+        {\itshape FetchBall(point)} & Returns the position on line which the ball is moving on and most close to the \textit{point}, and an orientation to fetch the ball.\\
+        {\itshape OneTouch(point, target)} & Returns the position on line which the ball is moving on and most close to the \textit{point}, and an orientation to kick the ball towards the \textit{target}.\\
         \hline
     \end{tabular}
 \end{table}
 
-Table \ref{tab:low-level-behaviors} shows the low-level behaviors that can be used as building blocks to create more complex behaviors as shown in Fig. \ref{fig:bt-move}. They are self-contained and easy to understand, so they can be developed and tested once, which is much less time-consuming than maintaining complex and interconnected systems developed together.
+Table \ref{tab:low-level-behaviors} shows the low-level behaviors that can be used as building blocks to create more complex behaviors. They are self-contained and easy to understand, so they can be developed and tested once, which is much less time-consuming than maintaining complex and interconnected systems developed together.
+
+Fig. \ref{fig:bt-move} shows an example BT that is built upon the lower-level behaviors described earlier in table \ref{tab:low-level-behaviors}. Note that this tree is stored as an \textit{XML} file that the software can load and reload at runtime, without a need to recompile. This greatly improves the iteration times.
 
 \begin{figure}
 	\centering
@@ -301,7 +302,7 @@ By using BTs in the development of our AI, we can create flexible, modular, and 
 \subsubsection{Config system}
 Previously, all parameters were hard-coded into the C++ code. This made it time-consuming to change anything, resulting in unacceptably long iteration times. Using a config file instead makes it easier to maintain and update the values, as they can be changed in a central location instead of having to search for each instance of the hard-coded value. It also makes the code more flexible and reusable, since you can easily switch between different configurations without having to change the code itself. This also makes it easier to test different scenarios without restarting the system.
 
-This year we started using \textbf{\textit{toml}} \cite{ref_toml} as our configuration format, along with a \textbf{\textit{json schema}} \cite{ref_json-schema} that we generate based on our C++ config structure to validate the toml file in both text editors and as a CI step. This schema is also used by our GUI to create a persistent config editor with the correct types, names, and defaults, even in the absence of a config file. The system uses a layered architecture; multiple toml configs, both from disk files and from the network, are fed into the system, each with a priority field. The configuration system then returns a single compiled configuration that all nodes in the system can use (Fig. \ref{fig:software-architecture}) . The system can also prompt the nodes in the system to persist the received config.
+This year we started using \textbf{\textit{toml}} \cite{ref_toml} as our configuration format, along with a \textbf{\textit{json schema}} \cite{ref_json-schema} that we generate based on our C++ config structure to validate the toml file in both text editors and as a CI step. This schema is also used by our GUI to create a persistent config editor with the correct types, names, and defaults, even in the absence of a config file. The system uses a layered architecture; multiple toml configs, both from disk files and from the network, are fed into the system, each with a priority field. The configuration system then returns a single compiled configuration that all nodes in the system can use (Fig. \ref{fig:software-architecture}). The system can also prompt the nodes in the system to persist the received config.
 
 \subsubsection{Improving build time}
 One of the common pitfalls of any C++ code base is the time it takes to build the project. This problem became more apparent as our software grew in size and dependencies. Before doing any optimizations, it took about 15 minutes to do a complete rebuild on a modern desktop CPU with 6 physical and 12 logical processors.
@@ -315,19 +316,19 @@ As a first step, we enabled multi-threaded compilation with \textbf{\textit{/MP}
 	\label{fig:time-trace}
 \end{figure}
 
-We then used the \textit{-ftime-trace} flag with Clang to see where the time is spent during the build. As shown in the Fig. \ref{fig:time-trace}, most of the time is spent in the frontend, in this example about \%96 of it. Upon closer inspection, it is clear that this is caused by excessive use of include files, which the compiler frontend has to process multiple times.
+We then used the \textit{-ftime-trace} flag with Clang to see where the time is spent during the build. As shown in Fig. \ref{fig:time-trace}, most of the time is spent in the frontend, in this example about \%96 of it. Upon closer inspection, it is clear that this is caused by excessive use of include files, which the compiler frontend has to process multiple times.
 
-To solve this problem, we started using \textit{unity build}, so that the headers are processed once for a set of source files. This resulted in a massive reduction in build times. A full rebuild took about 20 seconds on the same machine. But touching a single source file still triggered compilation of a set of files, which is inefficient.
+To solve this problem, we started using \textit{unity build}, so that the headers are processed once for a set of source files. This resulted in a massive reduction in build times. A full rebuild took about 20 seconds on the same machine. But touching a single source file still triggered the compilation of a set of files, which is inefficient.
 
 The last step to improve build time was to use \textit{pre-compiled header} (PCH). All header files from the 3rd party libraries, and the common code used by both vision and soccer modules except the generated protobuf header files are pre-compiled. This is then used by the compiler when compiling the vision and soccer modules. This way, the time to do a full rebuild is almost the same as the unity build. But the time to build the modules when only a few source files are changed became about 2 seconds, which shows a reduction of about \%80 compared to the unity build.
 
-We currently use PCH locally, and unity build together with PCH for our CI pipeline.
+We currently use PCH locally, and unity builds together with PCH for our CI pipeline.
 
 \subsection{Competitiveness}
 As mentioned earlier, the main focus this year has been to improve the foundation of our code base to make it easier to build more competitive software on top of it. We expect to see more soccer-related development in the coming years. The following sections describe the work we expect to be done in time for RoboCup 2023.
 
 \subsubsection{Local processing on robots}
-Currently, we run all the behaviors in the main software on a computer, and then send the target commands in the form of global target velocity, orientation, and kick commands to the robots. The robot's local processor then performs sensor fusion on the orientation processed by vision and the local Inertial measurement unit (IMU). This greatly improves the quality of the predicted orientation.
+Currently, we run all the behaviors in the main software on a computer, and then send the target commands in the form of global target velocity, orientation, and kick commands to the robots. The robot's local processor then performs sensor fusion on the orientation processed by the vision and the local Inertial measurement unit (IMU). This greatly improves the quality of the predicted orientation.
 
 To extend this idea, we plan to do more sensor fusion on the robot. We will use the output of the four rotary encoders connected to the wheels, the output of the IMU, the proximity sensor array around the robot, and the filtered world state received from the tracker.
 
