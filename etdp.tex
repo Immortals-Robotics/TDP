@@ -260,38 +260,31 @@ Our current AI is based on finite-state machines (FSMs) \cite{ref_ETDP2020}. Whi
 
 To overcome these problems, we switched to Behavior Trees (BT) this year. BTs are hierarchical structures composed of nodes representing actions, conditions, or other behaviors, and their connections define the order in which those behaviors should be executed. BT can be used to develop AI for soccer-playing robots by providing a framework for creating complex decision-making algorithms that can handle multiple goals and constraints.
 
-% clean-up this table with actual behaviors
-% add non-action nodes, such as finding mark opponents, finding suitable robots to execute the behavior, etc.
-\begin{table}[H]
+\begin{table}
     \centering
     \footnotesize
-    \caption{Example of low-level behaviors.}
+    \caption{Low-level behaviors.}
     \label{tab:low-level-behaviors}
-    \begin{tabular}{|p{0.5\textwidth}|p{6cm}|}
+    \begin{tabular}{|p{0.5\textwidth}|p{0.45\textwidth}|}
         \hline
-        \bf{Behavior} &  \bf{Explanation} \\
+        \bf{Behavior} & \bf{Description} \\
         \hline
         {\itshape Navigate(destination, orientation, profile)} & Navigate the robot to \textit{destination} with the provided velocity \textit{profile} while avoiding obstacles.\\
         {\itshape Chip(power)} & Request a chip kick with the passed \textit{power} to be executed when the ball is detected.\\
-        \\
         {\itshape Direct(power)} & Request a direct kick with the passed \textit{power} to be executed when the ball is detected.\\
         \hline
         {\itshape Obstacles(situation)} & Returns obstacles for the robot for a given \textit{situation} in the game.\\
-        \\
         {\itshape Face(point)} & Returns an orientation so that the robot faces the passed \textit{point}.\\
-        \\
         {\itshape Mark(opponent)} & Returns the defensive marking position for the given \textit{opponent} that is either between our goal and the \textit{opponent}, or the ball and the \textit{opponent}.\\
-        \\
         {\itshape FetchBall(point)} & Returns the position on line which the ball is moving on and most close to the \textit{point}, and an orientation to fetch the ball.\\
-        \\
         {\itshape OneTouch(point, target)} & Returns the position on line which the ball is moving on and most close to the \textit{point}, and an orientation to kick the ball towards the \textit{target}.\\
-        \\
-        {\itshape CircleBall(radius, angle)} & Returns a position on a circle around the ball at a specific angle.\\
         \hline
     \end{tabular}
 \end{table}
 
-Table \ref{tab:low-level-behaviors} shows the low-level behaviors that can be used as building blocks to create more complex behaviors as shown in Fig. \ref{fig:bt-move}. They are self-contained and easy to understand, so they can be developed and tested once, which is much less time-consuming than maintaining complex and interconnected systems developed together.
+Table \ref{tab:low-level-behaviors} shows the low-level behaviors that can be used as building blocks to create more complex behaviors. They are self-contained and easy to understand, so they can be developed and tested once, which is much less time-consuming than maintaining complex and interconnected systems developed together.
+
+Fig. \ref{fig:bt-move} shows an example BT that is built upon the lower-level behaviors described earlier in table \ref{tab:low-level-behaviors}. Note that this tree is stored as an \textit{XML} file that the software can load and reload at runtime, without a need to recompile. This greatly improves the iteration times.
 
 \begin{figure}
 	\centering
@@ -305,7 +298,7 @@ By using BTs in the development of our AI, we can create flexible, modular, and 
 \subsubsection{Config system}
 Previously, all parameters were hard-coded into the C++ code. This made it time-consuming to change anything, resulting in unacceptably long iteration times. Using a config file instead makes it easier to maintain and update the values, as they can be changed in a central location instead of having to search for each instance of the hard-coded value. It also makes the code more flexible and reusable, since you can easily switch between different configurations without having to change the code itself. This also makes it easier to test different scenarios without restarting the system.
 
-This year we started using \textbf{\textit{toml}} \cite{ref_toml} as our configuration format, along with a \textbf{\textit{json schema}} \cite{ref_json-schema} that we generate based on our C++ config structure to validate the toml file in both text editors and as a CI step. This schema is also used by our GUI to create a persistent config editor with the correct types, names, and defaults, even in the absence of a config file. The system uses a layered architecture; multiple toml configs, both from disk files and from the network, are fed into the system, each with a priority field. The configuration system then returns a single compiled configuration that all nodes in the system can use (Fig. \ref{fig:software-architecture}) . The system can also prompt the nodes in the system to persist the received config.
+This year we started using \textbf{\textit{toml}} \cite{ref_toml} as our configuration format, along with a \textbf{\textit{json schema}} \cite{ref_json-schema} that we generate based on our C++ config structure to validate the toml file in both text editors and as a CI step. This schema is also used by our GUI to create a persistent config editor with the correct types, names, and defaults, even in the absence of a config file. The system uses a layered architecture; multiple toml configs, both from disk files and from the network, are fed into the system, each with a priority field. The configuration system then returns a single compiled configuration that all nodes in the system can use (Fig. \ref{fig:software-architecture}). The system can also prompt the nodes in the system to persist the received config.
 
 \subsubsection{Improving build time}
 One of the common pitfalls of any C++ code base is the time it takes to build the project. This problem became more apparent as our software grew in size and dependencies. Before doing any optimizations, it took about 15 minutes to do a complete rebuild on a modern desktop CPU with 6 physical and 12 logical processors.
@@ -319,19 +312,19 @@ As a first step, we enabled multi-threaded compilation with \textbf{\textit{/MP}
 	\label{fig:time-trace}
 \end{figure}
 
-We then used the \textit{-ftime-trace} flag with Clang to see where the time is spent during the build. As shown in the Fig. \ref{fig:time-trace}, most of the time is spent in the frontend, in this example about \%96 of it. Upon closer inspection, it is clear that this is caused by excessive use of include files, which the compiler frontend has to process multiple times.
+We then used the \textit{-ftime-trace} flag with Clang to see where the time is spent during the build. As shown in Fig. \ref{fig:time-trace}, most of the time is spent in the frontend, in this example about \%96 of it. Upon closer inspection, it is clear that this is caused by excessive use of include files, which the compiler frontend has to process multiple times.
 
-To solve this problem, we started using \textit{unity build}, so that the headers are processed once for a set of source files. This resulted in a massive reduction in build times. A full rebuild took about 20 seconds on the same machine. But touching a single source file still triggered compilation of a set of files, which is inefficient.
+To solve this problem, we started using \textit{unity build}, so that the headers are processed once for a set of source files. This resulted in a massive reduction in build times. A full rebuild took about 20 seconds on the same machine. But touching a single source file still triggered the compilation of a set of files, which is inefficient.
 
 The last step to improve build time was to use \textit{pre-compiled header} (PCH). All header files from the 3rd party libraries, and the common code used by both vision and soccer modules except the generated protobuf header files are pre-compiled. This is then used by the compiler when compiling the vision and soccer modules. This way, the time to do a full rebuild is almost the same as the unity build. But the time to build the modules when only a few source files are changed became about 2 seconds, which shows a reduction of about \%80 compared to the unity build.
 
-We currently use PCH locally, and unity build together with PCH for our CI pipeline.
+We currently use PCH locally, and unity builds together with PCH for our CI pipeline.
 
 \subsection{Competitiveness}
 As mentioned earlier, the main focus this year has been to improve the foundation of our code base to make it easier to build more competitive software on top of it. We expect to see more soccer-related development in the coming years. The following sections describe the work we expect to be done in time for RoboCup 2023.
 
 \subsubsection{Local processing on robots}
-Currently, we run all the behaviors in the main software on a computer, and then send the target commands in the form of global target velocity, orientation, and kick commands to the robots. The robot's local processor then performs sensor fusion on the orientation processed by vision and the local Inertial measurement unit (IMU). This greatly improves the quality of the predicted orientation.
+Currently, we run all the behaviors in the main software on a computer, and then send the target commands in the form of global target velocity, orientation, and kick commands to the robots. The robot's local processor then performs sensor fusion on the orientation processed by the vision and the local Inertial measurement unit (IMU). This greatly improves the quality of the predicted orientation.
 
 To extend this idea, we plan to do more sensor fusion on the robot. We will use the output of the four rotary encoders connected to the wheels, the output of the IMU, the proximity sensor array around the robot, and the filtered world state received from the tracker.
 
