@@ -255,10 +255,10 @@ We are also in the process of making the code base warning-free and treating the
 
 \subsection{Extensibility}
 
-\subsubsection{Moving Beyond Finite-State Machines}
-Our current AI is based on finite-state machines (FSMs) \cite{ref_ETDP2020}. While this structure made it easier to decompose robot behavior into distinct states and implement every event as a transition between two states, it made it difficult to reuse states and increased the number of transitions exponentially. It also became really challenging to debug or extend the FSM to handle new behaviors and implement fallback tactics.
+\subsubsection{Issues with Finite-State Machines}
+Our current AI is based on finite-state machines (FSMs) \cite{ref_ETDP2020}. While this structure made it easier to decompose robot behavior into distinct states and implement each event as a transition between two states, it made it difficult to reuse states and increased the number of transitions exponentially. It also became very difficult to debug or extend the FSM to handle new behaviors and implement fallback tactics.
 
-When implementing each state of an FSM, the developer has to consider the other states and how they are transitioned to the current state and how it will transition to the next state. For a state machine consisting of only a few states, this can be more easily handled. However, considering the number of robots and the various tactics that the opponent can use, it is required by the developer to implement a high number of states to handle every possible situation in the FSM. This can create significant challenges for the developer in implementing all of the states and their relationships.
+When implementing each state of an FSM, the developer must consider the other states and how they will transition to the current state and how it will transition to the next state. For a state machine with only a few states, this is easier to handle. However, considering the number of robots and the different tactics that the opponent can use, the developer is required to implement a large number of states to handle every possible situation in the FSM. This can be a significant challenge for the developer to implement all the states and their relationships.
 
 
 \subsubsection{Behavior trees}
