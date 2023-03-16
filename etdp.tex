@@ -180,17 +180,18 @@ In the following sections, we will describe the efforts made to reach these goal
 \subsection{Robustness}
 
 \subsubsection{Continuous integration}
-This year, we created a continuous integration (CI) system based on GitHub workflows. It builds the software, performs style checks, and runs automated unit tests, and optionally publishes the result as a release to GitHub. This is an essential part of our development process, as it provides several important benefits that contribute to the quality and reliability of our software.
+\label{section:software_ci}
+This year, we created a continuous integration (CI) system based on GitHub workflows. It builds the software, performs style checks, runs automated unit tests, and optionally publishes the result as a release to GitHub. This is an essential part of our development process, as it provides several important benefits that contribute to the quality and reliability of our software.
 
-\indent It helps ensure that the software can be built across environments without problems. This is particularly important as we currently target \textbf{Windows} (\textit{MSVC} and \textit{Clang}), \textbf{Ubuntu} (\textit{GCC} and \textit{Clang}), and \textbf{macOS} (\textit{Clang}) with a specific configuration of library dependencies. The system uses the same CMake presets that we use locally to ensure that the software is built in a consistent and reproducible way.
+\indent It helps ensure that the software can be built across environments without problems. This is particularly important as we currently target \textbf{Windows} (\textit{MSVC} and \textit{Clang}), \textbf{Ubuntu} (\textit{GCC} and \textit{Clang}), and \textbf{macOS} (\textit{Clang}) with a collection of library dependencies as will be described in \ref{section:software_3rdparty}. The system uses the same CMake presets that we use locally to ensure that the software is built in a consistent and reproducible way.
 
-\indent It also performs style checks using clang-format and clang-tidy with the same configurations we use in our local integrated development environments (IDEs). This can help enforce a consistent coding style across the codebase, which can make the code easier to read and maintain, and can also help prevent problems that can arise from inconsistent code formatting, such as merge conflicts.
+\indent It also performs style checks described in \ref{section:software_coding_standard} using clang-format and clang-tidy with the same configurations we use in our local integrated development environments (IDEs). This can help enforce a consistent coding style across the codebase, which can make the code easier to read and maintain.
 
-\indent Another important aspect of the pipeline is the ability to run automated unit tests developed with \textbf{\textit{GoogleTest}} \cite{ref_3rd-party_gtest}. This can help identify problems and regressions in the software early in the development process. This can help prevent problems from being introduced into the software, and can help ensure that the software meets the project's requirements and specifications. At the time of writing, the code coverage of these tests is not adequate and we plan to improve this over time. We also plan to introduce more automated tests other than unit tests in the future, such as testing our tracker with known input and output data.
+\indent Another important aspect of the pipeline is the ability to run automated unit tests developed with \textbf{\textit{GoogleTest}} \cite{ref_3rd-party_gtest}. This can help identify problems and regressions in the software early in the development process. At the time of writing, the code coverage of these tests is not adequate and we plan to improve this over time. We also plan to introduce other ways of automated testing other than unit tests in the future, such as testing our tracker with known input and output data, and testing our defensive marking algorithm with situations from the past competitions.
 
-\indent We also have an automatic release submission pipeline when a tag starting with \textbf{\textit{v}} is pushed to our repositories. This automatically packages the resulting artifacts, creates a release on GitHub, and publishes the artifact along with the source code and data used to build it. Even this TDP was created using this mechanism.
+\indent We also have an automatic release submission pipeline when a tag starting with \textbf{\textit{v}}, e.g. \textit{v.1.0.0} is pushed to our repositories. This automatically packages the resulting artifacts, creates a release on GitHub, and publishes the artifact along with the source code and data used to build it. Even this TDP was created using this mechanism.
 
-\subsubsection{Third-party libraries}
+\subsubsection{Third-party libraries} \label{section:software_3rdparty}
 This year we started using several third-party libraries for parts of our software:
 \begin{enumerate}
     \item[$\bullet$] \textbf{\textit{BehaviorTree.CPP}} \cite{ref_3rd-party_btcpp} for Behavior Trees
@@ -203,18 +204,18 @@ This year we started using several third-party libraries for parts of our softwa
 
 \indent Using these libraries over our custom solutions can help improve code quality, both in terms of robustness and ease of use.
 
-\indent These open-source projects have a proven track record and have been extensively reviewed and stabilized by experts over time. This means they are more reliable than custom-built solutions and better suited to handle common tasks with reasonable performance and reliability.
+\indent These open-source projects have a proven track record and have been extensively reviewed and stabilized over time. This means they are more reliable than custom-built solutions and better suited to handle common tasks with reasonable performance and reliability.
 
-\indent They also often come with a broader set of features that have detailed documentation, making them easier to integrate and use. This allows developers to focus on implementing the core logic without worrying about the underlying infrastructure. This results in more readable code that is less prone to bugs.
+\indent They also often come with a broader set of features that have detailed documentation, making them easier to integrate and use. This allows us to focus on implementing the core logic without worrying about the underlying infrastructure. This results in more readable code that is less prone to bugs.
 
-\indent To make it even easier to use other libraries, we started using a C++ dependency manager, \textbf{\textit{vcpkg}} \cite{ref_3rd-party_vcpkg}. This simplifies the installation and maintenance of third-party libraries, ensures compatibility between them, and improves reproducibility on different local machines and in the CI pipeline.
+\indent To make it easier to integrate other libraries, we started using a C++ dependency manager, \textbf{\textit{vcpkg}} \cite{ref_3rd-party_vcpkg}. This simplifies the installation and maintenance of third-party libraries, ensures compatibility between them, and improves reproducibility on different local machines and in the CI pipeline.
 
 \subsubsection{Improved debugging}
-One of the main weaknesses of our software in the previous competition was the lack of understanding of why the software and robots were behaving the way they were and what might be causing the problems. We knew that by providing more detailed and informative logs, we could gain a better understanding, which could lead to faster and more effective debugging and troubleshooting.
+One of the main weaknesses of our software in the previous competition was the lack of understanding of why the software and robots were behaving the way they were and what might be causing the problems we were seeing. We knew that by providing more detailed and informative logs, we could gain a better understanding, which could lead to faster and more effective debugging and troubleshooting.
 
-This year, we improved our logging system with an extensible system that can output to the command line, to a file, and over the network. This allows us to later analyze any part of the runtime to better understand the behavior of the system and narrow down the problem to a specific point in time.
+This year, we improved our logging system with an extensible system that can output to multiple outputs, including the standard output, file, and over the network. This allows us to record the logs and later analyze any part of the runtime to better understand the behavior of the system and narrow down the problem to a specific point in time.
 
-We have also expanded the use of our visualization GUI. Having a graphical representation of the internals of different algorithms, as well as real-time sensory data from the robots, helps us better understand how different parts of the software work and make more informed decisions about how to improve the robots' performance and troubleshoot problems. The GUI also provides a more intuitive and user-friendly way to interact with the software and make configuration changes. Fig. \ref{fig_visualizer} shows an example of visualizing the internals of our ERRT path planning.
+We have also expanded the use of our visualization GUI. Having a graphical representation of the internals of different algorithms, as well as real-time sensory data from the robots, helps us better understand how different parts of the software work and make more informed decisions about how to improve the robots' performance and troubleshoot problems. The GUI also provides a more intuitive and user-friendly way to interact with the software and make configuration changes. Fig. \ref{fig_visualizer} shows an example of visualizing the internals of our path planning.
 
 \begin{figure}
     \includegraphics[width=\textwidth]{images/visual1.png}
@@ -242,19 +243,20 @@ The goal this year is to refactor the code base into separate parts that are con
 At the time of writing, these efforts are still ongoing, but we are confident that we will be able to transition to the new stack in time for RoboCup 2023.
 
 \subsubsection{Coding standards}
-One of the most important observations in the past has been the complexity of the C++ language when used incorrectly. This is especially important to us because the code is typically developed by students who do not have extensive experience with the language.
+\label{section:software_coding_standard}
+One of the most important observations in the past has been the complexity of the C++ language and the large number of problems that can arise when it is used incorrectly. This is especially important to us because the code is typically developed by students who do not have extensive experience with the language.
 
-To address this issue, we have chosen a coding standard \cite{ref_cppbestpractices} and agreed on a set of style and naming conventions to be used throughout the code base. These will improve readability and maintainability, and promote consistency. These style checks are implemented as \textbf{\textit{clang-tidy}} and \textbf{\textit{clang-format}} configurations which can be used both locally within the IDEs, and as an automated gate in our CI pipeline when creating a pull-request to the main branch.
+To address this issue, we have chosen a coding standard \cite{ref_cppbestpractices} and agreed on a set of style and naming conventions to be used throughout the code base. These will improve readability and maintainability, and promote consistency. These style checks are implemented as \textbf{\textit{clang-tidy}} and \textbf{\textit{clang-format}} configurations which can be used both locally within the IDEs, and as an automated gate in our CI pipeline as described in \ref{section:software_ci} when creating a pull-request to the main branch.
 
-As a first step in implementing the coding standard, we have begun to move the code base to a more modern C++ revision (C++20 at the time of this writing). This means moving away from the use of raw pointers in favor of smart pointers. This can help simplify memory management, improve code clarity and maintainability, and reduce the risk of errors related to object ownership and lifetime.
+As a first step in implementing the coding standard, we have begun to move the code base to a more modern C++ revision (C++20 at the time of this writing). It includes as an example moving away from the use of raw pointers in favor of smart pointers. This can help simplify memory management, improve code clarity and maintainability, and reduce the risk of errors related to object ownership and lifetime.
 
-We are also in the process of making the code base warning-free and treating the new warnings as bugs. These warnings are issued by the compiler when it detects potential problems in the code that could lead to bugs or undefined behavior. Treating them as errors force developers to address them and fix potential problems early in the development process, which can help prevent the accumulation of technical debt and reduce the risk of introducing bugs later. Some of these warnings are based on the C++ Core Guidelines \cite{ref_cppcoreguidelines}, which should be used in most C++ code to avoid common pitfalls seen in other projects.
+We are also in the process of making the code base warning-free and treating the new warnings as bugs. These warnings are issued by the compiler when it detects potential problems in the code that could lead to bugs or undefined behavior based on the C++ Core Guidelines \cite{ref_cppcoreguidelines} or other references. Treating them as errors force developers to address them and fix potential problems early in the development process, which can help prevent the accumulation of technical debt and reduce the risk of introducing bugs later.
 
 \subsection{Extensibility}
 
 \subsubsection{Behavior trees}
 Our current AI is based on finite-state machines (FSMs) \cite{ref_ETDP2020}. While this structure made it easier to decompose robot behavior into distinct states, it made it difficult to reuse states and increased the number of transitions exponentially. 
-% explain the issues with FSMs in more detail here
+% TODO for Omid: explain the issues with FSMs in more detail here
 
 To overcome these problems, we switched to Behavior Trees (BT) this year. BTs are hierarchical structures composed of nodes representing actions, conditions, or other behaviors, and their connections define the order in which those behaviors should be executed. BT can be used to develop AI for soccer-playing robots by providing a framework for creating complex decision-making algorithms that can handle multiple goals and constraints.
 
