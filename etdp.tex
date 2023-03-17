@@ -101,12 +101,12 @@ Our current electronics were designed in 2010 and have been in use since. In 201
 	\label{fig:electronics-architecture}
 \end{figure}
 
-The new architecture can be seen in Fig. \ref{fig:electronics-architecture}. We also switched from the old 4-cell batteries to 6-cell batteries this year. The older batteries were causing the BLDC motors to run below their rated voltage. But going to a higher voltage was not possible with our previous electronics due to some limitations in the switching power supply we used to generate 5V.
+The new architecture can be seen in Fig. \ref{fig:electronics-architecture}. We also switched from the old 4-cell batteries to 6-cell batteries this year. The older batteries were causing the brushless DC (BLDC) motors to run below their rated voltage. But going to a higher voltage was not possible with our previous electronics due to some limitations in the switching power supply we used to generate 5V.
 
 It should be mentioned that at the time of this writing, the design work is still ongoing and we don't have the final boards manufactured. We hope to equip at least half of our robots with the new parts in RoboCup 2023.
 
 \subsection{Main board}
-The current main board used by the team was designed in 2010 and has been used in its original form ever since, except for minor changes. It uses a Xilinx Spartan3 FPGA as the main processor. A soft processor, TASKING TSK3000, is used inside the FPGA to handle more sequential logic, while the FPGA itself is used to read encoders, drive brushless DC (BLDC) motors, drive the boost converter, etc. We later added an nRF52832 SoC to handle wireless communication, control the I/O switches and LEDs, and read the current sensors \cite{ref_ETDP2018}.
+The current main board used by the team was designed in 2010 and has been used in its original form ever since, except for minor changes. It uses a Xilinx Spartan3 FPGA as the main processor. A soft processor, TASKING TSK3000, is used inside the FPGA to handle more sequential logic, while the FPGA itself is used to read encoders, drive BLDC motors, drive the boost converter, etc. We later added an nRF52832 SoC to handle wireless communication, control the I/O switches and LEDs, and read the current sensors \cite{ref_ETDP2018}.
 
 While this design is flexible and comparatively cheap to produce, it has shown its age in recent years. The main drawbacks are:
 \begin{enumerate}
