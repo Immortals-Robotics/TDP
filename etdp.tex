@@ -23,11 +23,11 @@
 \author{Ali Salehi \and
 Mohammad Tabasi \and
 Omid Najafi \and
+Ali Amoozandeh Nobaveh \and
 MohammadHossein Fazeli \and
 MohammadAli Ghasemieh \and
 MohammadReza Niknezhad \and
-Mustafa Talaeezadeh \and
-Ali Amoozandeh Nobaveh}
+Mustafa Talaeezadeh}
 %
 \authorrunning{Immortals Robotics}
 %
@@ -38,15 +38,11 @@ Ali Amoozandeh Nobaveh}
 \maketitle              % typeset the header of the contribution
 %
 \begin{abstract}
-%The abstract should briefly summarize the contents of the paper in
-%15--250 words.
 This paper describes the recent work that has been done by the Immortals Robotics Team for the upcoming RoboCup 2023 competition in Bordeaux, France.
 
 \keywords{RoboCup 2023 \and Small Size League}
 \end{abstract}
-%
-%
-%
+
 \section{Introduction}
 The Immortals Small Size League team was founded in 2008 and participated for the first time in RoboCup 2009 in Graz, and later won several awards, including 2nd place in RoboCup 2011 in Istanbul, and 1st place in RoboCup Asia Pacific 2018 in Kish. The team currently consists of computer and electrical engineers.
 
@@ -79,8 +75,6 @@ It is worth mentioning that we will be publishing our designs and software on ou
 Due to the optimal design of the previous robots, the mechanical design team decided not to overhaul the entire system, but rather to modify design details to improve the manufacturability and durability of the parts. In addition, recent advances in additive manufacturing techniques, which have resulted in more accurate and reliable 3D-printed parts, are driving our developments toward broader use of these elements and the replacement of several mechanical parts currently manufactured using conventional methods, such as turning and wire EDM, with additively manufactured parts to reduce costs and increase manufacturing and maintenance speeds.
 
 The manufacturing companies are consulted on the technical drawings of the revised design, and most of the manufacturing work for the new series of robots has been outsourced.
-
-%%%%%%%%%%%%
 
 \section{Electronics}
 
@@ -131,7 +125,7 @@ This new driving board is based on:
 \begin{enumerate}
     \item[$\bullet$] A dedicated BLDC motor driver IC, TMC4671. It implements Field Oriented Control (FOC) for BLDC motors and includes various control methods. This offloads the local motor control functionality from the main processor to dedicated hardware, which is more reliable in terms of latency. It has an SPI interface to receive both configuration and commands and to send back sensor data including speed and position.
     \item[$\bullet$] A power MOSFET driver IC, TMC6200. It drives the MOSFETs and senses the motor currents needed for the FOC algorithm. It also includes a fault detection mechanism.
-    \item[$\bullet$] A small Arm processor, STM32F042G6Ux, acts as a CAN client link to the main processor. It communicates with both the TMC4671 and the TMC6200 via SPI and also reads the current sensor.
+    \item[$\bullet$] A small ARM processor, STM32F042G6Ux, acts as a CAN client link to the main processor. It communicates with both the TMC4671 and the TMC6200 via SPI and also reads the current sensor.
 \end{enumerate}
 
 \subsection{Kicking board}
@@ -217,7 +211,7 @@ One of the main weaknesses of our software in the previous competition was the l
 
 This year, we improved our logging system with an extensible system that can output to multiple outputs, including the standard output, file, and over the network. This allows us to record the logs and later analyze any part of the runtime to better understand the behavior of the system and narrow down the problem to a specific point in time.
 
-We have also expanded the use of our visualization GUI. Having a graphical representation of the internals of different algorithms, as well as real-time sensory data from the robots, helps us better understand how different parts of the software work and make more informed decisions about how to improve the robots' performance and troubleshoot problems. The GUI also provides a more intuitive and user-friendly way to interact with the software and make configuration changes. Fig. \ref{fig_visualizer} shows an example of visualizing the internals of our path planning.
+We have also expanded the use of our visualization GUI. Having a graphical representation of the internals of different algorithms, as well as real-time sensory data from the robots, help us better understand how different parts of the software work and make more informed decisions about how to improve the robots' performance and troubleshoot problems. The GUI also provides a more intuitive and user-friendly way to interact with the software and make configuration changes. Fig. \ref{fig_visualizer} shows an example of visualizing the internals of our path planning.
 
 \begin{figure}
     \includegraphics[width=\textwidth]{images/visual1.png}
@@ -260,7 +254,6 @@ We are also in the process of making the code base warning-free and treating the
 Our current AI is based on finite-state machines (FSMs) \cite{ref_ETDP2020}. While this structure made it easier to decompose robot behavior into distinct states and implement each event as a transition between two states, it made it difficult to reuse states and increased the number of transitions exponentially. It also became very difficult to debug or extend the FSM to handle new behaviors and implement fallback tactics.
 
 When implementing each state of an FSM, the developer must consider the other states and how they will transition to the current state and how it will transition to the next state. For a state machine with only a few states, this is easier to handle. However, considering the number of robots and the different tactics that the opponent can use, the developer is required to implement a large number of states to handle every possible situation in the FSM. This can be a significant challenge for the developer to implement all the states and their relationships.
-
 
 \subsubsection{Behavior trees}
 To overcome these problems, we switched to Behavior Trees (BT) this year. BTs are hierarchical structures composed of nodes representing actions, conditions, or other behaviors, and their connections define the order in which those behaviors should be executed. BT can be used to develop AI for soccer-playing robots by providing a framework for creating complex decision-making algorithms that can handle multiple goals and constraints.
