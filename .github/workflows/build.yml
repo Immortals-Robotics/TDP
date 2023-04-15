@@ -1,0 +1,33 @@
+name: Build LaTeX document
+
+on:
+  push:
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+  workflow_dispatch:
+
+env:
+  latex_file_name: etdp
+
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v3
+
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: ${{ env.latex_file_name }}.tex
+
+      - name: Upload PDF file
+        uses: actions/upload-artifact@v3
+        with:
+          name: PDF
+          path: ${{ env.latex_file_name }}.pdf
+
+      - name: Upload Release PDF
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ env.latex_file_name }}.pdf
