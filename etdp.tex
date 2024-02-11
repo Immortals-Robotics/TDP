@@ -111,14 +111,11 @@ However, during the firmware implementation phase, we encountered significant ch
 This year we are using a manual implementation of the SPI bus, hoping that it would improve the performance. 
 
 \subsection{Motor driver}
-In past competitions, the motor control circuitry was one of the most common points of failure for the robot. Since they were on the same PCB, repairing them would require a complete reflow of the broken parts. In more severe cases, such as when the traces are damaged, especially on the inner layers, this could mean that the board becomes irreparable.\\
-This year, we decided to design separate modular motor driver boards that will be placed on the main board for each motor. This will greatly improve our ability to repair robots if one of the drivers fails. It would also make it easier to develop the main board and the motor drivers separately.\\
-This new driving board is based on:
-\begin{enumerate}
-    \item[$\bullet$] A dedicated BLDC motor driver IC, TMC4671. It implements Field Oriented Control (FOC) for BLDC motors and includes various control methods. This offloads the local motor control functionality from the main processor to dedicated hardware, which is more reliable in terms of latency. It has an SPI interface to receive both configuration and commands and to send back sensor data including speed and position.
-    \item[$\bullet$] A power MOSFET driver IC, TMC6200. It drives the MOSFETs and senses the motor currents needed for the FOC algorithm. It also includes a fault detection mechanism.
-    \item[$\bullet$] A small ARM processor, STM32F042G6Ux, acts as a CAN client link to the main processor. It communicates with both the TMC4671 and the TMC6200 via SPI and also reads the current sensor.
-\end{enumerate}
+Our motor drivers are separate modules that sit on top of the main board. This greatly improves our ability to repair robots if one of the drivers fails. It also makes it easier to develop the main board and the motor drivers further separately.\\
+We use a dedicated BLDC motor driver IC, TMC4671. It implements Field Oriented Control (FOC) for BLDC motors and includes various control methods. This offloads the local motor control functionality from the main processor to dedicated hardware, which is more reliable in terms of latency.\\
+These drivers talk directly to the Compute Module using the SPI bus to receive both configuration and commands and to send back sensor data including speed and position. We use the TMC-API (TODO: ref) from Trinamic to make it easier to read from and write to the TMC4671's registers.\\
+We also use a power MOSFET driver IC, TMC6200. It drives the MOSFETs and senses the motor currents needed for the FOC algorithm. It also includes a fault detection mechanism. It shares the same SPI bus with TMC4671 and is directly connected to the Compute Module.\\
+TODO: add pictures of the final board.
 
 \subsection{Kicking board}
 In previous years, we used a boost converter driven by the FPGA from the main board. There were also two discharge pins and one charge pin connected directly to the FPGA's IO pins. These were major problems with this design both in terms of reliability and charge performance.\\
