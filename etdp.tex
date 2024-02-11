@@ -118,7 +118,11 @@ We also use a power MOSFET driver IC, TMC6200. It drives the MOSFETs and senses 
 TODO: add pictures of the final board.
 
 \subsection{Kicking board}
-In previous years, we used a boost converter driven by the FPGA from the main board. There were also two discharge pins and one charge pin connected directly to the FPGA's IO pins. These were major problems with this design both in terms of reliability and charge performance.\\
+Our kicking board (Fig. \ref{fig:mikona}) uses a dedicated LT3570 flyback capacitor charger IC driving a BSC109N10NS3G MOSFET connected to a DA2034 transformer for this circuit.\\
+After writing our last year's TDP, we switched to a simpler PIC microcontroller instead of the STM32. This resulted in major simplification that improved both reliablity and the cost.\\
+We also have a high-power resistor network consisting of three 2.4K 3W resistors to discharge the capacitors when needed without using the kicker magnets. The STN3N40K3 MOSFET driven by a ZXGD3009E6 is used to control the discharge.\\
+For the actual kicking, two IGB50N60T IGBTs driven by a single IX4427MTR are used to discharge the capacitors to the kicking magnets.\\
+It is also worth mentioning that the variable programmable resistor was removed after writing last year's TDP due to the lack of necessity. The boost voltage rarely changes and the change usually involved a corresponding hardware change, at which time we can simply re-calibrate the mechanical variable resistor instead.\\
 
 \begin{figure}
 	\centering
@@ -139,15 +143,6 @@ In previous years, we used a boost converter driven by the FPGA from the main bo
     \caption{The new kicking board design}
     \label{fig:mikona}
 \end{figure}
-
-This year we redesigned the kicking board (Fig. \ref{fig:mikona}) with the following features:
-\begin{enumerate}
-    \item[$\bullet$] Like other teams in the league \cite{ref_tigers_etdp_2020}, it uses a dedicated LT3570 flyback capacitor charger IC.This simplifies the design while improving performance and reliability. We use the DA2034 transformer and the BSC109N10NS3G MOSFET for this circuit.
-    \item[$\bullet$] A STM32F042G6Ux MCU is used on the board to handle the CAN protocol to the main board and to control the charger IC, variable resistors, and discharge IGBTs.
-    \item[$\bullet$] A high-power resistor network consisting of three 2.4K 3W resistors is added to the board to discharge the capacitors when needed without using the kicker magnets. The STN3N40K3 MOSFET driven by a ZXGD3009E6 is used to control the discharge.
-    \item[$\bullet$] Two IGB50N60T IGBTs driven by a single IX4427MTR are used to discharge the capacitors to the kicking magnets.
-    \item[$\bullet$] An MCP4562 variable resistor to set the target voltage of the flyback converter. This allows us to change the voltage by simply changing a configuration variable in the main software and communicating it down to the kicking board.
-\end{enumerate}
 
 \section{Software}
 Our current software stack was developed in C++ in 2010 and has seen several additions and improvements over the years. This has resulted in a high performance and robust software but at the same time a difficult-to-maintain code base that is too fragile for the new changes.
