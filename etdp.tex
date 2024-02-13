@@ -44,14 +44,13 @@ This paper describes the recent work that has been done by the Immortals Robotic
 \end{abstract}
 
 \section{Introduction}
-The Immortals Small Size League team was founded in 2008 and participated for the first time in RoboCup 2009 in Graz, and later won several awards, including 2nd place in RoboCup 2011 in Istanbul, and 3rd place in RoboCup 2023 in Bordeaux. The team currently consists of computer and electrical engineers.
-
+The Immortals Small Size League team was founded in 2008. We first participated in RoboCup 2009 in Graz. Later, we won several awards. This included 2nd place in RoboCup 2011 in Istanbul, and 3rd place in RoboCup 2023 in Bordeaux. The team currently consists of computer and electrical engineers.
 
 In the past year, our team focused on updating the electronics and software structure \cite{ref_ETDP2023}. These changes were aimed at improving the core functionalities of our system. While these updates represented a major step forward, they also introduced significant instability. Consequently, we were compelled to revert some parts of the system to older designs during RoboCup 2023.
 
-This year, our primary emphasis will pivot towards enhancing system robustness while capitalizing on the improved hardware and software foundation established through the modernization efforts. By prioritizing robustness enhancement, we aim to ensure a more stable and reliable performance of our system in future competitions.
+This year, our main focus will shift to enhancing system robustness. We will also capitalize on the improved hardware and software foundation established through modernization efforts. By prioritizing robustness enhancement, we aim to ensure a more stable and reliable performance of our system in future competitions.
  
-It is worth mentioning that we will be publishing our designs and software on our GitHub page \cite{ref_github} shortly after the competition is over.
+It is worth mentioning that we will publish our designs and software on our GitHub page \cite{ref_github} shortly after the competition is over.
 
 \begin{figure}
     \centering
@@ -73,9 +72,9 @@ It is worth mentioning that we will be publishing our designs and software on ou
 \end{figure}
 
 \section {Mechanics}
-Due to the optimal design of the previous robots, the mechanical design team decided not to overhaul the entire system, but rather to modify design details to improve the manufacturability and durability of the parts. In addition, recent advances in additive manufacturing techniques, which have resulted in more accurate and reliable 3D-printed parts, are driving our developments toward broader use of these elements and the replacement of several mechanical parts currently manufactured using conventional methods, such as turning and wire EDM, with additively manufactured parts to reduce costs and increase manufacturing and maintenance speeds.
+The mechanical design team decided not to overhaul the entire system. Instead, they chose to modify design details due to the optimal design of the previous robots. This change aims to improve the manufacturability and durability of the parts. Recent advances in additive manufacturing techniques have made 3D-printed parts more accurate and reliable. This is driving our developments toward broader use of these elements. We're also replacing several mechanical parts made using traditional methods, such as turning and wire EDM, with additively manufactured parts. This will cut costs and speed up manufacturing and maintenance.
 
-The manufacturing companies are consulted on the technical drawings of the revised design, and most of the manufacturing work for the new series of robots has been outsourced.
+Manufacturing companies are consulted on the technical drawings of the revised design. Most of the manufacturing work for the new series of robots has been outsourced.
 
 \section{Electronics}
 
@@ -87,59 +86,66 @@ The manufacturing companies are consulted on the technical drawings of the revis
     \item[$\bullet$] being more competitive
 \end{enumerate}
 
-it's important to highlight that the new designs worked well and addressed many of the issues we faced before. However, the changes also added far more complexity to the system. Additionally, the global shortage of chips, especially for the Compute Module, made it difficult to get all the components we needed. As a result, we weren't able to use the new boards for half of our robots like we had planned.
-
-TODO: change the pictures with the real boards.
+After writing last year's TDP and during the design and prototyping phase, we made several changes to the architecture that can be seen in Fig. \ref{fig:electronics-architecture}. These changes will be described in the following sections.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.8\textwidth]{images/electronics-architecture.jpg}
-	\caption{The new electronics architecture}
+	\caption{New main board}
 	\label{fig:electronics-architecture}
 \end{figure}
 
+it's important to highlight that the new designs worked well and addressed many of the issues we faced before. However, the changes also added far more complexity to the system. Additionally, the global chip shortage, especially for the Compute Module, made it hard to get all the components we needed. As a result, we weren't able to use the new boards for half of our robots like we had planned.
+
 \subsection{Main board}
 
-Our current main board was designed last year and uses a Raspberry Pi Compute Module (CM) 4 as the local compute unit on the robot. 
-
-We also use its 5GHz WiFi as the wireless communication link. During last year's competition we observed satisfactory results using it, with results very similar to what we had measured in the lab. Therefore we didn't follow with adding an additional nRf wireless link.
-
-One design change we made after writing last year's TDP was to use Serial Peripheral Interface (SPI) to communicate with the motor controllers instead of CAN. The main reasons were simplicity and price. During development and testing, we couldn't find any issues with the simpler SPI bus that we hoped CAN could fix. And the chip shortage meant the price of anything that speaks CAN were much higher than in the past, as the auto industry had priority over others when it comes to CAN-capable devices.
-
-However, during the firmware implementation phase, we encountered significant challenges while attempting to utilize the SPI bus on the Raspberry Pi for communication with the motor controllers: the speed of this interface fell considerably short of our expectations. We were using linux's builtin SPI driver, with Trionamic's API on top of it. This meant each byte were sent separately to the kernel causing a kernel mode switch every time. TODO: add some numbers and fact-check these.
-
-This year we are using a manual implementation of the SPI bus, hoping that it would improve the performance. 
-
-\subsection{Motor driver}
-Our motor drivers are separate modules that sit on top of the main board. This greatly improves our ability to repair robots if one of the drivers fails. It also makes it easier to develop the main board and the motor drivers further separately.\\
-We use a dedicated BLDC motor driver IC, TMC4671. It implements Field Oriented Control (FOC) for BLDC motors and includes various control methods. This offloads the local motor control functionality from the main processor to dedicated hardware, which is more reliable in terms of latency.\\
-These drivers talk directly to the Compute Module using the SPI bus to receive both configuration and commands and to send back sensor data including speed and position. We use the TMC-API (TODO: ref) from Trinamic to make it easier to read from and write to the TMC4671's registers.\\
-We also use a power MOSFET driver IC, TMC6200. It drives the MOSFETs and senses the motor currents needed for the FOC algorithm. It also includes a fault detection mechanism. It shares the same SPI bus with TMC4671 and is directly connected to the Compute Module.\\
-TODO: add pictures of the final board.
-
-\subsection{Kicking board}
-Our kicking board (Fig. \ref{fig:mikona}) uses a dedicated LT3570 flyback capacitor charger IC driving a BSC109N10NS3G MOSFET connected to a DA2034 transformer for this circuit.\\
-After writing our last year's TDP, we switched to a simpler PIC microcontroller instead of the STM32. This resulted in major simplification that improved both reliablity and the cost.\\
-We also have a high-power resistor network consisting of three 2.4K 3W resistors to discharge the capacitors when needed without using the kicker magnets. The STN3N40K3 MOSFET driven by a ZXGD3009E6 is used to control the discharge.\\
-For the actual kicking, two IGB50N60T IGBTs driven by a single IX4427MTR are used to discharge the capacitors to the kicking magnets.\\
-It is also worth mentioning that the variable programmable resistor was removed after writing last year's TDP due to the lack of necessity. The boost voltage rarely changes and the change usually involved a corresponding hardware change, at which time we can simply re-calibrate the mechanical variable resistor instead.\\
+Our current main board (Fig. \ref{fig:main-board}) was designed last year and uses a Raspberry Pi Compute Module (CM) 4 as the local compute unit on the robot. 
 
 \begin{figure}
 	\centering
-    \begin{subfigure}[b]{0.45\textwidth}
-         \centering
-         \includegraphics[width=\textwidth]{images/mikona_top.png}
-         \caption{top-view}
-         \label{fig:mikona_top}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/mikona_bottom.png}
-        \caption{bottom-view}
-        \label{fig:mikona_bottom}
-    \end{subfigure}
+	\includegraphics[width=0.8\textwidth]{images/main-board.jpg}
+	\caption{New main board}
+	\label{fig:main-board}
+\end{figure}
 
+We also use its 5GHz WiFi as the wireless communication link. During last year's competition we observed satisfactory results using it, with results very similar to what we had measured in the lab. Therefore we didn't follow with adding an additional nRf wireless link.
+
+We made a design change after writing last year's TDP. Instead of using CAN, we now use Serial Peripheral Interface (SPI) to communicate with the motor controllers. The main reasons were simplicity and price. During development and testing, we couldn't find any issues with the simpler SPI bus that we hoped CAN could fix. The chip shortage caused the price of anything that speaks CAN to be much higher than in the past. The auto industry had priority over others for CAN-capable devices.
+
+However, during the firmware implementation phase, we encountered significant challenges. We attempted to utilize the SPI bus on the Raspberry Pi for communication with the motor controllers. However, the speed of this interface fell considerably short of our expectations. We were using linux's builtin SPI driver, with Trionamic's API on top of it. This meant each byte were sent separately to the kernel causing a kernel mode switch every time. TODO: add some numbers and fact-check these.
+
+This year we are using a manual implementation of the SPI bus, hoping that it would improve the performance.
+
+\subsection{Motor driver}
+Our motor drivers (Fig. \ref{fig:motor-driver}) are separate modules that sit on top of the main board. This greatly improves our ability to repair robots if one of the drivers fails. It also makes it easier to develop the main board and the motor drivers further separately.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/motor-driver.jpg}
+	\caption{New motor driver module}
+	\label{fig:motor-driver}
+\end{figure}
+
+We use a dedicated BLDC motor driver IC, TMC4671. It implements Field Oriented Control (FOC) for BLDC motors and includes various control methods. This offloads the local motor control functionality from the main processor to dedicated hardware, which is more reliable in terms of latency.
+
+These drivers talk directly to the Compute Module using the SPI bus. They receive both configuration and commands, and send back sensor data including speed and position. We use the TMC-API (TODO: ref) from Trinamic to make it easier to read from and write to the TMC4671's registers.
+
+We also use a power MOSFET driver IC, TMC6200. It drives the MOSFETs and senses the motor currents needed for the FOC algorithm. It also includes a fault detection mechanism. It shares the same SPI bus with TMC4671 and is directly connected to the Compute Module.
+
+\subsection{Kicking board}
+Our kicking board (Fig. Figure \ref{fig:mikona} uses a dedicated LT3570 flyback capacitor charger IC. It drives a BSC109N10NS3G MOSFET connected to a DA2034 transformer for this circuit.
+
+After writing our last year's TDP, we switched to a simpler PIC microcontroller instead of the STM32. This resulted in major simplification that improved both reliablity and the cost.
+
+We also have a high-power resistor network. It consists of three 2.4K 3W resistors. It discharges the capacitors when needed, without using the kicker magnets. The STN3N40K3 MOSFET driven by a ZXGD3009E6 is used to control the discharge.
+
+For the actual kicking, two IGB50N60T IGBTs driven by a single IX4427MTR are used to discharge the capacitors to the kicking magnets.
+
+It is also worth mentioning that the variable programmable resistor was removed after writing last year's TDP. This was because it was not necessary. The boost voltage rarely changes. When it does change, it usually involves a corresponding hardware change. At that time, we can simply re-calibrate the mechanical variable resistor instead.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{images/mikona.jpg}
     \caption{The new kicking board design}
     \label{fig:mikona}
 \end{figure}
