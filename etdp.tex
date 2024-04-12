@@ -188,9 +188,6 @@ The RP2040 microcontroller was selected for its high performance and efficiency 
 \subsection{Power management and monitoring}
 
 This year, we have advanced our robot's power management system by implementing a sophisticated power monitoring and control system (Fig. \ref{fig:PMU}), moving away from traditional on-off switches. This new system incorporates an LTC2955 push-button controller and an LTC4231 micropower hot swap controller. These components work in tandem to enhance our power management capabilities, allowing for controlled power shutdown with a specific delay in the event of overcurrent conditions, without the need for traditional one-time fuses.
-The LTC4231 plays a crucial role as a micropower hot swap controller, which allows for safe insertion and removal of boards in a live system. In our application, it helps manage the power distribution within the robot, particularly safeguarding against overcurrent scenarios. By monitoring the current flow and quickly disconnecting the power in case of an overcurrent, it prevents potential damage to the electronic components and the main board.
-
-Additionally, we incorporated the PAC1954 current sensor to continuously monitor the battery's current.
 
 \begin{figure}
     \centering
@@ -199,6 +196,9 @@ Additionally, we incorporated the PAC1954 current sensor to continuously monitor
     \label{fig:PMU}
 \end{figure}
 
+The LTC4231 plays a crucial role as a micropower hot swap controller, which allows for safe insertion and removal of boards in a live system. In our application, it helps manage the power distribution within the robot, particularly safeguarding against overcurrent scenarios. By monitoring the current flow and quickly disconnecting the power in case of an overcurrent, it prevents potential damage to the electronic components and the main board.
+
+Additionally, we incorporated the PAC1954 current sensor to continuously monitor the battery's current.
 
 \section{Software}
 Last year we started to rewrite our software (Fig. \ref{fig:software-architecture}), focusing on the following points:
