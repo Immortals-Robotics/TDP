@@ -21,6 +21,7 @@
 \titlerunning{Immortals 2024 ETDP}
 
 \author{Ali Salehi \and
+Mohammad Mahdi Shirazi \and
 Mohammad Tabasi \and
 Omid Najafi \and
 Ali Amoozandeh Nobaveh \and
@@ -76,15 +77,17 @@ In congruence with the mechanical design maintained from the previous year [1], 
 
 \section{Electronics}
 
-\indent Last year, we redesigned all of our electronics from scratch to reflect the latest developments in the league and also in the industry. The main goals were:
-
+\indent 
+In the previous year, a comprehensive overhaul was undertaken to redesign all electronic components from the ground up, aligning with the latest advancements both within the specific league and the broader industry landscape. The primary objectives of this endeavor encompassed:
 \begin{enumerate}
     \item[$\bullet$] reliability
     \item[$\bullet$] expandability
     \item[$\bullet$] being more competitive
 \end{enumerate}
 
-After writing last year's TDP and during the design and prototyping phase, we made several changes to the architecture that can be seen in Fig. \ref{fig:electronics-architecture}. These changes will be described in the following sections.
+Following the composition of last year's Team Description Paper (TDP) and throughout the design and prototyping phases, several adjustments were implemented in the architecture, as depicted in Fig. \ref{fig:electronics-architecture}. These modifications, aimed at addressing previously encountered challenges, notably enhanced the functionality and performance of the system. However, it is imperative to acknowledge that these changes also introduced heightened complexity to the overall system architecture. Compounding this complexity was the global chip shortage, particularly affecting the availability of the Compute Module and other essential components. Consequently, despite the efficacy of the new designs, logistical constraints stemming from the chip shortage impeded the deployment of the updated boards on approximately half of our robotic platforms, deviating from our initial implementation plans.
+
+All of our pcb and schematic designs are opensource and can be accessed by immortals github page [2].
 
 \begin{figure}
 	\centering
@@ -93,11 +96,10 @@ After writing last year's TDP and during the design and prototyping phase, we ma
 	\label{fig:electronics-architecture}
 \end{figure}
 
-it's important to highlight that the new designs worked well and addressed many of the issues we faced before. However, the changes also added far more complexity to the system. Additionally, the global chip shortage, especially for the Compute Module, made it hard to get all the components we needed. As a result, we weren't able to use the new boards for half of our robots like we had planned.
-
 \subsection{Main board}
 
-Our current main board (Fig. \ref{fig:main-board}) was designed last year and uses a Raspberry Pi Compute Module (CM) 4 as the local compute unit on the robot. 
+Our current main board [8] (as depicted in Fig. \ref{fig:main-board}) was meticulously designed and engineered during the previous year, integrating state-of-the-art components to optimize the performance of our robots. Central to its architecture is the utilization of the Raspberry Pi Compute Module (CM) 4, renowned for its computational prowess and versatility, serving as the cornerstone for local processing tasks within the robot. Furthermore, the design process involved meticulous consideration of various factors, including power efficiency, and compactness to ensure the optimal integration and functionality of the main board within our robot.
+
 
 \begin{figure}
 	\centering
@@ -106,17 +108,18 @@ Our current main board (Fig. \ref{fig:main-board}) was designed last year and us
 	\label{fig:main-board}
 \end{figure}
 
-We also use its 5GHz WiFi as the wireless communication link. During last year's competition we observed satisfactory results using it, with results very similar to what we had measured in the lab. Therefore we didn't follow with adding an additional nRf wireless link.
+In addition to the hardware advancements, the 5GHz WiFi band was employed as the wireless communication link between our server and robots. This decision was based on the positive experiences from the previous year's competition, where the use of 5GHz WiFi yielded results that were closely aligned with those obtained in controlled laboratory settings [1]. The consistency and reliability observed under competitive conditions validated our choice, negating the need for an additional wireless communication system. Consequently, we decided against using an nRF wireless link, which, while offering benefits like reduced power consumption and potentially greater range, was considered superfluous given the effectiveness of our existing setup. This strategic decision not only simplified our system's architecture but also enhanced its reliability by minimizing the complexity and maintenance requirements associated with managing multiple communication protocols.
 
-We made a design change after writing last year's TDP. Instead of using CAN, we now use Serial Peripheral Interface (SPI) to communicate with the motor controllers. The main reasons were simplicity and price. During development and testing, we couldn't find any issues with the simpler SPI bus that we hoped CAN could fix. The chip shortage caused the price of anything that speaks CAN to be much higher than in the past. The auto industry had priority over others for CAN-capable devices.
+After evaluating our design as documented in last year's Team Description Paper (TDP), we made a significant change in our communication protocol with motor controllers, transitioning from the Controller Area Network (CAN) to the Serial Peripheral Interface (SPI). The primary motivations for this shift were the simplicity of the SPI system and cost considerations. Throughout the development and testing phases, the SPI bus demonstrated robust performance, and we did not identify any functional deficiencies that CAN might have addressed. Furthermore, the global chip shortage inflated the costs of CAN-compatible devices, compounded by the automotive industry's preferential access to these components, thus making SPI a more viable and economical option.
 
-However, during the firmware implementation phase, we encountered significant challenges. We attempted to utilize the SPI bus on the Raspberry Pi for communication with the motor controllers. However, the speed of this interface fell considerably short of our expectations. We were using linux's builtin SPI driver, with Trionamic's API on top of it. This meant each byte were sent separately to the kernel causing a kernel mode switch every time. TODO: add some numbers and fact-check these.
+However, the implementation phase presented unforeseen challenges. We initially implemented the SPI communication using the built-in SPI driver in Linux, coupled with Trinamic's API. This setup, while functional, did not meet our performance expectations due to the slow operational speed. The integration involved sending each byte of data individually through the Linux kernel, resulting in a kernel mode switch with each transmission, which significantly hampered the speed and efficiency of data transfer.
 
-This year we are using a manual implementation of the SPI bus, hoping that it would improve the performance.
+In response to these challenges, we have adopted a manual implementation of the SPI bus for this year's competition. This approach allows for more direct control over the data transmission process and is expected to enhance the speed and reliability of communications between the Raspberry Pi and the motor controllers. We are currently conducting rigorous testing to validate this new implementation.
+
+In addition to completely removing CAN from our system, we decided to adopt the I2C protocol for communication with various peripheral devices, including our battery monitoring system, proximity sensor (used for ball detection), and the kicking board. The choice of I2C was driven by its simplicity and efficiency in handling multiple short-distance communications.
 
 \subsection{Motor driver}
-Our motor drivers (Fig. \ref{fig:motor-driver}) are separate modules that sit on top of the main board. This greatly improves our ability to repair robots if one of the drivers fails. It also makes it easier to develop the main board and the motor drivers further separately.
-
+In our current design, as depicted in Fig. \ref{fig:motor-driver}, the motor drivers are configured as separate modules [10] that are mounted on top of the main board. This modular approach significantly enhances our ability to maintain and repair the robots, particularly in the event of motor driver failures. By isolating the motor drivers from the main board, we can quickly replace or repair a failed module without the need to dismantle other components, thereby minimizing downtime and improving the maintainability of our robots.
 \begin{figure}
 	\centering
 	\includegraphics[width=0.8\textwidth]{images/motor-driver.jpg}
@@ -124,15 +127,15 @@ Our motor drivers (Fig. \ref{fig:motor-driver}) are separate modules that sit on
 	\label{fig:motor-driver}
 \end{figure}
 
-We use a dedicated BLDC motor driver IC, TMC4671. It implements Field Oriented Control (FOC) for BLDC motors and includes various control methods. This offloads the local motor control functionality from the main processor to dedicated hardware, which is more reliable in terms of latency.
+We have integrated a dedicated BLDC motor driver IC, the TMC4671, into our system, which implements Field Oriented Control (FOC) for BLDC motors. This IC supports various control methods and offloads the local motor control functionality from the main processor to dedicated hardware. By doing so, it enhances the reliability of our system, particularly in terms of reducing latency and ensuring consistent performance under varying loads.
 
-These drivers talk directly to the Compute Module using the SPI bus. They receive both configuration and commands, and send back sensor data including speed and position. We use the TMC-API (TODO: ref) from Trinamic to make it easier to read from and write to the TMC4671's registers.
+The motor drivers communicate directly with the Compute Module using the SPI bus. This setup facilitates a robust exchange of data, allowing the drivers to receive configuration settings and commands from the main processor and to send back vital sensor data, including motor speed and position. We utilize the Trinamic API, specifically designed for the TMC4671, to streamline the process of reading from and writing to the driver's registers, enhancing the efficiency of our control system [7].
 
-We also use a power MOSFET driver IC, TMC6200. It drives the MOSFETs and senses the motor currents needed for the FOC algorithm. It also includes a fault detection mechanism. It shares the same SPI bus with TMC4671 and is directly connected to the Compute Module.
+In addition to the TMC4671, our system incorporates the TMC6200 power MOSFET driver IC. This component is crucial for driving the MOSFETs used in our motor control setup and for sensing the motor currents that are essential for executing the FOC algorithm. The TMC6200 also includes an integrated fault detection mechanism, which is invaluable for maintaining the overall safety and reliability of the motor control system. It shares the same SPI bus as the TMC4671 and is directly connected to the Compute Module, ensuring that communication between these components is streamlined and effective.
 
+Together, these components form a sophisticated motor control system that significantly enhances the operational capabilities of our robots, providing them with precise control and high reliability essential for competitive robotics.
 \subsection{Kicking board}
-Our kicking board (Fig. \ref{fig:mikona}) uses a dedicated LT3570 flyback capacitor charger IC. It drives a BSC109N10NS3G MOSFET connected to a DA2034 transformer for this circuit.
-
+In the design of our kicking mechanism [9], as depicted in Figure \ref{fig:mikona}, we have integrated a dedicated LT3570 flyback capacitor charger IC. This component is specifically utilized to efficiently manage the charging of capacitors. The LT3570 IC is responsible for driving a BSC109N10NS3G MOSFET, which is connected to a DA2034 transformer within the circuit. This arrangement forms an essential part of the flyback converter system, designed to elevate the voltage to appropriate levels for rapid capacitor charging, essential for the operation of the kicking board.
 \begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{images/mikona.jpg}
@@ -140,13 +143,33 @@ Our kicking board (Fig. \ref{fig:mikona}) uses a dedicated LT3570 flyback capaci
     \label{fig:mikona}
 \end{figure}
 
-After writing our last year's TDP, we switched to a simpler PIC microcontroller instead of the STM32. This resulted in major simplification that improved both reliablity and the cost.
+Following the publication of last year's Team Description Paper (TDP) [1], we implemented a significant modification in our control system by transitioning from the STM32 microcontroller to a simpler PIC microcontroller. This change led to a substantial simplification of our circuit design, enhancing both the reliability and cost-effectiveness of our robot.
 
-We also have a high-power resistor network. It consists of three 2.4K 3W resistors. It discharges the capacitors when needed, without using the kicker magnets. The STN3N40K3 MOSFET driven by a ZXGD3009E6 is used to control the discharge.
+Additionally, our system incorporates a high-power resistor network, which is composed of three 2.4K ohm, 3W resistors. This network is specifically designed to safely discharge the capacitors as needed, independently of the kicker magnets. The discharge process is controlled by an STN3N40K3 MOSFET, which is driven by a ZXGD3009E6 driver, ensuring efficient and reliable management of the discharge cycle.
 
-For the actual kicking, two IGB50N60T IGBTs driven by a single IX4427MTR are used to discharge the capacitors to the kicking magnets.
+For the actuation of the kicking mechanism itself, two IGB50N60T Insulated Gate Bipolar Transistors (IGBTs) are employed. These are driven by a single IX4427MTR driver, which facilitates the rapid discharge of the capacitors directly into the kicking magnets, providing the necessary force for effective ball propulsion.
 
-It is also worth mentioning that the variable programmable resistor was removed after writing last year's TDP. This was because it was not necessary. The boost voltage rarely changes. When it does change, it usually involves a corresponding hardware change. At that time, we can simply re-calibrate the mechanical variable resistor instead.
+It is also noteworthy that the variable programmable resistor was removed from our system design after last year's TDP was documented. This decision was based on the finding that adjustments to the boost voltage were infrequently required. On the occasions where voltage adjustments are necessary, they typically coincide with hardware changes.
+\subsection{Fault detection}
+
+This year, we have implemented a significant improvement in our system's safety and reliability by integrating a separate microcontroller, the RP2040, specifically for detecting motor faults. The primary motivation for this change is to enhance the capability to rapidly identify any malfunctions in the motors or motor drivers. By doing so, we can immediately shut down the affected component before it has the opportunity to cause any damage to the main board.
+
+The RP2040 microcontroller was selected for its high performance and efficiency in handling real-time processing tasks. It allows for continuous monitoring of the motor status. When a fault is detected, the RP2040 can execute a rapid response protocol, effectively disabling the faulty motor within milliseconds.
+
+\subsection{Power management and monitoring}
+
+This year, we have advanced our robot's power management system by implementing a sophisticated power monitoring and control system (Fig. \ref{fig:PMU}), moving away from traditional on-off switches. This new system incorporates an LTC2955 push-button controller and an LTC4231 micropower hot swap controller. These components work in tandem to enhance our power management capabilities, allowing for controlled power shutdown with a specific delay in the event of overcurrent conditions, without the need for traditional one-time fuses.
+The LTC4231 plays a crucial role as a micropower hot swap controller, which allows for safe insertion and removal of boards in a live system. In our application, it helps manage the power distribution within the robot, particularly safeguarding against overcurrent scenarios. By monitoring the current flow and quickly disconnecting the power in case of an overcurrent, it prevents potential damage to the electronic components and the main board.
+
+Additionally, we incorporated the PAC1954 current sensor to continuously monitor the battery's current.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\textwidth]{images/PMU.png}
+    \caption{Power management and monitoring}
+    \label{fig:PMU}
+\end{figure}
+
 
 \section{Software}
 Last year we started to rewrite our software (Fig. \ref{fig:software-architecture}), focusing on the following points:
@@ -208,6 +231,18 @@ Odin Programming Language \url{https://odin-lang.org/}
 
 \bibitem{PEEK_properties}
 Kurtz, S. M., \& Devine, J. N. (2007). PEEK biomaterials in trauma, orthopedic, and spinal implants. Biomaterials, 28(32), 4845-4869.
+
+\bibitem{ref_TMC_API}
+The TMC-API is a portable C library for working with Trinamic ICs in embedded projects. \url{https://github.com/analogdevicesinc/TMC-API}.
+
+\bibitem{ref_mainboard}
+Immortals Open Source Main board \url{https://github.com/Immortals-Robotics/MainBoard}.
+
+\bibitem{ref_mikona}
+Immortals Open Source Kicking board AKA Mikona \url{https://github.com/Immortals-Robotics/Mikona}.
+
+\bibitem{ref_motordriver}
+Immortals Open Source Motor driver module \url{https://github.com/Immortals-Robotics/MotorDriver}.
 
 \end{thebibliography}
 \end{document}
